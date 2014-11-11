@@ -7,17 +7,21 @@ public class Territory {
 	private Player currentOwner;
 	private int numArmies;
 	private ArrayList<Territory> adjacent;
+	private Continent continent;
+	// need color
 	
-	public Territory(String name) {
+	public Territory(String name, Continent continent) {
 		this.name = name;
 		currentOwner = null;
 		numArmies = 0;
 		adjacent = new ArrayList<Territory>();
 	}
 	
-	public Territory(String name, ArrayList<Territory> adjacent) {
+	// this one isn't used
+	public Territory(String name, ArrayList<Territory> adjacent, Continent continent) {
 		this.name = name;
 		this.adjacent = adjacent;
+		this.continent = continent;
 		currentOwner = null;
 		numArmies = 0;
 	}
@@ -51,6 +55,9 @@ public class Territory {
 	}
 	
 	public boolean isAdjacent(Territory toCheck) {
+		for (Territory t : adjacent) {
+			if (toCheck.equals(t)) return true;
+		}
 		return false;
 	}
 }
