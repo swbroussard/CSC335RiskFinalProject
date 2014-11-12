@@ -1,4 +1,4 @@
-package testModelPrograms;
+package test;
 
 import org.junit.Test;
 import model.SimpleAI;
