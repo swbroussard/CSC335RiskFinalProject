@@ -54,6 +54,7 @@ public class SimpleAI extends Player{
 					armies = t2.getNumArmies();
 				}
 				
+				
 			}
 			//TODO: get reinforce method that takes from takeArmy and gives troops to reinforceThis
 		}
