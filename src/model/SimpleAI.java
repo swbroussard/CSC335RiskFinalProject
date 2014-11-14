@@ -28,7 +28,10 @@ public class SimpleAI extends Player{
 			
 			int decisionAdjacent = (t.getAdjacent().size());
 			Territory toAttack = t.getAdjacent().get(randomAdjacent.nextInt(decisionAdjacent));
-			
+			if(getTerritories().contains(toAttack)){
+				toAttack = t.getAdjacent().get(randomAdjacent.nextInt(decisionAdjacent)); // Make Sure that the current player does not already own this territory
+			}
+			// need an attack method
 		}
 		if(decisionAttack == 1){ //don't attack
 			return;
