@@ -21,6 +21,8 @@ public class SimpleAI extends Player{
 	
 	@Override
 	public void playTurn() {
+		
+		//TODO: At the beginning of the game grab territories that are not already taken--Jeremy
 		int decisionAttack = (int) Math.random();
 		int decideTerritory = randomGen.nextInt(getTerritories().size());
 		if(decisionAttack == 0){ //-the simple AI is random so randomly generating wether or not to attack and wether or not to reinforce --Jeremy & Steven
