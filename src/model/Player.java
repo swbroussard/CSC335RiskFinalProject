@@ -8,14 +8,22 @@ public abstract class Player {
 	private int numArmies;
 	private ArrayList<Territory> territoriesOwned;
 	private ArrayList<Card> cards;
-	private List<Dice> dice;
+	private List<Dice> attackingDice;
+	private List<Dice> defendingDice;
+	private Dice die;
 	
 	//abstract methods to implement in subclasses
 	public abstract void playTurn();
 	public abstract void chooseTerritory();
 
 	public Player() {
-		
+		attackingDice = new ArrayList<Dice>();
+		defendingDice = new ArrayList<Dice>();
+		attackingDice.add(die);
+		attackingDice.add(die);
+		attackingDice.add(die);
+		defendingDice.add(die);
+		defendingDice.add(die);
 	}
 
 	public void addArmies() {
@@ -30,8 +38,17 @@ public abstract class Player {
 		//TODO: Figure out a way to call 
 	}
 	
+	public void rollDice(){
+		for(int i = 0; i < attackingDice.size(); i++){
+			attackingDice.get(i).rollDice();
+		}
+		for(int i = 0; i < attackingDice.size(); i++){
+			attackingDice.get(i).rollDice();
+		}
+		//TODO: call the searching algorithm
+	}
 	
-	
+	//TODO: create the search algorithm
 	
 	//set methods
 	public void setName(String name) {
