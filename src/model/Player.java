@@ -1,13 +1,14 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Player {
 	private String name;
 	private int numArmies;
 	private ArrayList<Territory> territoriesOwned;
 	private ArrayList<Card> cards;
-	private ArrayList<Dice> dice;
+	private List<Dice> dice;
 	
 	//abstract methods to implement in subclasses
 	public abstract void playTurn();
