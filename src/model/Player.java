@@ -7,6 +7,7 @@ public abstract class Player {
 	private int numArmies;
 	private ArrayList<Territory> territoriesOwned;
 	private ArrayList<Card> cards;
+	private ArrayList<Dice> dice;
 	
 	//abstract methods to implement in subclasses
 	public abstract void playTurn();
@@ -24,7 +25,9 @@ public abstract class Player {
 		territoriesOwned.add(toAdd);
 	}
 	
-	
+	public void attack(Territory attackingTerritory, Territory DefendingTerritory){
+		
+	}
 	
 	
 	
