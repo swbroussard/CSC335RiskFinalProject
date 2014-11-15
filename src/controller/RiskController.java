@@ -20,6 +20,9 @@ public class RiskController {
 		setUpTerritories();
 		setUpDeck();
 		
+		// TODO find out how many players and what kinds; create and add the players
+		populateBoard();
+		playGame();
 	}
 	
 	public void addPlayer(Player newPlayer) {
@@ -27,15 +30,52 @@ public class RiskController {
 	}
 	
 	public void populateBoard() {
+		if (players.size() == 2)
+			for (Player p : players) {
+				p.setNumArmies(40);
+			}
+		else if (players.size() == 3)
+			for (Player p : players) {
+				p.setNumArmies(35);
+			}
+		else if (players.size() == 4)
+			for (Player p : players) {
+				p.setNumArmies(30);
+			}
+		else if (players.size() == 5)
+			for (Player p : players) {
+				p.setNumArmies(25);
+			}
+		else if (players.size() == 6)
+			for (Player p : players) {
+				p.setNumArmies(20);
+			}
+		else
+			// TODO later, println's should be messages in the GUI instead
+			System.out.println("Illegal number of players.\n"
+					+ "Number of players must be between two and six inclusive.");
+
+		for (int i = 0; i < 42; i++) {
+			for (Player p : players) {
+				p.chooseTerritory(); 
+			}
+		} // all territories chosen
 		
+		// TODO while there are unallocated armies remaining, players must put armies on their territories
+		// while (players.get(0).getNumArmies() > 0)
+		//     for (Player p : players)
+		//         p.placeArmy();
 	}
 	
 	public void playGame() {
-		
+		while (players.size() > 1) {
+			// TODO have players take turns
+		}
+		System.out.println(players.get(0).getName()+" won!");
 	}
 	
 	private void setUpTerritories() {
-		// TODO for Iteration 2, need to set map color for each territory 
+		// TODO for Iteration 2, need to set map color for each territory (instance variable in Territory)
 		alaska = new Territory("Alaska", Continent.NORTH_AMERICA);
 		alberta = new Territory("Alberta", Continent.NORTH_AMERICA);
 		centralAmerica = new Territory("Central America", Continent.NORTH_AMERICA);

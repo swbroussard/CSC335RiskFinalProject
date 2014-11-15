@@ -6,6 +6,9 @@ import java.util.List;
 public abstract class Player {
 	private String name;
 	private int numArmies;
+	// TODO I think we need a way to know how many of the player's total armies are on a territory. 
+	// Should we subtract from numArmies when we place armies? or should we have another variable
+	// just to keep track of unallocated armies? -Elizabeth
 	private ArrayList<Territory> territoriesOwned;
 	private ArrayList<Card> cards;
 	private List<Dice> attackingDice;
@@ -15,6 +18,11 @@ public abstract class Player {
 	//abstract methods to implement in subclasses
 	public abstract void playTurn();
 	public abstract void chooseTerritory();
+	// TODO Also, I think we need a method to place armies (at the beginning once all
+	// territories are chosen, as well as at the beginning of each turn. The player
+	// must choose where to place an army, out of the territories he owns. -Elizabeth 
+	// I (pseudo?)coded calling this method in RiskController's populateBoard()
+	// By the rulebook, armies are placed one at a time. 
 
 	public Player() {
 		attackingDice = new ArrayList<Dice>();
@@ -28,6 +36,9 @@ public abstract class Player {
 
 	public void addArmies() {
 		numArmies += (territoriesOwned.size() / 3);
+		// Rulebook: a player is entitled to a minimum of three armies even if
+		// he owns fewer than nine territories
+		// Continent bonuses: Asia, 7; North America and Europe, 5; Africa, 3; Australia and South America, 2
 	}
 	
 	public void addTerritory(Territory toAdd) {
@@ -36,6 +47,7 @@ public abstract class Player {
 	
 	public void attack(Territory attackingTerritory, Territory DefendingTerritory){
 		//TODO: Figure out a way to call 
+		// I think Controller does or should do this -Elizabeth
 	}
 	
 	public void rollDice(){
