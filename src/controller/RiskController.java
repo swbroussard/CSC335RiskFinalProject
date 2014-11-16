@@ -17,10 +17,11 @@ public class RiskController {
 	private ArrayList<Card> deckOfCards;
 	
 	public RiskController() {
+		// TODO should the constructor take an ArrayList of players? seems like the simplest way
 		setUpTerritories();
 		setUpDeck();
 		
-		// TODO find out how many players and what kinds; create and add the players
+		// (TODO find out how many players and what kinds; create and add the players)
 		populateBoard();
 		playGame();
 	}
@@ -69,10 +70,15 @@ public class RiskController {
 	
 	public void playGame() {
 		while (players.size() > 1) {
-			// TODO have players take turns
+			for (Player p : players) {
+				p.playTurn();
+				// TODO what else needs to be handled here? How and where should battles occur? 
+			}
 		}
 		System.out.println(players.get(0).getName()+" won!");
 	}
+	
+	// TODO a static method to determine the winner of a dice battle (takes parameters from two players)
 	
 	private void setUpTerritories() {
 		// TODO for Iteration 2, need to set map color for each territory (instance variable in Territory)

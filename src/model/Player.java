@@ -45,7 +45,7 @@ public abstract class Player {
 		territoriesOwned.add(toAdd);
 	}
 	
-	public void attack(Territory attackingTerritory, Territory DefendingTerritory){
+	public void attack(Territory attackingTerritory, Territory defendingTerritory){
 		//TODO: Figure out a way to call 
 		// I think Controller does or should do this -Elizabeth
 	}
