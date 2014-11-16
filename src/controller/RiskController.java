@@ -8,7 +8,7 @@ import model.*;
 
 public class RiskController {
 	private ArrayList<Territory> territories;
-	Territory alaska, alberta, centralAmerica, easternUS, greenland, northwest,
+	private Territory alaska, alberta, centralAmerica, easternUS, greenland, northwest,
 		ontario, quebec, westernUS, argentina, brazil, peru, venezuela, 
 		greatBritain, iceland, northernEurope, scandinavia, southernEurope, 
 		ukraine, westernEurope, congo, eastAfrica, egypt, madagascar, northAfrica,
@@ -85,6 +85,8 @@ public class RiskController {
 	}
 	
 	private void setUpTerritories() {
+		territories = new ArrayList<Territory>();
+		
 		// TODO for Iteration 2, need to set map color for each territory (instance variable in Territory)
 		alaska = new Territory("Alaska", Continent.NORTH_AMERICA);
 		alberta = new Territory("Alberta", Continent.NORTH_AMERICA);
@@ -545,6 +547,10 @@ public class RiskController {
 		defendingTerritory.setNumArmies(defendingTerritory.getNumArmies() - attackerWon);
 
 		// TODO for iteration 2, if a territory is lost, move armies from winner
+	}
+	
+	public ArrayList<Territory> getTerritories() {
+		return territories;
 	}
 	
 }

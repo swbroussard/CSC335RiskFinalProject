@@ -1,26 +1,33 @@
-package controller;
+package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import controller.RiskController;
+
 public class RiskGUI extends JFrame{
 	private RiskController controller;
 	private JFrame frame;
-	private JPanel buttonPanel, mapPanel, labelPanel;
-	
+	private JPanel buttonPanel, labelPanel;
+	private MapPanel mapPanel;
 	
 	public RiskGUI() {
-		//controller = new RiskController();
+		super();
+		controller = new RiskController();
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		frame.setSize(1100, 800);
+		frame.setSize(1160, 680);
 		frame.setTitle("RISK");
 		
 		JPanel basePanel = new JPanel();
@@ -29,7 +36,8 @@ public class RiskGUI extends JFrame{
 		JPanel mapAndLabelPanel = new JPanel();
 		mapAndLabelPanel.setLayout(new BorderLayout());
 		
-		setUpMapPanel();
+		mapPanel = new MapPanel(controller.getTerritories());
+	
 		mapAndLabelPanel.add(mapPanel, BorderLayout.CENTER);
 		
 		setUpButtonSidePanel();
@@ -46,21 +54,14 @@ public class RiskGUI extends JFrame{
 	
 	public void setUpButtonSidePanel() {
 		buttonPanel = new JPanel();
-		buttonPanel.setPreferredSize(new Dimension(200, 800));
+		buttonPanel.setPreferredSize(new Dimension(200, 600));
 		buttonPanel.setBackground(Color.GREEN);
 		buttonPanel.setVisible(true);
 	}
 	
-	public void setUpMapPanel() {
-		mapPanel = new JPanel();
-		mapPanel.setPreferredSize(new Dimension(300, 700));
-		mapPanel.setBackground(Color.RED);
-		mapPanel.setVisible(true);
-	}
-	
 	public void setUpLabelPanel() {
 		labelPanel = new JPanel();
-		labelPanel.setPreferredSize(new Dimension(900, 50));
+		labelPanel.setPreferredSize(new Dimension(960, 40));
 		//labelPanel.setBackground(Color.BLUE);
 		labelPanel.setVisible(true);
 		
