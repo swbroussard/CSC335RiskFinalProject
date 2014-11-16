@@ -8,12 +8,20 @@ public class Territory {
 	private int numArmies;
 	private ArrayList<Territory> adjacent;
 	private Continent continent;
-	// need color
+	private int color;
 	
 	public Territory(String name, Continent continent) {
 		this.name = name;
 		currentOwner = null;
 		numArmies = 0;
+		adjacent = new ArrayList<Territory>();
+	}
+	
+	public Territory(String name, Continent continent, int colorRGB) {
+		this.name = name;
+		currentOwner = null;
+		numArmies = 0;
+		color = colorRGB;
 		adjacent = new ArrayList<Territory>();
 	}
 	
@@ -48,6 +56,10 @@ public class Territory {
 	
 	public int getNumArmies() {
 		return numArmies;
+	}
+	
+	public int getColor() {
+		return color;
 	}
 	
 	public ArrayList<Territory> getAdjacent() {

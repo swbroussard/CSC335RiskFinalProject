@@ -72,22 +72,22 @@ public abstract class Player {
 				break;
 			}
 		}
-		if(northAmerica == 1) {
+		if(northAmerica == 9) {
 			numArmies += 5;
 		}
-		if(southAmerica == 1) {
+		if(southAmerica == 4) {
 			numArmies += 2;
 		}
-		if(europe == 1) {
+		if(europe == 7) {
 			numArmies += 5;
 		}
-		if(africa == 1) {
+		if(africa == 6) {
 			numArmies += 3;
 		}
-		if(asia == 1) {
+		if(asia == 12) {
 			numArmies += 7;
 		}
-		if(australia == 1){
+		if(australia == 4){
 			numArmies += 2;
 		}
 	}

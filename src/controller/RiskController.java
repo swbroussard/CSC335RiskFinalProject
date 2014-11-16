@@ -6,7 +6,7 @@ import model.*;
 
 public class RiskController {
 	private ArrayList<Territory> territories;
-	Territory alaska, alberta, centralAmerica, easternUS, greenland, northwest,
+	private Territory alaska, alberta, centralAmerica, easternUS, greenland, northwest,
 		ontario, quebec, westernUS, argentina, brazil, peru, venezuela, 
 		greatBritain, iceland, northernEurope, scandinavia, southernEurope, 
 		ukraine, westernEurope, congo, eastAfrica, egypt, madagascar, northAfrica,
@@ -19,11 +19,11 @@ public class RiskController {
 	public RiskController() {
 		// TODO should the constructor take an ArrayList of players? seems like the simplest way
 		setUpTerritories();
-		setUpDeck();
+		//setUpDeck();
 		
 		// (TODO find out how many players and what kinds; create and add the players)
-		populateBoard();
-		playGame();
+		//populateBoard();
+		//playGame();
 	}
 	
 	public void addPlayer(Player newPlayer) {
@@ -81,6 +81,8 @@ public class RiskController {
 	// TODO a static method to determine the winner of a dice battle (takes parameters from two players)
 	
 	private void setUpTerritories() {
+		territories = new ArrayList<Territory>();
+		
 		// TODO for Iteration 2, need to set map color for each territory (instance variable in Territory)
 		alaska = new Territory("Alaska", Continent.NORTH_AMERICA);
 		alberta = new Territory("Alberta", Continent.NORTH_AMERICA);
@@ -516,6 +518,10 @@ public class RiskController {
 		//TODO: Figure out a way to call 
 		// I think Controller does or should do this -Elizabeth
 		
+	}
+	
+	public ArrayList<Territory> getTerritories() {
+		return territories;
 	}
 	
 }
