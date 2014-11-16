@@ -1,6 +1,5 @@
 package model;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 public class Territory {
@@ -61,4 +60,9 @@ public class Territory {
 		}
 		return false;
 	}
+	
+	public Continent getContinent() {
+		return continent;
+	}
+	
 }

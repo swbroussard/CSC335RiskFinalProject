@@ -35,10 +35,61 @@ public abstract class Player {
 	}
 
 	public void addArmies() {
-		numArmies += (territoriesOwned.size() / 3);
+		if(territoriesOwned.size() / 3 <= 3 ) {
+			numArmies += 3;
+		}
+		else
+			numArmies += (territoriesOwned.size() / 3);
 		// Rulebook: a player is entitled to a minimum of three armies even if
 		// he owns fewer than nine territories
 		// Continent bonuses: Asia, 7; North America and Europe, 5; Africa, 3; Australia and South America, 2
+		int northAmerica = 0;
+		int southAmerica = 0;
+		int europe = 0;
+		int africa = 0;
+		int asia = 0;
+		int australia = 0;
+		for(Territory t: territoriesOwned) {
+			Continent continent = t.getContinent();
+			switch(continent) {
+			case NORTH_AMERICA:
+				northAmerica++;
+				break;
+			case SOUTH_AMERICA:
+				southAmerica++;
+				break;
+			case EUROPE:
+				europe++;
+			break;
+			case AFRICA:
+				africa++;
+				break;
+			case ASIA:
+				asia++;
+				break;
+			case AUSTRALIA:
+				australia++;
+				break;
+			}
+		}
+		if(northAmerica == 1) {
+			numArmies += 5;
+		}
+		if(southAmerica == 1) {
+			numArmies += 2;
+		}
+		if(europe == 1) {
+			numArmies += 5;
+		}
+		if(africa == 1) {
+			numArmies += 3;
+		}
+		if(asia == 1) {
+			numArmies += 7;
+		}
+		if(australia == 1){
+			numArmies += 2;
+		}
 	}
 	
 	public void addTerritory(Territory toAdd) {
@@ -47,7 +98,6 @@ public abstract class Player {
 	
 	public void attack(Territory attackingTerritory, Territory defendingTerritory){
 		//TODO: Figure out a way to call 
-		// I think Controller does or should do this -Elizabeth
 	}
 	
 	public void rollDice(){

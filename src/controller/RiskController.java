@@ -511,4 +511,11 @@ public class RiskController {
 	private void setUpDeck() {
 		// TODO don't need cards until iteration 2
 	}
+	
+	public void attack(Territory attackingTerritory, Territory DefendingTerritory){
+		//TODO: Figure out a way to call 
+		// I think Controller does or should do this -Elizabeth
+		
+	}
+	
 }
