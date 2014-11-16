@@ -1,9 +1,8 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Random;
 
-public class SimpleAI extends Player{
+public class SimpleAIPlayer extends Player{
 	/**
 	 * TODO: Figure out how to call attack & Reinforce
 	 */
@@ -12,7 +11,7 @@ public class SimpleAI extends Player{
 	Random randomGen;
 	Random randomAdjacent;
 	//constructor
-	public SimpleAI(){
+	public SimpleAIPlayer(){
 		randomGen = new Random(1);  //static state from the random generator
 		//randomGen = new Random();  //random generator
 		randomAdjacent = new Random(1);
@@ -21,8 +20,7 @@ public class SimpleAI extends Player{
 	
 	@Override
 	public void playTurn() {
-		
-		//TODO: At the beginning of the game grab territories that are not already taken--Jeremy
+		// Much of this might be the controller's responsibility
 		int decisionAttack = (int) Math.random();
 		int decideTerritory = randomGen.nextInt(getTerritories().size());
 		if(decisionAttack == 0){ //-the simple AI is random so randomly generating whether or not to attack and whether or not to reinforce --Jeremy & Steven
@@ -83,6 +81,24 @@ public class SimpleAI extends Player{
 		
 		//makes decision according to a random number generator
 		//for test only, the decision will be static
+		
+	}
+
+	@Override
+	public Territory attackFrom() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Territory attackTo(Territory attackFrom) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void placeArmy() {
+		// TODO Auto-generated method stub
 		
 	}
 }

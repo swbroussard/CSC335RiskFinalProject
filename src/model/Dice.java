@@ -15,9 +15,13 @@ public class Dice {
 		diceValue = 0;
 	}
 	
-	public void rollDice(){
-		diceValue = randomDice.nextInt(5) + 1;
+	public int rollDice() {
+		return randomDice.nextInt(5) + 1;
 	}
+	
+	/*public void rollDice(){
+		diceValue = randomDice.nextInt(5) + 1;
+	}*/
 	
 	//get dice value
 	public int getDiceValue(){

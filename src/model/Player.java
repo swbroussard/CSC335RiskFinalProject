@@ -5,10 +5,7 @@ import java.util.List;
 
 public abstract class Player {
 	private String name;
-	private int numArmies;
-	// TODO I think we need a way to know how many of the player's total armies are on a territory. 
-	// Should we subtract from numArmies when we place armies? or should we have another variable
-	// just to keep track of unallocated armies? -Elizabeth
+	private int numArmies; // number of un-placed armies
 	private ArrayList<Territory> territoriesOwned;
 	private ArrayList<Card> cards;
 	private List<Dice> attackingDice;
@@ -25,13 +22,13 @@ public abstract class Player {
 	// By the rulebook, armies are placed one at a time. 
 
 	public Player() {
-		attackingDice = new ArrayList<Dice>();
-		defendingDice = new ArrayList<Dice>();
-		attackingDice.add(die);
-		attackingDice.add(die);
-		attackingDice.add(die);
-		defendingDice.add(die);
-		defendingDice.add(die);
+		setAttackingDice(new ArrayList<Dice>());
+		setDefendingDice(new ArrayList<Dice>());
+		getAttackingDice().add(die);
+		getAttackingDice().add(die);
+		getAttackingDice().add(die);
+		getDefendingDice().add(die);
+		getDefendingDice().add(die);
 	}
 
 	public void addArmies() {
@@ -98,14 +95,15 @@ public abstract class Player {
 	
 	public void attack(Territory attackingTerritory, Territory defendingTerritory){
 		//TODO: Figure out a way to call 
+		// Maybe this needs to be the Controller's responsibility
 	}
 	
 	public void rollDice(){
-		for(int i = 0; i < attackingDice.size(); i++){
-			attackingDice.get(i).rollDice();
+		for(int i = 0; i < getAttackingDice().size(); i++){
+			getAttackingDice().get(i).rollDice();
 		}
-		for(int i = 0; i < attackingDice.size(); i++){
-			attackingDice.get(i).rollDice();
+		for(int i = 0; i < getAttackingDice().size(); i++){
+			getAttackingDice().get(i).rollDice();
 		}
 		//TODO: call the searching algorithm
 	}
@@ -133,6 +131,35 @@ public abstract class Player {
 	
 	public ArrayList<Territory> getTerritories() {
 		return territoriesOwned;
+	}
+	public abstract void placeArmy();
+		// TODO Takes an un-placed army, chooses a territory, and places it there
+	
+	public boolean canAttack() {
+		for (Territory t : territoriesOwned) {
+			if (t.getNumArmies() > 1)
+				return true;
+		}
+		return false;
+	}
+	
+	public abstract Territory attackFrom();
+		// TODO Chooses, from territories with two or more armies, which to attack with. 
+	
+	public abstract Territory attackTo(Territory attackFrom);
+		// TODO Chooses, from territories adjacent to the parameter, which to attack. 
+	
+	public List<Dice> getAttackingDice() {
+		return attackingDice;
+	}
+	public void setAttackingDice(List<Dice> attackingDice) {
+		this.attackingDice = attackingDice;
+	}
+	public List<Dice> getDefendingDice() {
+		return defendingDice;
+	}
+	public void setDefendingDice(List<Dice> defendingDice) {
+		this.defendingDice = defendingDice;
 	}
 	
 }

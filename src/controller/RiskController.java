@@ -1,6 +1,8 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import model.*;
 
@@ -16,12 +18,10 @@ public class RiskController {
 	private ArrayList<Player> players;
 	private ArrayList<Card> deckOfCards;
 	
-	public RiskController() {
-		// TODO should the constructor take an ArrayList of players? seems like the simplest way
+	public RiskController(ArrayList<Player> myPlayers) {
+		players = myPlayers;
 		setUpTerritories();
 		setUpDeck();
-		
-		// (TODO find out how many players and what kinds; create and add the players)
 		populateBoard();
 		playGame();
 	}
@@ -31,6 +31,7 @@ public class RiskController {
 	}
 	
 	public void populateBoard() {
+		// maybe a switch statement would be prettier
 		if (players.size() == 2)
 			for (Player p : players) {
 				p.setNumArmies(40);
@@ -62,23 +63,26 @@ public class RiskController {
 			}
 		} // all territories chosen
 		
-		// TODO while there are unallocated armies remaining, players must put armies on their territories
-		// while (players.get(0).getNumArmies() > 0)
-		//     for (Player p : players)
-		//         p.placeArmy();
+		while (players.get(0).getNumArmies() > 0) {
+			for (Player p : players)
+				p.placeArmy();
+		} // all armies placed for all players
 	}
 	
 	public void playGame() {
 		while (players.size() > 1) {
 			for (Player p : players) {
-				p.playTurn();
-				// TODO what else needs to be handled here? How and where should battles occur? 
+				p.addArmies();
+				while (p.canAttack()) {
+					Territory attacker = p.attackFrom();
+					Territory defender = p.attackTo(attacker);
+					attack(attacker, defender);
+				} 
+				// TODO for iteration 2, fortify if desired
 			}
 		}
 		System.out.println(players.get(0).getName()+" won!");
 	}
-	
-	// TODO a static method to determine the winner of a dice battle (takes parameters from two players)
 	
 	private void setUpTerritories() {
 		// TODO for Iteration 2, need to set map color for each territory (instance variable in Territory)
@@ -512,10 +516,35 @@ public class RiskController {
 		// TODO don't need cards until iteration 2
 	}
 	
-	public void attack(Territory attackingTerritory, Territory DefendingTerritory){
-		//TODO: Figure out a way to call 
-		// I think Controller does or should do this -Elizabeth
+	private void attack(Territory attackingTerritory, Territory defendingTerritory){
+		List<Dice> attackingDice = attackingTerritory.getCurrentOwner().getAttackingDice();
+		List<Dice> defendingDice = defendingTerritory.getCurrentOwner().getDefendingDice();
+		ArrayList<Integer> attackingDiceValues = new ArrayList<Integer>();
+		ArrayList<Integer> defendingDiceValues = new ArrayList<Integer>();
 		
+		for (Dice die : attackingDice) {
+			attackingDiceValues.add(die.rollDice());
+		}
+		for (Dice die : defendingDice) {
+			defendingDiceValues.add(die.rollDice());
+		}
+		
+		Collections.sort(attackingDiceValues);
+		Collections.sort(defendingDiceValues);
+		
+		int attackerWon = 0;
+		int defenderWon = 0;
+		
+		for (int i = 0; i <= attackingDiceValues.size(); i++) {
+			if (attackingDiceValues.get(i) > defendingDiceValues.get(i))
+				attackerWon++;
+			else // defender wins ties
+				defenderWon++;
+		}
+		attackingTerritory.setNumArmies(attackingTerritory.getNumArmies() - defenderWon);
+		defendingTerritory.setNumArmies(defendingTerritory.getNumArmies() - attackerWon);
+
+		// TODO for iteration 2, if a territory is lost, move armies from winner
 	}
 	
 }

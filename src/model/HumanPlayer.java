@@ -14,4 +14,22 @@ public class HumanPlayer extends Player{
 		
 	}
 
+	@Override
+	public void placeArmy() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Territory attackFrom() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Territory attackTo(Territory attackFrom) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
