@@ -96,11 +96,6 @@ public abstract class Player {
 		territoriesOwned.add(toAdd);
 	}
 	
-	public void attack(Territory attackingTerritory, Territory DefendingTerritory){
-		//TODO: Figure out a way to call 
-		// I think Controller does or should do this -Elizabeth
-	}
-	
 	public void rollDice(){
 		for(int i = 0; i < attackingDice.size(); i++){
 			attackingDice.get(i).rollDice();
