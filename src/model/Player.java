@@ -96,6 +96,7 @@ public abstract class Player {
 	public void attack(Territory attackingTerritory, Territory defendingTerritory){
 		//TODO: Figure out a way to call 
 		// Maybe this needs to be the Controller's responsibility
+		// this method is now obsolete
 	}
 	
 	public void rollDice(){

@@ -20,6 +20,7 @@ public class SimpleAIPlayer extends Player{
 	
 	@Override
 	public void playTurn() {
+		// obsolete - we no longer need this method in Player. however, much of this code looks like it could be useful elsewhere
 		// Much of this might be the controller's responsibility
 		int decisionAttack = (int) Math.random();
 		int decideTerritory = randomGen.nextInt(getTerritories().size());
@@ -76,6 +77,7 @@ public class SimpleAIPlayer extends Player{
 
 	@Override
 	public void chooseTerritory() {
+		// we no longer need this method
 		
 		//-steven, makes random decision to choose which territory
 		
@@ -87,18 +89,20 @@ public class SimpleAIPlayer extends Player{
 	@Override
 	public Territory attackFrom() {
 		// TODO Auto-generated method stub
+		// Randomly chooses a territory with two or more armies to attack from
 		return null;
 	}
 
 	@Override
 	public Territory attackTo(Territory attackFrom) {
 		// TODO Auto-generated method stub
+		// Randomly chooses a territory adjacent to the parameter, owned by another player, to attack
 		return null;
 	}
 
 	@Override
 	public void placeArmy() {
 		// TODO Auto-generated method stub
-		
+		// Randomly chooses a territory and places one army there
 	}
 }

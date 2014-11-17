@@ -27,7 +27,7 @@ public class RiskController {
 	}
 	
 	public void addPlayer(Player newPlayer) {
-		
+		// I don't think this one is necessary
 	}
 	
 	public void populateBoard() {
@@ -66,6 +66,7 @@ public class RiskController {
 		while (players.get(0).getNumArmies() > 0) {
 			for (Player p : players)
 				p.placeArmy();
+			// TODO for a human player, maybe we could add the option to place multiple territories at once
 		} // all armies placed for all players
 	}
 	
@@ -75,6 +76,9 @@ public class RiskController {
 				p.addArmies();
 				while (p.canAttack()) {
 					Territory attacker = p.attackFrom();
+					// check if human user wants to attack or no
+					if (attacker == null)
+						break;
 					Territory defender = p.attackTo(attacker);
 					attack(attacker, defender);
 				} 
@@ -545,8 +549,21 @@ public class RiskController {
 		}
 		attackingTerritory.setNumArmies(attackingTerritory.getNumArmies() - defenderWon);
 		defendingTerritory.setNumArmies(defendingTerritory.getNumArmies() - attackerWon);
-
-		// TODO for iteration 2, if a territory is lost, move armies from winner
+		
+		if (defendingTerritory.getNumArmies() == 0) {
+			// attacker conquered defending territory
+			if (defendingTerritory.getCurrentOwner().getTerritories().size() == 1) {
+				// attacker conquered defender's last territory
+				players.remove(defendingTerritory.getCurrentOwner());
+			}
+			// defending territory now belongs to attacker
+			defendingTerritory.getCurrentOwner().getTerritories().remove(defendingTerritory);
+			defendingTerritory.setCurrentOwner(attackingTerritory.getCurrentOwner());
+			attackingTerritory.getCurrentOwner().getTerritories().add(defendingTerritory);
+			// same number of armies as dice rolled move to conquered territory
+			// TODO iteration 2: can choose the number of armies to move (>= number of dice rolled)
+			defendingTerritory.setNumArmies(attackingDiceValues.size());
+		}
 	}
 	
 	public ArrayList<Territory> getTerritories() {
