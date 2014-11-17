@@ -88,16 +88,21 @@ public class SimpleAIPlayer extends Player{
 
 	@Override
 	public Territory attackFrom() {
+		int choosenTerritory = 0;
 		// TODO Auto-generated method stub
 		// Randomly chooses a territory with two or more armies to attack from
-		return null;
+		choosenTerritory = randomGen.nextInt(getTerritories().size());
+		return getTerritories().get(choosenTerritory);
 	}
 
 	@Override
 	public Territory attackTo(Territory attackFrom) {
 		// TODO Auto-generated method stub
 		// Randomly chooses a territory adjacent to the parameter, owned by another player, to attack
-		return null;
+		int choosenAttack = 0;
+		choosenAttack = randomGen.nextInt(attackFrom().getAdjacent().size());
+		return attackFrom().getAdjacent().get(choosenAttack); //Because Steven is a boss -Jeremy
+		
 	}
 
 	@Override
