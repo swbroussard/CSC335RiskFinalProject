@@ -57,11 +57,11 @@ public class RiskController {
 			System.out.println("Illegal number of players.\n"
 					+ "Number of players must be between two and six inclusive.");
 
-		for (int i = 0; i < 42; i++) {
-			for (Player p : players) {
-				p.chooseTerritory(); 
-			}
-		} // all territories chosen
+		//for (int i = 0; i < 42; i++) {
+			//for (Player p : players) {
+				//p.chooseTerritory(); 
+			//}
+		//} // all territories chosen
 		
 		while (players.get(0).getNumArmies() > 0) {
 			for (Player p : players)

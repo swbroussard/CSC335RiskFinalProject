@@ -1,7 +1,11 @@
 package model;
 
 import java.util.Random;
-
+/**
+ * object of a die
+ * @author jeremyjalnos StevenBroussard
+ *
+ */
 public class Dice {
 	
 	//instance variable
@@ -10,11 +14,18 @@ public class Dice {
 	//"roll" dice
 	Random randomDice;
 	
+	/**
+	 * constructor to initialize the instance variables
+	 */
 	public Dice (){
 		randomDice = new Random();
 		diceValue = 0;
 	}
 	
+	/**
+	 * rolls a die
+	 * @return random value of die
+	 */
 	public int rollDice() {
 		return randomDice.nextInt(5) + 1;
 	}
@@ -24,6 +35,11 @@ public class Dice {
 	}*/
 	
 	//get dice value
+	
+	/**
+	 * to get the value of the die
+	 * @return diceValue
+	 */
 	public int getDiceValue(){
 		return diceValue;
 	}

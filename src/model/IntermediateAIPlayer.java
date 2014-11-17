@@ -8,11 +8,7 @@ public class IntermediateAIPlayer extends Player{
 		// obsolete, should be deleted
 	}
 
-	@Override
-	public void chooseTerritory() {
-		// TODO Auto-generated method stub
-		// obsolete, should be deleted
-	}
+	
 
 	@Override
 	public void placeArmy() {
@@ -33,6 +29,14 @@ public class IntermediateAIPlayer extends Player{
 		// TODO Auto-generated method stub
 		// Semi-intelligently chooses a territory and places one army there
 		return null;
+	}
+
+
+
+	@Override
+	public void reinforceArmies(Territory takeArmy, Territory reinforceThis) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
