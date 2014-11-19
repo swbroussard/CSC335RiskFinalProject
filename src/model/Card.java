@@ -4,6 +4,10 @@ public class Card {
 	private String cardType;
 	private Territory cardTerritory;
 	
+	public Card() {
+		
+	}
+	
 	public void setCardType(String cardType) {
 		this.cardType = cardType;
 	}

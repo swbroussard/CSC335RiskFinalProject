@@ -19,7 +19,7 @@ public class RiskController {
 	private ArrayList<Card> deckOfCards;
 	
 	public RiskController(ArrayList<Player> myPlayers) {
-		players = myPlayers;
+		setPlayers(myPlayers);
 		setUpTerritories();
 		setUpDeck();
 		populateBoard();
@@ -32,24 +32,24 @@ public class RiskController {
 	
 	public void populateBoard() {
 		// maybe a switch statement would be prettier
-		if (players.size() == 2)
-			for (Player p : players) {
+		if (getPlayers().size() == 2)
+			for (Player p : getPlayers()) {
 				p.setNumArmies(40);
 			}
-		else if (players.size() == 3)
-			for (Player p : players) {
+		else if (getPlayers().size() == 3)
+			for (Player p : getPlayers()) {
 				p.setNumArmies(35);
 			}
-		else if (players.size() == 4)
-			for (Player p : players) {
+		else if (getPlayers().size() == 4)
+			for (Player p : getPlayers()) {
 				p.setNumArmies(30);
 			}
-		else if (players.size() == 5)
-			for (Player p : players) {
+		else if (getPlayers().size() == 5)
+			for (Player p : getPlayers()) {
 				p.setNumArmies(25);
 			}
-		else if (players.size() == 6)
-			for (Player p : players) {
+		else if (getPlayers().size() == 6)
+			for (Player p : getPlayers()) {
 				p.setNumArmies(20);
 			}
 		else
@@ -63,16 +63,16 @@ public class RiskController {
 			//}
 		//} // all territories chosen
 		
-		while (players.get(0).getNumArmies() > 0) {
-			for (Player p : players)
+		while (getPlayers().get(0).getNumArmies() > 0) {
+			for (Player p : getPlayers())
 				p.placeArmy();
 			// TODO for a human player, maybe we could add the option to place multiple territories at once
 		} // all armies placed for all players
 	}
 	
-	public void playGame() {
-		while (players.size() > 1) {
-			for (Player p : players) {
+	public Player playGame() {
+		while (getPlayers().size() > 1) {
+			for (Player p : getPlayers()) {
 				p.addArmies();
 				while (p.canAttack()) {
 					Territory attacker = p.attackFrom();
@@ -85,7 +85,7 @@ public class RiskController {
 				// TODO for iteration 2, fortify if desired
 			}
 		}
-		System.out.println(players.get(0).getName()+" won!");
+		return players.get(0);
 	}
 	
 	private void setUpTerritories() {
@@ -520,6 +520,8 @@ public class RiskController {
 	
 	private void setUpDeck() {
 		// TODO don't need cards until iteration 2
+		deckOfCards = new ArrayList<Card>();
+		deckOfCards.add(new Card());
 	}
 	
 	private void attack(Territory attackingTerritory, Territory defendingTerritory){
@@ -554,7 +556,7 @@ public class RiskController {
 			// attacker conquered defending territory
 			if (defendingTerritory.getCurrentOwner().getTerritories().size() == 1) {
 				// attacker conquered defender's last territory
-				players.remove(defendingTerritory.getCurrentOwner());
+				getPlayers().remove(defendingTerritory.getCurrentOwner());
 			}
 			// defending territory now belongs to attacker
 			defendingTerritory.getCurrentOwner().getTerritories().remove(defendingTerritory);
@@ -568,6 +570,14 @@ public class RiskController {
 	
 	public ArrayList<Territory> getTerritories() {
 		return territories;
+	}
+
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(ArrayList<Player> players) {
+		this.players = players;
 	}
 	
 }

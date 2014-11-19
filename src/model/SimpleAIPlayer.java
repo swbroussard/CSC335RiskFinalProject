@@ -122,7 +122,7 @@ public class SimpleAIPlayer extends Player {
 		// Randomly chooses a territory and places one army there at the
 		// beginning of the game--Jeremy & Steven
 		int choosenTerritory = 0;
-		choosenTerritory = randomGen.nextInt(getTerritories().size());
+		choosenTerritory = randomGen.nextInt(getTerritories().size()); // TODO NullPointerException on this line
 		int i = getTerritories().size();
 		int x = 0;
 		while (getTerritories().get(x).getCurrentOwner() != null) {
