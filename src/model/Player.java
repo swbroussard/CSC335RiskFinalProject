@@ -17,7 +17,7 @@ public abstract class Player {
 	private Dice die;
 	
 	//abstract methods to implement in subclasses
-	public abstract void playTurn();
+	//public abstract void playTurn();
 
 	
 	// TODO Also, I think we need a method to place armies (at the beginning once all
