@@ -1,13 +1,39 @@
 package model;
 
+import java.util.Random;
+
+/**
+ * More intelligent then Simple AI
+ * 
+ * Strategy: randomly places first in a territory, then add other troops in adjacent
+ * territories. Only attack the fewest amount enemy troops.
+ * 
+ * @author Steven W Broussard & Jeremy Jelnos
+ *
+ */
 public class IntermediateAIPlayer extends Player{
 
 	
-
+	/**
+	 * Description: First troop is place at a territory randomly. All other troops will
+	 * then be place in adjacent territories that are not owned.
+	 */
 	@Override
 	public void placeArmy() {
-		// TODO Auto-generated method stub
+		// TODO place an troop one per turn or place all the armies on player turn in the beginning?
 		// Semi-intelligently chooses a territory with two or more armies to attack from
+		Random genRan;
+		genRan = new Random();
+		int randomTerritoryIndex = getTerritories().size();
+		Territory firstPick = null;
+		
+		//first troop is place at a territory randomly
+		firstPick = getTerritories().get(genRan.nextInt(randomTerritoryIndex));
+		firstPick.setCurrentOwner(this);
+		firstPick.setNumArmies(1);
+		
+		//second and more troops are put around the first troop in the 
+		//beginning
 		
 	}
 

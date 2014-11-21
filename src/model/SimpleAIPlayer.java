@@ -3,6 +3,9 @@ package model;
 import java.util.Random;
 
 /**
+ * Easiest AI to beat
+ * Makes decisions based on random generator.
+ * 
  * @author jeremyjalnos stevenBroussard
  */
 public class SimpleAIPlayer extends Player {
@@ -13,9 +16,9 @@ public class SimpleAIPlayer extends Player {
 
 	// constructor
 	public SimpleAIPlayer() {
-		randomGen = new Random(1); // static state from the random generator
-		// randomGen = new Random(); //random generator
-		randomAdjacent = new Random(1);
+		//randomGen = new Random(1); // static state from the random generator
+		randomGen = new Random(); //random generator
+		randomAdjacent = new Random(); //removed the one in the Random argument -steven
 
 	}
 
