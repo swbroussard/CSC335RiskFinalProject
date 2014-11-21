@@ -12,7 +12,6 @@ import java.util.Random;
  *
  */
 public class IntermediateAIPlayer extends Player{
-
 	public IntermediateAIPlayer() {
 		super();
 	}
@@ -20,6 +19,7 @@ public class IntermediateAIPlayer extends Player{
 	public IntermediateAIPlayer(String name) {
 		super(name);
 	}
+	
 	/**
 	 * Description: First troop is place at a territory randomly. All other troops will
 	 * then be place in adjacent territories that are not owned.
@@ -30,11 +30,11 @@ public class IntermediateAIPlayer extends Player{
 		// Semi-intelligently chooses a territory with two or more armies to attack from
 		Random genRan;
 		genRan = new Random();
-		int randomTerritoryIndex = getTerritoriesOwned().size();
+		int randomTerritoryIndex = getTerritories().size();
 		Territory firstPick = null;
 		
 		//first troop is place at a territory randomly
-		firstPick = getTerritoriesOwned().get(genRan.nextInt(randomTerritoryIndex));
+		firstPick = getTerritories().get(genRan.nextInt(randomTerritoryIndex));
 		firstPick.setCurrentOwner(this);
 		firstPick.setNumArmies(1);
 		
@@ -78,26 +78,26 @@ public class IntermediateAIPlayer extends Player{
 	int lowTroop = 0;
 	int lowTroop2 =0;
 	
-	for(int i =0; i <= getTerritoriesOwned().size(); i++){
-		for(int j =0; j <= getTerritoriesOwned().get(i).getAdjacent().size(); j++){// check all territories look through all armies find lowest with competitors or ones with no competitors and give to territories more in need
-			if(getTerritoriesOwned().get(i).getAdjacent().get(j).getCurrentOwner() != this){
-			if(getTerritoriesOwned().get(i).getAdjacent().get(j).getNumArmies() >= getTerritoriesOwned().get(i).getNumArmies()){
-				low = getTerritoriesOwned().get(i);
+	for(int i =0; i <= getTerritories().size(); i++){
+		for(int j =0; j <= getTerritories().get(i).getAdjacent().size(); j++){// check all territories look through all armies find lowest with competitors or ones with no competitors and give to territories more in need
+			if(getTerritories().get(i).getAdjacent().get(j).getCurrentOwner() != this){
+			if(getTerritories().get(i).getAdjacent().get(j).getNumArmies() >= getTerritories().get(i).getNumArmies()){
+				low = getTerritories().get(i);
 			}
-			if(getTerritoriesOwned().get(i).getAdjacent().get(j).getNumArmies() >= getTerritoriesOwned().get(i).getNumArmies() && getTerritoriesOwned().get(i).getNumArmies() >= low.getNumArmies()){
-				low2 = getTerritoriesOwned().get(i);
-				lowTroop2 = getTerritoriesOwned().get(i).getNumArmies();
+			if(getTerritories().get(i).getAdjacent().get(j).getNumArmies() >= getTerritories().get(i).getNumArmies() && getTerritories().get(i).getNumArmies() >= low.getNumArmies()){
+				low2 = getTerritories().get(i);
+				lowTroop2 = getTerritories().get(i).getNumArmies();
 			}
 			else{
-				highAdjacent = getTerritoriesOwned().get(i).getAdjacent().get(j).getNumArmies();
-				highTroop = getTerritoriesOwned().get(i).getNumArmies();
-				high = getTerritoriesOwned().get(i);
+				highAdjacent = getTerritories().get(i).getAdjacent().get(j).getNumArmies();
+				highTroop = getTerritories().get(i).getNumArmies();
+				high = getTerritories().get(i);
 				numTroopsTake = highTroop - highAdjacent +1;
 				
 			}
 		}
 			else{
-				numTroopsTake = getTerritoriesOwned().get(i).getNumArmies() -1;
+				numTroopsTake = getTerritories().get(i).getNumArmies() -1;
 			}
 		
 			

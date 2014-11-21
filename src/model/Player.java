@@ -274,4 +274,9 @@ public abstract class Player {
 	public ArrayList<Territory> getAllTerritories() {
 		return allTerritories;
 	}
+	
+	//trying to fix merge conflict
+	public ArrayList<Territory> getTerritories() {
+		return null;
+	}
 }
