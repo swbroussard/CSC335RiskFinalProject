@@ -55,6 +55,7 @@ public class IntermediateAIPlayer extends Player{
 	
 	/**
 	 * TODO: Fix all Jeremy's nonSense below 
+	 * numTroopsTake2 wont work with current implementation
 	 */
 	
 	int numTroopsTake = 0;
@@ -66,11 +67,11 @@ public class IntermediateAIPlayer extends Player{
 	Territory low = null;
 	Territory low2 = null;
 	int highTroop = 0;
-	int highTroop2 =0;
+//	int highTroop2 =0;
 	int highAdjacent = 0;
-	int highAdjacent2 = 0;
+//	int highAdjacent2 = 0;
 	int lowTroop = 0;
-	int lowTroop2 =0;
+//	int lowTroop2 =0;
 	
 	for(int i =0; i <= getTerritories().size(); i++){
 		for(int j =0; j <= getTerritories().get(i).getAdjacent().size(); j++){// check all territories look through all armies find lowest with competitors or ones with no competitors and give to territories more in need
@@ -78,15 +79,23 @@ public class IntermediateAIPlayer extends Player{
 			if(getTerritories().get(i).getAdjacent().get(j).getNumArmies() >= getTerritories().get(i).getNumArmies()){
 				low = getTerritories().get(i);
 			}
-			if(getTerritories().get(i).getAdjacent().get(j).getNumArmies() >= getTerritories().get(i).getNumArmies() && getTerritories().get(i).getNumArmies() >= low.getNumArmies()){
-				low2 = getTerritories().get(i);
-				lowTroop2 = getTerritories().get(i).getNumArmies();
-			}
+//			if(getTerritories().get(i).getAdjacent().get(j).getNumArmies() >= getTerritories().get(i).getNumArmies() && getTerritories().get(i).getNumArmies() >= low.getNumArmies()){
+//				low2 = getTerritories().get(i);
+//				lowTroop2 = getTerritories().get(i).getNumArmies();
+//			}
 			else{
 				highAdjacent = getTerritories().get(i).getAdjacent().get(j).getNumArmies();
 				highTroop = getTerritories().get(i).getNumArmies();
 				high = getTerritories().get(i);
 				numTroopsTake = highTroop - highAdjacent +1;
+				
+//				if(getTerritories().get(i).getAdjacent().get(j).getNumArmies() <= getTerritories().get(i).getNumArmies() && getTerritories().get(i).getNumArmies() <= highTroop){
+//					highAdjacent2 = getTerritories().get(i).getAdjacent().get(j).getNumArmies();
+//					highTroop2 = getTerritories().get(i).getNumArmies();
+//					high2 = getTerritories().get(i);
+//					numTroopsTake2 = highTroop - highAdjacent +1;
+			//	}
+				
 				
 			}
 		}
@@ -97,6 +106,7 @@ public class IntermediateAIPlayer extends Player{
 			
 		}
 		reinforceArmies(high, low);
+//		reinforceArmies(high2, low2);
 		
 	}
 	
