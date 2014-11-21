@@ -10,7 +10,7 @@ import java.util.List;
 public abstract class Player {
 	private String name;
 	private int numArmies; // number of un-placed armies
-	private ArrayList<Territory> territoriesOwned;
+	private ArrayList<Territory> territoriesOwned, allTerritories;
 	private ArrayList<Card> cards;
 	private List<Dice> attackingDice;
 	private List<Dice> defendingDice;
@@ -36,7 +36,28 @@ public abstract class Player {
 		getAttackingDice().add(die);
 		getDefendingDice().add(die);
 		getDefendingDice().add(die);
+		
+		territoriesOwned = new ArrayList<Territory>();
+		cards = new ArrayList<Card>();
 	}
+
+	/**
+	 * sets up the player using a name
+	 */
+		public Player(String name) {
+			this.name = name;
+			setAttackingDice(new ArrayList<Dice>());
+			setDefendingDice(new ArrayList<Dice>());
+			getAttackingDice().add(die);
+			getAttackingDice().add(die);
+			getAttackingDice().add(die);
+			getDefendingDice().add(die);
+			getDefendingDice().add(die);
+			
+			territoriesOwned = new ArrayList<Territory>();
+			cards = new ArrayList<Card>();
+		}
+	
 /**
  * Rulebook: a player is entitled to a minimum of three armies even if he owns fewer than nine territories Continent bonuses: Asia, 7; North America and Europe, 5; Africa, 3; Australia and South America, 2
  */
@@ -176,7 +197,7 @@ public abstract class Player {
 	 * @return territoriesOwned
 	 * holds arraylist of owned territories
 	 */
-	public ArrayList<Territory> getTerritories() {
+	public ArrayList<Territory> getTerritoriesOwned() {
 		return territoriesOwned;
 	}
 	/**
@@ -245,4 +266,12 @@ public abstract class Player {
 		this.defendingDice = defendingDice;
 	}
 	
+	public void setAllTerritories(ArrayList<Territory> territories) {
+		allTerritories = new ArrayList<Territory>();
+		allTerritories = territories;
+	}
+	
+	public ArrayList<Territory> getAllTerritories() {
+		return allTerritories;
+	}
 }

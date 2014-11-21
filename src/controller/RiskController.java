@@ -21,6 +21,7 @@ public class RiskController {
 	public RiskController(ArrayList<Player> myPlayers) {
 		setPlayers(myPlayers);
 		setUpTerritories();
+		sendTerritoriesToPlayers();
 		setUpDeck();
 		populateBoard();
 		playGame();
@@ -554,14 +555,14 @@ public class RiskController {
 		
 		if (defendingTerritory.getNumArmies() == 0) {
 			// attacker conquered defending territory
-			if (defendingTerritory.getCurrentOwner().getTerritories().size() == 1) {
+			if (defendingTerritory.getCurrentOwner().getTerritoriesOwned().size() == 1) {
 				// attacker conquered defender's last territory
 				getPlayers().remove(defendingTerritory.getCurrentOwner());
 			}
 			// defending territory now belongs to attacker
-			defendingTerritory.getCurrentOwner().getTerritories().remove(defendingTerritory);
+			defendingTerritory.getCurrentOwner().getTerritoriesOwned().remove(defendingTerritory);
 			defendingTerritory.setCurrentOwner(attackingTerritory.getCurrentOwner());
-			attackingTerritory.getCurrentOwner().getTerritories().add(defendingTerritory);
+			attackingTerritory.getCurrentOwner().getTerritoriesOwned().add(defendingTerritory);
 			// same number of armies as dice rolled move to conquered territory
 			// TODO iteration 2: can choose the number of armies to move (>= number of dice rolled)
 			defendingTerritory.setNumArmies(attackingDiceValues.size());
@@ -580,4 +581,9 @@ public class RiskController {
 		this.players = players;
 	}
 	
+	public void sendTerritoriesToPlayers() {
+		for(Player p: players) {
+			p.setAllTerritories(territories);
+		}
+	}
 }

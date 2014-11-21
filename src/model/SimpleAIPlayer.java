@@ -16,12 +16,23 @@ public class SimpleAIPlayer extends Player {
 
 	// constructor
 	public SimpleAIPlayer() {
+		super();
 		//randomGen = new Random(1); // static state from the random generator
 		randomGen = new Random(); //random generator
 		randomAdjacent = new Random(); //removed the one in the Random argument -steven
 
 	}
 
+	// constructor with name
+		public SimpleAIPlayer(String name) {
+			super(name);
+			//randomGen = new Random(1); // static state from the random generator
+			randomGen = new Random(); //random generator
+			randomAdjacent = new Random(); //removed the one in the Random argument -steven
+
+		}
+		
+		
 	///**
 	 //* sets up whether or not the player will attack or reinforce
 	 //*/
@@ -96,8 +107,8 @@ public class SimpleAIPlayer extends Player {
 	@Override
 	public Territory attackFrom() {
 		int choosenTerritory = 0;
-		choosenTerritory = randomGen.nextInt(getTerritories().size());
-		return getTerritories().get(choosenTerritory);
+		choosenTerritory = randomGen.nextInt(getTerritoriesOwned().size());
+		return getTerritoriesOwned().get(choosenTerritory);
 	}
 
 	/**
@@ -125,14 +136,16 @@ public class SimpleAIPlayer extends Player {
 		// Randomly chooses a territory and places one army there at the
 		// beginning of the game--Jeremy & Steven
 		int choosenTerritory = 0;
-		choosenTerritory = randomGen.nextInt(getTerritories().size()); // TODO NullPointerException on this line
-		int i = getTerritories().size();
+		//TODO:  getAllTerritories has the arrayList of all of the territories, will not shrink
+		//This method should only place one army because the controller is handling rotating through players
+		choosenTerritory = randomGen.nextInt(getAllTerritories().size()); // TODO NullPointerException on this line
+		int i = getTerritoriesOwned().size();
 		int x = 0;
-		while (getTerritories().get(x).getCurrentOwner() != null) {
+		while (getTerritoriesOwned().get(x).getCurrentOwner() != null) {
 
-			if (getTerritories().get(x).getCurrentOwner() == null) {
-				getTerritories().get(x).setCurrentOwner(this);
-				getTerritories().get(x).setNumArmies(1);
+			if (getTerritoriesOwned().get(x).getCurrentOwner() == null) {
+				getTerritoriesOwned().get(x).setCurrentOwner(this);
+				getTerritoriesOwned().get(x).setNumArmies(1);
 				break;
 			} else {
 				x++;

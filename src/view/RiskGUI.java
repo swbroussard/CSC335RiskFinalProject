@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -14,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import model.Player;
 import controller.RiskController;
 
 public class RiskGUI extends JFrame{
@@ -24,7 +26,7 @@ public class RiskGUI extends JFrame{
 	
 	public RiskGUI() {
 		super();
-		controller = new RiskController();
+		controller = new RiskController(new ArrayList<Player>());
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setSize(1160, 680);
@@ -62,7 +64,6 @@ public class RiskGUI extends JFrame{
 	public void setUpLabelPanel() {
 		labelPanel = new JPanel();
 		labelPanel.setPreferredSize(new Dimension(960, 40));
-		//labelPanel.setBackground(Color.BLUE);
 		labelPanel.setVisible(true);
 		
 		JLabel label = new JLabel();
