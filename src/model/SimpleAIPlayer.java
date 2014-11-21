@@ -32,74 +32,7 @@ public class SimpleAIPlayer extends Player {
 
 		}
 		
-		
-	///**
-	 //* sets up whether or not the player will attack or reinforce
-	 //*/
-	//@Override
-	//public void playTurn() {
-		// obsolete - we no longer need this method in Player. however, much of
-		// this code looks like it could be useful elsewhere
-		// Much of this might be the controller's responsibility
-	//int decisionAttack = (int) Math.random();
-	//int decideTerritory = randomGen.nextInt(getTerritories().size());
-	//if (decisionAttack == 0) { // -the simple AI is random so randomly
-									// generating whether or not to attack and
-									// whether or not to reinforce --Jeremy &
-									// Steven
-	//	Territory t = getTerritories().get(decideTerritory);
 
-	//	int decisionAdjacent = (t.getAdjacent().size());
-	//	Territory toAttack = t.getAdjacent().get(
-	//			randomAdjacent.nextInt(decisionAdjacent));
-	//	if (getTerritories().contains(toAttack)) {
-	//		toAttack = t.getAdjacent().get(
-	//	randomAdjacent.nextInt(decisionAdjacent)); // Make Sure
-																	// that the
-																	// current
-																	// player
-																	// does not
-																	// already
-																	// own this
-																	// territory
-						//		}
-
-			// need an attack method
-//if (canAttack()) {
-//			attackTo(attackFrom());
-
-//		}
-
-//	}
-//if (decisionAttack == 1) { // don't attack
-			//		return;
-//	}
-		/*
-		 * if decision is to reinforce find the territory with the fewest armies
-		 * and the territory with the most and swap a few armies -Jeremy
-		 */
-
-//	int decisionReinforce = (int) Math.random();
-//	if (decisionReinforce == 0) {
-//		int armies = 0;
-//		int armyMax = 0;
-//		Territory reinforceThis = null;
-//		Territory takeArmy = null;
-//		for (Territory t2 : getTerritories()) {
-//			if (t2.getNumArmies() >= armyMax) { // get most Armies
-//takeArmy = t2;
-					//armyMax = t2.getNumArmies();
-					//}
-				//if (t2.getNumArmies() <= armies) { // get least Armies
-					//	reinforceThis = t2;
-					//armies = t2.getNumArmies();
-					//}
-
-				//	}
-			//	reinforceArmies(takeArmy, reinforceThis);
-
-			//	}
-		//}
 
 	/**
 	 * Randomly chooses a territory with two or more armies to attack from
@@ -135,27 +68,24 @@ public class SimpleAIPlayer extends Player {
 	public void placeArmy() {
 		// Randomly chooses a territory and places one army there at the
 		// beginning of the game--Jeremy & Steven
-		int choosenTerritory = 0;
 		//TODO:  getAllTerritories has the arrayList of all of the territories, will not shrink
 		//This method should only place one army because the controller is handling rotating through players
-		choosenTerritory = randomGen.nextInt(getAllTerritories().size()); // TODO NullPointerException on this line
-		int i = getTerritoriesOwned().size();
+		
+		
 		int x = 0;
-		while (getTerritoriesOwned().get(x).getCurrentOwner() != null) {
-
-			if (getTerritoriesOwned().get(x).getCurrentOwner() == null) {
-				getTerritoriesOwned().get(x).setCurrentOwner(this);
-				getTerritoriesOwned().get(x).setNumArmies(1);
+		while (x < getAllTerritories().size()) {
+			if (getAllTerritories().get(x).getCurrentOwner() == null) {
+				getAllTerritories().get(x).setCurrentOwner(this);
+				getAllTerritories().get(x).setNumArmies(1);
 				break;
 			} else {
 				x++;
-				if (x == i) {
-					break;
+				
 				}
 			}
 		}
 
-	}
+	
 
 	/**
 	 * @param takeArmy

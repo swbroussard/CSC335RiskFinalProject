@@ -43,4 +43,6 @@ public class Dice {
 	public int getDiceValue(){
 		return diceValue;
 	}
+	
+	
 }
