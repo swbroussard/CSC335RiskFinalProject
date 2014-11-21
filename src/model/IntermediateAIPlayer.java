@@ -8,7 +8,7 @@ import java.util.Random;
  * Strategy: randomly places first in a territory, then add other troops in adjacent
  * territories. Only attack the fewest amount enemy troops.
  * 
- * @author Steven W Broussard & Jeremy Jelnos
+ * @author Steven W Broussard & Jeremy Jalnos
  *
  */
 public class IntermediateAIPlayer extends Player{
