@@ -6,13 +6,13 @@ import java.util.Random;
  * @author jeremyjalnos StevenBroussard
  *
  */
-public class Dice {
+public class Dice implements Comparable<Dice>{
 	
 	//instance variable
 	private int diceValue;
 	
 	//"roll" dice
-	Random randomDice;
+	static Random randomDice;
 	
 	/**
 	 * constructor to initialize the instance variables
@@ -42,6 +42,12 @@ public class Dice {
 	 */
 	public int getDiceValue(){
 		return diceValue;
+	}
+
+	@Override
+	public int compareTo(Dice o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	
