@@ -6,7 +6,7 @@ import java.util.Random;
  * @author jeremyjalnos StevenBroussard
  *
  */
-public class Dice implements Comparable<Dice>{
+public class Dice{
 	
 	//instance variable
 	private int diceValue;
@@ -19,7 +19,7 @@ public class Dice implements Comparable<Dice>{
 	 */
 	public Dice (){
 		randomDice = new Random();
-		diceValue = 0;
+		this.diceValue = 0;
 	}
 	
 	/**
@@ -43,12 +43,4 @@ public class Dice implements Comparable<Dice>{
 	public int getDiceValue(){
 		return diceValue;
 	}
-
-	@Override
-	public int compareTo(Dice o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	
 }
