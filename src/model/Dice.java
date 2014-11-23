@@ -1,6 +1,18 @@
 package model;
 
 import java.util.Random;
+
+/*
+ * Please delete this comment. I am not sure if you saw my message but
+ * the comparison of dice is done in the RiskController. I deleted the 
+ * DiceTray. Please let me know if we need to debug 
+ * intermediate player reinforce method.
+ * 
+ * Sincerely,
+ * 
+ * Steven Broussard
+ */
+
 /**
  * object of a die
  * @author jeremyjalnos StevenBroussard
