@@ -58,6 +58,7 @@ public class Run6Bots {
 	public void runRisk(ArrayList<Player> players) {
 		controller = new RiskController(players);
 		//empty while loop to wait for end of game
+		//TODO: what is going on here?????? - Jeremy & Steven
 		while(controller.getPlayers().size() > 1) {
 
 		}
