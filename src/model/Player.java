@@ -29,6 +29,7 @@ public abstract class Player {
  * sets up the player
  */
 	public Player() {
+		System.out.println("player constructor is called");
 		setAttackingDice(new ArrayList<Dice>());
 		setDefendingDice(new ArrayList<Dice>());
 		getAttackingDice().add(die);
@@ -45,6 +46,7 @@ public abstract class Player {
 	 * sets up the player using a name
 	 */
 		public Player(String name) {
+			System.out.println("player set up is called");
 			this.name = name;
 			setAttackingDice(new ArrayList<Dice>());
 			setDefendingDice(new ArrayList<Dice>());
@@ -62,6 +64,7 @@ public abstract class Player {
  * Rulebook: a player is entitled to a minimum of three armies even if he owns fewer than nine territories Continent bonuses: Asia, 7; North America and Europe, 5; Africa, 3; Australia and South America, 2
  */
 	public void addArmies() {
+		System.out.println("addArmies is called");
 		if(territoriesOwned.size() / 3 <= 3 ) {
 			numArmies += 3;
 		}
@@ -121,6 +124,7 @@ public abstract class Player {
 	 * adds a territory to the list of owned territories
 	 */
 	public void addTerritory(Territory toAdd) {
+		System.out.println("addTerritory is called");
 		territoriesOwned.add(toAdd);
 	}
 	/**
@@ -145,6 +149,7 @@ public abstract class Player {
 	 * used to roll dice for the purpose of attacking territories
 	 */
 	public void rollDice(){
+		System.out.println("rollDice is called");
 		for(int i = 0; i < getAttackingDice().size(); i++){
 			getAttackingDice().get(i).rollDice();
 		}
@@ -163,6 +168,7 @@ public abstract class Player {
 	 * set player name
 	 */
 	public void setName(String name) {
+		System.out.println("setName is called");
 		this.name = name;
 	}
 	/**
@@ -170,8 +176,14 @@ public abstract class Player {
 	 * @param numArmies
 	 */
 	public void setNumArmies(int numArmies) {
+		
 		this.numArmies = numArmies;
-	}
+		System.out.println("set armies: " + numArmies);  //that will work also
+		//I tried using the Run6Bots for test instead, because testing using the
+		//JUnit would be very hard. There is a infinite loop in the main method
+		//I am adding a lot of print lines and see if the methods are being called.
+	}//sounds good ill be back in a few minutes
+	//okay
 	
 	
 	//get methods
@@ -181,6 +193,7 @@ public abstract class Player {
 	 * gets player name
 	 */
 	public String getName() {
+		System.out.println("Get name has been called");
 		return name;
 	}
 	/**
@@ -189,6 +202,7 @@ public abstract class Player {
 	 * returns number of armies in a territory
 	 */
 	public int getNumArmies() {
+		System.out.println("getNumArmies is called");
 		return numArmies;
 	}
 	
@@ -198,6 +212,7 @@ public abstract class Player {
 	 * holds arraylist of owned territories
 	 */
 	public ArrayList<Territory> getTerritoriesOwned() {
+		System.out.println("getTerritoryOwned is called");
 		return territoriesOwned;
 	}
 	/**
@@ -212,6 +227,7 @@ public abstract class Player {
 	 * see if one territory is elidgable to attack another
 	 */
 	public boolean canAttack() {
+		System.out.println("canAttack is called");
 		for (Territory t : territoriesOwned) {
 			if (t.getNumArmies() > 1)
 				return true;
@@ -238,6 +254,7 @@ public abstract class Player {
 	 * @return attackingDice
 	 */
 	public List<Dice> getAttackingDice() {
+		System.out.println("getAttackingDice is called");
 		return attackingDice;
 	}
 	/**
@@ -246,6 +263,7 @@ public abstract class Player {
 	 * sets the attacking dice
 	 */
 	public void setAttackingDice(List<Dice> attackingDice) {
+		System.out.println("set armies: ");
 		this.attackingDice = attackingDice;
 	}
 	
