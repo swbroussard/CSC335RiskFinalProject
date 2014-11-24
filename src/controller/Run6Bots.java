@@ -11,7 +11,7 @@ public class Run6Bots {
 	private RiskController controller;
 	private ArrayList<Player> players;
 	private int simpleWon, intermediateWon;
-	
+
 	public Run6Bots() {
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Choose your players, you must have between 2 and 6 players");
@@ -19,8 +19,11 @@ public class Run6Bots {
 		int simplePlayers = Integer.parseInt(scan.next());
 		System.out.println("Enter the number of IntermediateAIPlayers");
 		int intermediatePlayers = Integer.parseInt(scan.next());
+//		int simplePlayers = 1;
+//		int intermediatePlayers = 2;
+//		
 		players = new ArrayList<Player>();
-		
+
 		//make sure user has entered no more than 6 players
 		if(simplePlayers > 6) {
 			simplePlayers = 6;
@@ -44,29 +47,24 @@ public class Run6Bots {
 		int simpleWon = 0;
 		int intermediateWon = 0;
 		for (int i = 0; i < 1000; i++) {
-			runRisk(players);
-		}
-		double simplePercent = simpleWon/10.0;
-		double intermediatePercent = intermediateWon/10.0;
-		System.out.println("SimpleAIPlayers won "+simpleWon+" times ("+
-				simplePercent+"%.");
-		System.out.println("IntermediateAIPlayers won "+intermediateWon+" times"
-				+" ("+intermediatePercent+"%.");
-		scan.close();
-	}
-	
-	public void runRisk(ArrayList<Player> players) {
-		controller = new RiskController(players);
-		//empty while loop to wait for end of game
-		//TODO: what is going on here?????? - Jeremy & Steven
-		while(controller.getPlayers().size() > 1) {
+			controller = new RiskController(players);
+			//empty while loop to wait for end of game
+//			int m = 0;
+//			while(controller.getPlayers().size() > 1) {
+//				System.out.println(m);
+//				m++;
+//			}
+			if (controller.getPlayers().get(0) instanceof SimpleAIPlayer)
+				simpleWon++;
+			else
+				intermediateWon++;
 
 		}
-		if (controller.getPlayers().get(0) instanceof SimpleAIPlayer)
-			simpleWon++;
-		else
-			intermediateWon++;
-		
+		double simplePercent = simpleWon / 10.0;
+		double intermediatePercent = intermediateWon / 10.0;
+		System.out.println("SimpleAIPlayers won " + simpleWon + " times (" + simplePercent + "%.");
+		System.out.println("IntermediateAIPlayers won " + intermediateWon + " times" + " (" + intermediatePercent + "%.");
+		scan.close();
 	}
 
 	public static void main(String[] args) {

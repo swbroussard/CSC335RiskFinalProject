@@ -24,14 +24,14 @@ public class SimpleAIPlayer extends Player {
 	}
 
 	// constructor with name
-		public SimpleAIPlayer(String name) {
-			super(name);
-			//randomGen = new Random(1); // static state from the random generator
-			randomGen = new Random(); //random generator
-			randomAdjacent = new Random(); //removed the one in the Random argument -steven
+	public SimpleAIPlayer(String name) {
+		super(name);
+		//randomGen = new Random(1); // static state from the random generator
+		randomGen = new Random(); //random generator
+		randomAdjacent = new Random(); //removed the one in the Random argument -steven
 
-		}
-		
+	}
+
 
 
 	/**
@@ -39,9 +39,13 @@ public class SimpleAIPlayer extends Player {
 	 */
 	@Override
 	public Territory attackFrom() {
-		int choosenTerritory = 0;
-		choosenTerritory = randomGen.nextInt(getTerritoriesOwned().size());
-		return getTerritoriesOwned().get(choosenTerritory);
+		Territory choosenTerritory = null;
+		while(choosenTerritory == null){
+			int r = randomGen.nextInt(getTerritoriesOwned().size());
+			if(getTerritoriesOwned().get(r).getNumArmies() > 1) 
+				choosenTerritory = getTerritoriesOwned().get(r);
+		}
+		return choosenTerritory;
 	}
 
 	/**
@@ -52,17 +56,20 @@ public class SimpleAIPlayer extends Player {
 	 * @return a territory object
 	 */
 	@Override
-	public Territory attackTo(Territory attackFrom) {
-		int choosenAttack = 0;
-		choosenAttack = randomGen.nextInt(attackFrom().getAdjacent().size());
-		return attackFrom().getAdjacent().get(choosenAttack); // Because Steven
-																// is a boss
-																// -Jeremy
-
+	public Territory attackTo(Territory attacker) {
+		Territory choosenTerritory = null;
+		while(choosenTerritory == null) {
+			int r = randomGen.nextInt(attacker.getAdjacent().size());
+			if(attacker.getAdjacent().get(r).getCurrentOwner() != this) {
+				choosenTerritory = attacker.getAdjacent().get(r);
+			}
+		}
+		return choosenTerritory; 
 	}
 
 	/**
 	 * places armies for the beginning of game, one soldier at a time in a territory at a time
+	 * -Becca: this method should also reinforce armies in the initial setup (you get more armies than you have territories)
 	 */
 	@Override
 	public void placeArmy() {
@@ -70,22 +77,59 @@ public class SimpleAIPlayer extends Player {
 		// beginning of the game--Jeremy & Steven
 		//TODO:  getAllTerritories has the arrayList of all of the territories, will not shrink
 		//This method should only place one army because the controller is handling rotating through players
-		
-		
-		int x = 0;
-		while (x < getAllTerritories().size()) {
-			if (getAllTerritories().get(x).getCurrentOwner() == null) {
-				getAllTerritories().get(x).setCurrentOwner(this);
-				getAllTerritories().get(x).setNumArmies(1);
-				break;
-			} else {
-				x++;
-				
-				}
+
+
+		//		int x = 0;
+		//		while (x < getAllTerritories().size()) {
+		//			if (getAllTerritories().get(x).getCurrentOwner() == null) {
+		//				getAllTerritories().get(x).setCurrentOwner(this);
+		//				getAllTerritories().get(x).setNumArmies(1);
+		//				break;
+		//			} else {
+		//				x++;
+		//				
+		//				}
+		//			}
+		//		
+
+		//rewriting because previous is not randomized. - Becca
+		//first check to determine if the territories are all owned.  if they are not then select a territory
+		boolean allSelected = true;
+		for(Territory t: getAllTerritories()) {
+			if(t.getCurrentOwner() == null) {
+				allSelected = false;
 			}
 		}
+		
+		//select a territory if one is available.
+		if(allSelected == false) {
+			int r = randomGen.nextInt(42);
+			boolean territorySelected = false;
+			while(!territorySelected) {
+				Territory selected = getAllTerritories().get(r);
+				if(selected.getCurrentOwner() == null) {
+					selected.setCurrentOwner(this);
+					selected.setNumArmies(1);
+					territorySelected = true;
+					addTerritory(selected);
+					setNumArmies(getNumArmies() - 1);
+				}
+				else
+					r = randomGen.nextInt(42);
+			}
+		}
+		
+		//if territory is not available, add an army to one you own.
+		else{
+			int r = randomGen.nextInt(getTerritoriesOwned().size());
+			getTerritoriesOwned().get(r).setNumArmies(getNumArmies() + 1);
+			setNumArmies(getNumArmies() - 1);
+		}
 
-	
+
+	}
+
+
 
 	/**
 	 * @param takeArmy

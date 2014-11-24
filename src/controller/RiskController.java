@@ -27,52 +27,45 @@ public class RiskController {
 		playGame();
 	}
 	
-	public void addPlayer(Player newPlayer) {
-		// I don't think this one is necessary
-	}
-	
 	public void populateBoard() {
-		// maybe a switch statement would be prettier
-		if (getPlayers().size() == 2)
-			for (Player p : getPlayers()) {
-				p.setNumArmies(40);
-			}
-		else if (getPlayers().size() == 3)
-			for (Player p : getPlayers()) {
-				p.setNumArmies(35);
-			}
-		else if (getPlayers().size() == 4)
-			for (Player p : getPlayers()) {
-				p.setNumArmies(30);
-			}
-		else if (getPlayers().size() == 5)
-			for (Player p : getPlayers()) {
-				p.setNumArmies(25);
-			}
-		else if (getPlayers().size() == 6)
-			for (Player p : getPlayers()) {
-				p.setNumArmies(20);
-			}
-		else
-			// TODO later, println's should be messages in the GUI instead
+		int temp;
+		switch(players.size()) {
+		case 2:
+			temp = 40;
+			break;
+		case 3:
+			temp = 35;
+			break;
+		case 4:
+			temp = 30;
+			break;
+		case 5:
+			temp = 25;
+			break;
+		case 6:
+			temp = 20;
+			break;
+		default:
+			temp = 0;
 			System.out.println("Illegal number of players.\n"
 					+ "Number of players must be between two and six inclusive.");
+			break;
+		}
+		for (Player p : getPlayers()) {
+			p.setNumArmies(temp);
+		}
 
-		//for (int i = 0; i < 42; i++) {
-			//for (Player p : players) {
-				//p.chooseTerritory(); 
-			//}
-		//} // all territories chosen
-		
 		while (getPlayers().get(0).getNumArmies() > 0) {
-			for (Player p : getPlayers())
+			for (Player p : players)
 				p.placeArmy();
 			// TODO for a human player, maybe we could add the option to place multiple territories at once
 		} // all armies placed for all players
 	}
 	
-	public Player playGame() {
+	public void playGame() {
 		while (getPlayers().size() > 1) {
+			//would an enhanced for loop be an issue if a player gets eliminated before their turn
+			//i think we would get a null pointer exception -Becca
 			for (Player p : getPlayers()) {
 				p.addArmies();
 				while (p.canAttack()) {
@@ -83,10 +76,11 @@ public class RiskController {
 					Territory defender = p.attackTo(attacker);
 					attack(attacker, defender);
 				} 
+				p.setDoneAttacking(false);
 				// TODO for iteration 2, fortify if desired
 			}
 		}
-		return players.get(0);
+		//return players.get(0);
 	}
 	
 	private void setUpTerritories() {
@@ -544,7 +538,7 @@ public class RiskController {
 		int attackerWon = 0;
 		int defenderWon = 0;
 		
-		for (int i = 0; i <= attackingDiceValues.size(); i++) {
+		for (int i = 0; i < defendingDiceValues.size(); i++) {
 			if (attackingDiceValues.get(i) > defendingDiceValues.get(i))
 				attackerWon++;
 			else // defender wins ties

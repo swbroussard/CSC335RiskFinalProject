@@ -14,7 +14,8 @@ public abstract class Player {
 	private ArrayList<Card> cards;
 	private List<Dice> attackingDice;
 	private List<Dice> defendingDice;
-	private Dice die;
+	
+	private boolean doneAttacking;
 	
 	//abstract methods to implement in subclasses
 	//public abstract void playTurn();
@@ -32,11 +33,11 @@ public abstract class Player {
 		System.out.println("player constructor is called");
 		setAttackingDice(new ArrayList<Dice>());
 		setDefendingDice(new ArrayList<Dice>());
-		getAttackingDice().add(die);
-		getAttackingDice().add(die);
-		getAttackingDice().add(die);
-		getDefendingDice().add(die);
-		getDefendingDice().add(die);
+		getAttackingDice().add(new Dice());
+		getAttackingDice().add(new Dice());
+		getAttackingDice().add(new Dice());
+		getDefendingDice().add(new Dice());
+		getDefendingDice().add(new Dice());
 		
 		territoriesOwned = new ArrayList<Territory>();
 		cards = new ArrayList<Card>();
@@ -50,11 +51,11 @@ public abstract class Player {
 			this.name = name;
 			setAttackingDice(new ArrayList<Dice>());
 			setDefendingDice(new ArrayList<Dice>());
-			getAttackingDice().add(die);
-			getAttackingDice().add(die);
-			getAttackingDice().add(die);
-			getDefendingDice().add(die);
-			getDefendingDice().add(die);
+			getAttackingDice().add(new Dice());
+			getAttackingDice().add(new Dice());
+			getAttackingDice().add(new Dice());
+			getDefendingDice().add(new Dice());
+			getDefendingDice().add(new Dice());
 			
 			territoriesOwned = new ArrayList<Territory>();
 			cards = new ArrayList<Card>();
@@ -78,26 +79,18 @@ public abstract class Player {
 		int australia = 0;
 		for(Territory t: territoriesOwned) {
 			Continent continent = t.getContinent();
-			switch(continent) {
-			case NORTH_AMERICA:
+			if(continent == Continent.NORTH_AMERICA)
 				northAmerica++;
-				break;
-			case SOUTH_AMERICA:
+			if(continent == Continent.SOUTH_AMERICA)
 				southAmerica++;
-				break;
-			case EUROPE:
+			if(continent == Continent.EUROPE)
 				europe++;
-			break;
-			case AFRICA:
+			if(continent == Continent.AFRICA)
 				africa++;
-				break;
-			case ASIA:
+			if(continent == Continent.ASIA)
 				asia++;
-				break;
-			case AUSTRALIA:
+			if(continent == Continent.AUSTRALIA)
 				australia++;
-				break;
-			}
 		}
 		if(northAmerica == 9) {
 			numArmies += 5;
@@ -228,11 +221,17 @@ public abstract class Player {
 	 */
 	public boolean canAttack() {
 		System.out.println("canAttack is called");
+		if(doneAttacking)
+			return false;
 		for (Territory t : territoriesOwned) {
 			if (t.getNumArmies() > 1)
 				return true;
 		}
 		return false;
+	}
+	
+	public void setDoneAttacking(boolean doneAttacking) {
+		this.doneAttacking = doneAttacking;
 	}
 	/**
 	 * 
