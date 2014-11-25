@@ -9,24 +9,19 @@ import java.util.Random;
  */
 public class SimpleAIPlayer extends Player {
 	Random randomGen;
-	Random randomAdjacent; //TODO: this isnt used at all, why do we need it?
+	int numAttacks;
 
 	// constructor
 	public SimpleAIPlayer() {
 		super();
 		randomGen = new Random(); //random generator
-		randomAdjacent = new Random(); //removed the one in the Random argument -steven
 	}
 
 	// constructor with name
 	public SimpleAIPlayer(String name) {
 		super(name);
 		randomGen = new Random(); 
-		randomAdjacent = new Random(); 
 		if (debug) System.out.println("New SimpleAIPlayer created: "+name);
-		//randomGen = new Random(1); // static state from the random generator
-		randomGen = new Random(); //random generator
-		randomAdjacent = new Random(); //removed the one in the Random argument -steven
 	}
 
 	/**
@@ -64,6 +59,11 @@ public class SimpleAIPlayer extends Player {
 			if(attacker.getAdjacent().get(r).getCurrentOwner() != this) {
 				choosenTerritory = attacker.getAdjacent().get(r);
 			}
+		}
+		numAttacks++;
+		if(numAttacks == 5) {
+			setDoneAttacking(true);
+			numAttacks = 0;
 		}
 		return choosenTerritory; 
 	}

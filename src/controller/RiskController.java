@@ -3,6 +3,7 @@ package controller;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import model.*;
 //TODO: Java Doc Comments
@@ -18,6 +19,7 @@ public class RiskController {
 		indonesia, newGuinea, westernAustralia;
 	private ArrayList<Player> players;
 	private ArrayList<Card> deckOfCards;
+	static Random rand;
 	
 	public RiskController(ArrayList<Player> myPlayers) {
 		//if (debug) System.out.println("New RiskController created");
@@ -70,7 +72,10 @@ public class RiskController {
 		while (getPlayers().size() > 1) {
 			//would an enhanced for loop be an issue if a player gets eliminated before their turn
 			//i think we would get a null pointer exception -Becca
-			for (Player p : getPlayers()) {
+			int counter = 0;
+			while(counter < players.size()) {
+			//for (Player p : getPlayers()) {
+				Player p = players.get(counter);
 				if (debug) System.out.println(p.getName()+"'s turn");
 				p.addArmies();
 				while (p.getNumArmies() > 0)
@@ -85,7 +90,11 @@ public class RiskController {
 				} 
 				p.setDoneAttacking(false);
 				// TODO: ITERATION 2 - fortify if desired
+				counter++;
 			}
+		}
+		if(players.size() == 1) {
+			System.out.println(players.get(0).getName() + " won the game");
 		}
 		//return players.get(0);
 	}
@@ -528,21 +537,41 @@ public class RiskController {
 		deckOfCards.add(new Card());
 	}
 	
+	private int rollDice() {
+		rand = new Random();
+		return rand.nextInt(5) + 1;
+	}
+	
 	private void attack(Territory attackingTerritory, Territory defendingTerritory){
 		if (debug) System.out.println("attack called \nAttacker - "+attackingTerritory.getName()
 				+" (owner - "+attackingTerritory.getCurrentOwner().getName()+")"
 				+"\nDefender - "+defendingTerritory.getName()+" (owner - "
 				+defendingTerritory.getCurrentOwner().getName()+")");
-		List<Dice> attackingDice = attackingTerritory.getCurrentOwner().getAttackingDice();
-		List<Dice> defendingDice = defendingTerritory.getCurrentOwner().getDefendingDice();
+		
+//		List<Dice> attackingDice = attackingTerritory.getCurrentOwner().getAttackingDice();
+//		List<Dice> defendingDice = defendingTerritory.getCurrentOwner().getDefendingDice();
 		ArrayList<Integer> attackingDiceValues = new ArrayList<Integer>();
 		ArrayList<Integer> defendingDiceValues = new ArrayList<Integer>();
 		
-		for (Dice die : attackingDice) {
-			attackingDiceValues.add(die.rollDice());
+		int attackingNumDice;
+		int defendingNumDice;
+		if(attackingTerritory.getNumArmies() == 2) 
+			attackingNumDice = 1;
+		else if(attackingTerritory.getNumArmies() == 3)
+			attackingNumDice = 2;
+		else
+			attackingNumDice = 3;
+		
+		if(defendingTerritory.getNumArmies() == 1)
+			defendingNumDice = 1;
+		else
+			defendingNumDice = 2;
+		
+		for (int i = 0; i < attackingNumDice; i++) {
+			attackingDiceValues.add(rollDice());
 		}
-		for (Dice die : defendingDice) {
-			defendingDiceValues.add(die.rollDice());
+		for (int i = 0; i < defendingNumDice; i++) {
+			defendingDiceValues.add(rollDice());
 		}
 		
 		Collections.sort(attackingDiceValues);
@@ -551,8 +580,11 @@ public class RiskController {
 		int attackerWon = 0;
 		int defenderWon = 0;
 		
-		for (int i = 0; i < defendingDiceValues.size(); i++) {
-			if (attackingDiceValues.get(i) > defendingDiceValues.get(i))
+		for (int i = 0; i < 4; i++) {
+			if(attackingDiceValues.size() <= i || defendingDiceValues.size() <= i) {
+				
+			}
+			else if (attackingDiceValues.get(i) > defendingDiceValues.get(i))
 				attackerWon++;
 			else // defender wins ties
 				defenderWon++;
@@ -564,8 +596,10 @@ public class RiskController {
 			// attacker conquered defending territory
 			if (defendingTerritory.getCurrentOwner().getTerritoriesOwned().size() == 1) {
 				// attacker conquered defender's last territory
+				System.out.println(defendingTerritory.getCurrentOwner().getName() + " has lost the game");
 				getPlayers().remove(defendingTerritory.getCurrentOwner());
 			}
+			System.out.println(defendingTerritory.getName() + " now belongs to the attacker");
 			// defending territory now belongs to attacker
 			defendingTerritory.getCurrentOwner().getTerritoriesOwned().remove(defendingTerritory);
 			defendingTerritory.setCurrentOwner(attackingTerritory.getCurrentOwner());
@@ -573,6 +607,7 @@ public class RiskController {
 			// same number of armies as dice rolled move to conquered territory
 			// TODO: ITERATION 2 - can choose the number of armies to move (>= number of dice rolled)
 			defendingTerritory.setNumArmies(attackingDiceValues.size());
+			attackingTerritory.setNumArmies(attackingTerritory.getNumArmies() - attackingDiceValues.size());
 		}
 	}
 	

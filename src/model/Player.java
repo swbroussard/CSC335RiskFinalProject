@@ -178,8 +178,12 @@ public abstract class Player {
 		if(doneAttacking)
 			return false;
 		for (Territory t : territoriesOwned) {
-			if (t.getNumArmies() > 1)
-				return true;
+			if (t.getNumArmies() > 1) {
+				for(Territory a: t.getAdjacent()) {
+					if(a.getCurrentOwner() != this)
+						return true;
+				}
+			}
 		}
 		return false;
 	}
