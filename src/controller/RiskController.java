@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import model.*;
-
+//TODO: Java Doc Comments
 public class RiskController {
 	boolean debug = true;
 	private ArrayList<Territory> territories;
@@ -61,7 +61,7 @@ public class RiskController {
 		while (getPlayers().get(0).getNumArmies() > 0) {
 			for (Player p : players)
 				p.placeArmy();
-			// TODO for a human player, maybe we could add the option to place multiple territories at once
+			// TODO: ITERATION 2 - for a human player, maybe we could add the option to place multiple territories at once
 		} // all armies placed for all players
 	}
 	
@@ -84,7 +84,7 @@ public class RiskController {
 					attack(attacker, defender);
 				} 
 				p.setDoneAttacking(false);
-				// TODO for iteration 2, fortify if desired
+				// TODO: ITERATION 2 - fortify if desired
 			}
 		}
 		//return players.get(0);
@@ -94,7 +94,7 @@ public class RiskController {
 		if (debug) System.out.println("setUpTerritories called");
 		territories = new ArrayList<Territory>();
 		
-		// TODO for Iteration 2, need to set map color for each territory (instance variable in Territory)
+		// TODO: ITERATION 2 - need to set map color for each territory (instance variable in Territory)
 		alaska = new Territory("Alaska", Continent.NORTH_AMERICA);
 		alberta = new Territory("Alberta", Continent.NORTH_AMERICA);
 		centralAmerica = new Territory("Central America", Continent.NORTH_AMERICA);
@@ -523,7 +523,7 @@ public class RiskController {
 	
 	private void setUpDeck() {
 		if (debug) System.out.println("setUpDeck called");
-		// TODO don't need cards until iteration 2
+		// TODO: ITERATION 2 - hard code deck of cards
 		deckOfCards = new ArrayList<Card>();
 		deckOfCards.add(new Card());
 	}
@@ -571,7 +571,7 @@ public class RiskController {
 			defendingTerritory.setCurrentOwner(attackingTerritory.getCurrentOwner());
 			attackingTerritory.getCurrentOwner().getTerritoriesOwned().add(defendingTerritory);
 			// same number of armies as dice rolled move to conquered territory
-			// TODO iteration 2: can choose the number of armies to move (>= number of dice rolled)
+			// TODO: ITERATION 2 - can choose the number of armies to move (>= number of dice rolled)
 			defendingTerritory.setNumArmies(attackingDiceValues.size());
 		}
 	}

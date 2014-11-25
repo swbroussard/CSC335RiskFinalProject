@@ -66,7 +66,6 @@ public class IntermediateAIPlayer extends Player{
 	public Territory attackFrom() {
 		if (debug) System.out.println("attackFrom called by "+getName());
 		Territory attack = null;
-		// TODO Auto-generated method stub
 		// Semi-intelligently chooses a territory adjacent to the parameter, owned by another player, to attack
 		int x = 0;
 		while(x < getTerritoriesOwned().size()){
