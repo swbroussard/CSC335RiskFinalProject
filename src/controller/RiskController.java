@@ -543,7 +543,7 @@ public class RiskController {
 	}
 	
 	private void attack(Territory attackingTerritory, Territory defendingTerritory){
-		if (debug) System.out.println("attack called \nAttacker - "+attackingTerritory.getName()
+		if (debug) System.out.println("Attacker - "+attackingTerritory.getName()
 				+" (owner - "+attackingTerritory.getCurrentOwner().getName()+")"
 				+"\nDefender - "+defendingTerritory.getName()+" (owner - "
 				+defendingTerritory.getCurrentOwner().getName()+")");
@@ -575,7 +575,12 @@ public class RiskController {
 		}
 		
 		Collections.sort(attackingDiceValues);
+		Collections.reverse(attackingDiceValues);
 		Collections.sort(defendingDiceValues);
+		Collections.reverse(defendingDiceValues);
+		
+		System.out.println("Attacking: " + attackingDiceValues);
+		System.out.println("Defending: " + defendingDiceValues);
 		
 		int attackerWon = 0;
 		int defenderWon = 0;
@@ -609,6 +614,7 @@ public class RiskController {
 			defendingTerritory.setNumArmies(attackingDiceValues.size());
 			attackingTerritory.setNumArmies(attackingTerritory.getNumArmies() - attackingDiceValues.size());
 		}
+		System.out.println(territories + "\n");
 	}
 	
 	public ArrayList<Territory> getTerritories() {

@@ -77,4 +77,7 @@ public class Territory {
 		return continent;
 	}
 	
+	public String toString() {
+		return getName() + " " + getNumArmies() + " (" + currentOwner.getName() + ")";
+	}
 }
