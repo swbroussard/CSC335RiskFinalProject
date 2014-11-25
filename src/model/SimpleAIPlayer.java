@@ -80,6 +80,8 @@ public class SimpleAIPlayer extends Player {
 		// Randomly chooses a territory and places one army there at the
 		// beginning of the game--Jeremy & Steven
 		//TODO:  getAllTerritories has the arrayList of all of the territories, will not shrink
+		// Why is this a todo? 
+		
 		//This method should only place one army because the controller is handling rotating through players
 		//		int x = 0;
 		//		while (x < getAllTerritories().size()) {
@@ -101,9 +103,7 @@ public class SimpleAIPlayer extends Player {
 			if(t.getCurrentOwner() == null) {
 				allSelected = false;
 			}
-		}
-		// TODO !! getAllTerritories, I think, may be the source of the problem. How can we get that functionality here? 
-		// Might have to do the random selection in RiskController because Player doesn't know the list of all territories.   
+		}   
 		
 		//select a territory if one is available.
 		if(allSelected == false) {

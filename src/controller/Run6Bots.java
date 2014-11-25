@@ -8,7 +8,7 @@ import model.Player;
 import model.SimpleAIPlayer;
 
 /**
- * 
+ * This class tests <code>RiskController</code> by running 1000 games among <code>SimpleAIPlayer</code>s and <code>IntermediateAIPlayer</code>s, and reporting the number of winners for each type of AI. 
  * @author Elizabeth Harris, Becca Simon
  *
  */
@@ -20,7 +20,7 @@ public class Run6Bots {
 	private int simpleWon, intermediateWon;
 
 	/**
-	 * constructor
+	 * Constructs a new <code>Run6Bots</code>, reads in the number and type of players from the command line, and reports the percentages of wins for each type of player. 
 	 */
 	public Run6Bots() {
 		Scanner scan = new Scanner(System.in);
@@ -82,7 +82,7 @@ public class Run6Bots {
 	}
 
 	/**
-	 * main method
+	 * Runs the program by creating a new <code>Run6Bots</code>.  
 	 * @param args
 	 */
 	public static void main(String[] args) {

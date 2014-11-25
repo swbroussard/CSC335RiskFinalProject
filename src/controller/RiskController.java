@@ -2,13 +2,12 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 import model.*;
 
 /**
- * 
+ * Controls the game of Risk, as the name suggests. Maintains a list of <code>Player</code>s and every possible <code>Territory</code>. Handles gameplay, including board setup and turns, until a winner is declared.  
  * @author Elizabeth Harris, Becca Simon
  *
  */
@@ -27,7 +26,10 @@ public class RiskController {
 	static Random rand;
 	
 	/**
-	 * 
+	 * Constructs a new <code>RiskController</code> object from a given <code>ArrayList<Player></code>. 
+	 * Calls helper methods to set up all possible territories, give each <code>Player</code> that list, 
+	 * set up the deck of cards, have players claim territories and allocate armies, and handle gameplay
+	 * to the end of the game. 
 	 * @param myPlayers
 	 */
 	public RiskController(ArrayList<Player> myPlayers) {
@@ -41,27 +43,23 @@ public class RiskController {
 	}
 	
 	/**
-	 * 
+	 * Helper method for the first stage of gameplay. Allots each <code>Player</code> the appropriate number of armies, 
+	 * and has them place armies on territories in turn. 
 	 */
 	public void populateBoard() {
 		//if (debug) System.out.println("populateBoard called");
 		int temp;
 		switch(players.size()) {
 		case 2:
-			temp = 40;
-			break;
+			temp = 40; break;
 		case 3:
-			temp = 35;
-			break;
+			temp = 35; break;
 		case 4:
-			temp = 30;
-			break;
+			temp = 30; break;
 		case 5:
-			temp = 25;
-			break;
+			temp = 25; break;
 		case 6:
-			temp = 20;
-			break;
+			temp = 20; break;
 		default:
 			temp = 0;
 			System.out.println("Illegal number of players.\n"
@@ -80,7 +78,11 @@ public class RiskController {
 	}
 	
 	/**
-	 * 
+	 * Helper method for the second (main) stage of gameplay. While there is more than one <code>Player</code>
+	 * left in the game, has players take turns. A turn has three stages: First, the player is given armies
+	 * based on how many territories he controls and places them on his territories. Second, the player attacks
+	 * other players' territories in an attempt to conquer more territories. Third, when the player is finished
+	 * attacking, he has the option to fortify his territories by moving armies from one to another. 
 	 */
 	public void playGame() {
 		if (debug) System.out.println("playGame called");
@@ -115,7 +117,8 @@ public class RiskController {
 	}
 	
 	/**
-	 * 
+	 * Helper method for initial territory setup. Instantiates the 42 territories on a Risk world map, 
+	 * assigning them the proper continent and neighbors. 
 	 */
 	private void setUpTerritories() {
 		if (debug) System.out.println("setUpTerritories called");
@@ -549,7 +552,7 @@ public class RiskController {
 	}
 	
 	/**
-	 * 
+	 * Helper method for initial deck setup. Instantiates the cards in the deck and adds them to the deck. 
 	 */
 	private void setUpDeck() {
 		if (debug) System.out.println("setUpDeck called");
@@ -559,8 +562,8 @@ public class RiskController {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Simulates a dice roll by returning a pseudorandom integer between 1 and 6 inclusive. 
+	 * @return int
 	 */
 	private int rollDice() {
 		rand = new Random();
@@ -568,7 +571,9 @@ public class RiskController {
 	}
 	
 	/**
-	 * 
+	 * Helper method to handle attacks, called by <code>playGame</code>. Based on the number of armies
+	 * in the attacking and defending territory, simulates the appropriate dice rolls, then moves armies
+	 * and reassigns territory ownership depending on the outcome of the rolls. 
 	 * @param attackingTerritory
 	 * @param defendingTerritory
 	 */
@@ -648,23 +653,23 @@ public class RiskController {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Getter for <code>territories</code>
+	 * @return territories
 	 */
 	public ArrayList<Territory> getTerritories() {
 		return territories;
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Getter for <code>players</code>
+	 * @return players
 	 */
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
 
 	/**
-	 * 
+	 * Setter for <code>players</code>
 	 * @param players
 	 */
 	public void setPlayers(ArrayList<Player> players) {
@@ -672,7 +677,7 @@ public class RiskController {
 	}
 	
 	/**
-	 * 
+	 * Helper method for game setup. Gives each player access to the list of all territories on the Risk world map. 
 	 */
 	public void sendTerritoriesToPlayers() {
 		for(Player p: players) {
