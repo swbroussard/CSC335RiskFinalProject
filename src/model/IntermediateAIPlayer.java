@@ -27,7 +27,7 @@ public class IntermediateAIPlayer extends Player{
 	 */
 	@Override
 	public void placeArmy() {
-		// TODO place an troop one per turn or place all the armies on player turn in the beginning?
+		// TODO: place an troop one per turn or place all the armies on player turn in the beginning?
 		// Semi-intelligently chooses a territory with two or more armies to attack from
 		Random genRan;
 		Random genRandom;
@@ -63,7 +63,6 @@ public class IntermediateAIPlayer extends Player{
 	@Override
 	public Territory attackFrom() {
 		Territory attack = null;
-		// TODO Auto-generated method stub
 		// Semi-intelligently chooses a territory adjacent to the parameter, owned by another player, to attack
 		int x = 0;
 		while(x < getTerritoriesOwned().size()){
@@ -81,7 +80,6 @@ public class IntermediateAIPlayer extends Player{
 
 	@Override
 	public Territory attackTo(Territory attackFrom) {
-		// TODO Auto-generated method stub
 		// Semi-intelligently chooses a territory and places one army there
 		int lowTroop = 1000;
 		Territory attack = null;

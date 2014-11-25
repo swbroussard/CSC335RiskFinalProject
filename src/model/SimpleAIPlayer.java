@@ -3,39 +3,33 @@ package model;
 import java.util.Random;
 
 /**
- * Easiest AI to beat
- * Makes decisions based on random generator.
+ * Simple AI that makes decisions based on a random generator.  Easiest AI to beat
  * 
  * @author jeremyjalnos stevenBroussard
  */
 public class SimpleAIPlayer extends Player {
-
-	// instance variables
 	Random randomGen;
-	Random randomAdjacent;
+	Random randomAdjacent; //TODO: this isnt used at all, why do we need it?
 
 	// constructor
 	public SimpleAIPlayer() {
 		super();
-		//randomGen = new Random(1); // static state from the random generator
 		randomGen = new Random(); //random generator
 		randomAdjacent = new Random(); //removed the one in the Random argument -steven
-
 	}
 
 	// constructor with name
 	public SimpleAIPlayer(String name) {
 		super(name);
-		//randomGen = new Random(1); // static state from the random generator
-		randomGen = new Random(); //random generator
-		randomAdjacent = new Random(); //removed the one in the Random argument -steven
-
+		randomGen = new Random(); 
+		randomAdjacent = new Random(); 
 	}
 
-
-
 	/**
-	 * Randomly chooses a territory with two or more armies to attack from
+	 * Randomly chooses a territory that the player owns to attack from.  The territory
+	 * must have at least two armies.
+	 * 
+	 * @return The territory that the player is attacking from.
 	 */
 	@Override
 	public Territory attackFrom() {
@@ -49,11 +43,12 @@ public class SimpleAIPlayer extends Player {
 	}
 
 	/**
-	 * @param attackFrom
+	 * @param attacker The territory that the player is attacking from.
 	 * 
-	 * Randomly chooses a territory adjacent to the parameter, owned by another player, to attack
+	 * Randomly chooses a territory to attack.  The territory to attack must be 
+	 * adjacent to the parameter and owned by a different player
 	 * 
-	 * @return a territory object
+	 * @return The territory that that the player is attacking
 	 */
 	@Override
 	public Territory attackTo(Territory attacker) {
@@ -68,17 +63,13 @@ public class SimpleAIPlayer extends Player {
 	}
 
 	/**
-	 * places armies for the beginning of game, one soldier at a time in a territory at a time
-	 * -Becca: this method should also reinforce armies in the initial setup (you get more armies than you have territories)
+	 * At the beginning of the game, randomly chooses empty territories to place an army in.
+	 * Each time this method is called, the player is placing one territory.
+	 * After all territories have one army on it, this randomly places an army in a territory
+	 * that is currently owned. 
 	 */
 	@Override
 	public void placeArmy() {
-		// Randomly chooses a territory and places one army there at the
-		// beginning of the game--Jeremy & Steven
-		//TODO:  getAllTerritories has the arrayList of all of the territories, will not shrink
-		//This method should only place one army because the controller is handling rotating through players
-
-
 		//		int x = 0;
 		//		while (x < getAllTerritories().size()) {
 		//			if (getAllTerritories().get(x).getCurrentOwner() == null) {
@@ -100,7 +91,7 @@ public class SimpleAIPlayer extends Player {
 				allSelected = false;
 			}
 		}
-		
+
 		//select a territory if one is available.
 		if(allSelected == false) {
 			int r = randomGen.nextInt(42);
@@ -118,7 +109,7 @@ public class SimpleAIPlayer extends Player {
 					r = randomGen.nextInt(42);
 			}
 		}
-		
+
 		//if territory is not available, add an army to one you own.
 		else{
 			int r = randomGen.nextInt(getTerritoriesOwned().size());
@@ -132,6 +123,7 @@ public class SimpleAIPlayer extends Player {
 
 
 	/**
+	 * Not used in iteration 1
 	 * @param takeArmy
 	 * @param reinforceThis
 	 * 

@@ -18,7 +18,6 @@ public class HumanPlayer extends Player{
 
 	@Override
 	public Territory attackTo(Territory attackFrom) {
-		// TODO Auto-generated method stub
 		// choose another player's territory adjacent to attackFrom
 		return null;
 	}
@@ -27,7 +26,6 @@ public class HumanPlayer extends Player{
 
 	@Override
 	public void reinforceArmies(Territory takeArmy, Territory reinforceThis) {
-		// TODO Auto-generated method stub
 		
 	}
 
