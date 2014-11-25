@@ -7,12 +7,21 @@ import model.IntermediateAIPlayer;
 import model.Player;
 import model.SimpleAIPlayer;
 
+/**
+ * 
+ * @author Elizabeth Harris, Becca Simon
+ *
+ */
+
 public class Run6Bots {
 	boolean debug = true;
 	private RiskController controller;
 	private ArrayList<Player> players;
 	private int simpleWon, intermediateWon;
 
+	/**
+	 * constructor
+	 */
 	public Run6Bots() {
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Choose your players, you must have between 2 and 6 players");
@@ -72,6 +81,10 @@ public class Run6Bots {
 		scan.close();
 	}
 
+	/**
+	 * main method
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		new Run6Bots();
 	}

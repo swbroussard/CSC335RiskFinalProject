@@ -6,7 +6,12 @@ import java.util.List;
 import java.util.Random;
 
 import model.*;
-//TODO: Java Doc Comments
+
+/**
+ * 
+ * @author Elizabeth Harris, Becca Simon
+ *
+ */
 public class RiskController {
 	boolean debug = true;
 	private ArrayList<Territory> territories;
@@ -21,6 +26,10 @@ public class RiskController {
 	private ArrayList<Card> deckOfCards;
 	static Random rand;
 	
+	/**
+	 * 
+	 * @param myPlayers
+	 */
 	public RiskController(ArrayList<Player> myPlayers) {
 		//if (debug) System.out.println("New RiskController created");
 		setPlayers(myPlayers);
@@ -31,6 +40,9 @@ public class RiskController {
 		playGame();
 	}
 	
+	/**
+	 * 
+	 */
 	public void populateBoard() {
 		//if (debug) System.out.println("populateBoard called");
 		int temp;
@@ -67,6 +79,9 @@ public class RiskController {
 		} // all armies placed for all players
 	}
 	
+	/**
+	 * 
+	 */
 	public void playGame() {
 		if (debug) System.out.println("playGame called");
 		while (getPlayers().size() > 1) {
@@ -99,6 +114,9 @@ public class RiskController {
 		//return players.get(0);
 	}
 	
+	/**
+	 * 
+	 */
 	private void setUpTerritories() {
 		if (debug) System.out.println("setUpTerritories called");
 		territories = new ArrayList<Territory>();
@@ -530,6 +548,9 @@ public class RiskController {
 		territories.add(westernAustralia);
 	}
 	
+	/**
+	 * 
+	 */
 	private void setUpDeck() {
 		if (debug) System.out.println("setUpDeck called");
 		// TODO: ITERATION 2 - hard code deck of cards
@@ -537,11 +558,20 @@ public class RiskController {
 		deckOfCards.add(new Card());
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	private int rollDice() {
 		rand = new Random();
 		return rand.nextInt(5) + 1;
 	}
 	
+	/**
+	 * 
+	 * @param attackingTerritory
+	 * @param defendingTerritory
+	 */
 	private void attack(Territory attackingTerritory, Territory defendingTerritory){
 		if (debug) System.out.println("Attacker - "+attackingTerritory.getName()
 				+" (owner - "+attackingTerritory.getCurrentOwner().getName()+")"
@@ -617,18 +647,33 @@ public class RiskController {
 		System.out.println(territories + "\n");
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public ArrayList<Territory> getTerritories() {
 		return territories;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
 
+	/**
+	 * 
+	 * @param players
+	 */
 	public void setPlayers(ArrayList<Player> players) {
 		this.players = players;
 	}
 	
+	/**
+	 * 
+	 */
 	public void sendTerritoriesToPlayers() {
 		for(Player p: players) {
 			p.setAllTerritories(territories);
