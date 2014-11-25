@@ -25,7 +25,7 @@ public class Territory {
 		adjacent = new ArrayList<Territory>();
 	}
 	
-	// this one isn't used
+	// this constructor isn't used
 	public Territory(String name, ArrayList<Territory> adjacent, Continent continent) {
 		this.name = name;
 		this.adjacent = adjacent;

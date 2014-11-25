@@ -8,6 +8,7 @@ import model.Player;
 import model.SimpleAIPlayer;
 
 public class Run6Bots {
+	boolean debug = true;
 	private RiskController controller;
 	private ArrayList<Player> players;
 	private int simpleWon, intermediateWon;
@@ -37,28 +38,32 @@ public class Run6Bots {
 		int counter = 1;
 		//add players to list
 		for (int i = 0; i < simplePlayers; i++) {
-			players.add(new SimpleAIPlayer("Player " + counter));
+			players.add(new SimpleAIPlayer("Simple Player " + counter));
 			counter++;
+			if (debug) System.out.println("Simple player "+players.get(i).toString()+" added");
 		}
 		for (int i = 0; i < intermediatePlayers; i++) {
-			players.add(new IntermediateAIPlayer("Player " + counter));	
+			players.add(new IntermediateAIPlayer("Intermediate Player " + counter));	
 			counter++;
+			if (debug) System.out.println("Intermediate player "+players.get(i).toString()+" added");
 		}
-		int simpleWon = 0;
-		int intermediateWon = 0;
-		for (int i = 0; i < 1000; i++) {
+		simpleWon = 0;
+		intermediateWon = 0;
+		// for (int i = 0; i < 1000; i++) { TODO while debugging just run two games; change this when ready to run 1000 games
+		for (int i = 0; i < 2; i++) {
 			controller = new RiskController(players);
+			if (debug) System.out.println("Game "+i+" started");
 			//empty while loop to wait for end of game
 //			int m = 0;
 //			while(controller.getPlayers().size() > 1) {
 //				System.out.println(m);
 //				m++;
 //			}
-			if (controller.getPlayers().get(0) instanceof SimpleAIPlayer)
+			if (controller.getPlayers().get(0) instanceof SimpleAIPlayer) 
 				simpleWon++;
 			else
 				intermediateWon++;
-
+			if (debug) System.out.println("Player "+controller.getPlayers().get(0).toString()+ "won");
 		}
 		double simplePercent = simpleWon / 10.0;
 		double intermediatePercent = intermediateWon / 10.0;

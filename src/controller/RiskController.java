@@ -7,6 +7,7 @@ import java.util.List;
 import model.*;
 
 public class RiskController {
+	boolean debug = true;
 	private ArrayList<Territory> territories;
 	private Territory alaska, alberta, centralAmerica, easternUS, greenland, northwest,
 		ontario, quebec, westernUS, argentina, brazil, peru, venezuela, 
@@ -19,6 +20,7 @@ public class RiskController {
 	private ArrayList<Card> deckOfCards;
 	
 	public RiskController(ArrayList<Player> myPlayers) {
+		//if (debug) System.out.println("New RiskController created");
 		setPlayers(myPlayers);
 		setUpTerritories();
 		sendTerritoriesToPlayers();
@@ -28,6 +30,7 @@ public class RiskController {
 	}
 	
 	public void populateBoard() {
+		//if (debug) System.out.println("populateBoard called");
 		int temp;
 		switch(players.size()) {
 		case 2:
@@ -63,11 +66,15 @@ public class RiskController {
 	}
 	
 	public void playGame() {
+		if (debug) System.out.println("playGame called");
 		while (getPlayers().size() > 1) {
 			//would an enhanced for loop be an issue if a player gets eliminated before their turn
 			//i think we would get a null pointer exception -Becca
 			for (Player p : getPlayers()) {
+				if (debug) System.out.println(p.getName()+"'s turn");
 				p.addArmies();
+				while (p.getNumArmies() > 0)
+					p.placeArmy();
 				while (p.canAttack()) {
 					Territory attacker = p.attackFrom();
 					// check if human user wants to attack or no
@@ -84,6 +91,7 @@ public class RiskController {
 	}
 	
 	private void setUpTerritories() {
+		if (debug) System.out.println("setUpTerritories called");
 		territories = new ArrayList<Territory>();
 		
 		// TODO for Iteration 2, need to set map color for each territory (instance variable in Territory)
@@ -514,12 +522,17 @@ public class RiskController {
 	}
 	
 	private void setUpDeck() {
+		if (debug) System.out.println("setUpDeck called");
 		// TODO don't need cards until iteration 2
 		deckOfCards = new ArrayList<Card>();
 		deckOfCards.add(new Card());
 	}
 	
 	private void attack(Territory attackingTerritory, Territory defendingTerritory){
+		if (debug) System.out.println("attack called \nAttacker - "+attackingTerritory.getName()
+				+" (owner - "+attackingTerritory.getCurrentOwner().getName()+")"
+				+"\nDefender - "+defendingTerritory.getName()+" (owner - "
+				+defendingTerritory.getCurrentOwner().getName()+")");
 		List<Dice> attackingDice = attackingTerritory.getCurrentOwner().getAttackingDice();
 		List<Dice> defendingDice = defendingTerritory.getCurrentOwner().getDefendingDice();
 		ArrayList<Integer> attackingDiceValues = new ArrayList<Integer>();

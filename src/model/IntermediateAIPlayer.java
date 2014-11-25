@@ -19,6 +19,7 @@ public class IntermediateAIPlayer extends Player{
 	
 	public IntermediateAIPlayer(String name) {
 		super(name);
+		if (debug) System.out.println("New IntermediateAIPlayer created: "+name);
 	}
 	
 	/**
@@ -27,6 +28,7 @@ public class IntermediateAIPlayer extends Player{
 	 */
 	@Override
 	public void placeArmy() {
+		if (debug) System.out.println("placeArmy called by "+getName());
 		// TODO place an troop one per turn or place all the armies on player turn in the beginning?
 		// Semi-intelligently chooses a territory with two or more armies to attack from
 		Random genRan;
@@ -62,6 +64,7 @@ public class IntermediateAIPlayer extends Player{
 	
 	@Override
 	public Territory attackFrom() {
+		if (debug) System.out.println("attackFrom called by "+getName());
 		Territory attack = null;
 		// TODO Auto-generated method stub
 		// Semi-intelligently chooses a territory adjacent to the parameter, owned by another player, to attack
@@ -81,6 +84,7 @@ public class IntermediateAIPlayer extends Player{
 
 	@Override
 	public Territory attackTo(Territory attackFrom) {
+		if (debug) System.out.println("attackTo called by "+getName());
 		// TODO Auto-generated method stub
 		// Semi-intelligently chooses a territory and places one army there
 		int lowTroop = 1000;
@@ -100,13 +104,15 @@ public class IntermediateAIPlayer extends Player{
 	
 	
 	/**
-	 * TODO: Fix all Jeremy's nonSense below 
+	 * TODO: Fix all Jeremy's nonSense below
+	 * TODO style (indentation) please! :) 
 	 */
 	
 	private int numTroopsTake = 0;
 	 private int numTimesCalled = 0;
 	
 	public void reinforce(){
+		if (debug) System.out.println("reinforce called by "+getName());
 		
 	Territory high = null; 
 	Territory low = null;
@@ -160,6 +166,7 @@ public class IntermediateAIPlayer extends Player{
 
 	@Override
 	public void reinforceArmies(Territory takeArmy, Territory reinforceThis) {
+		if (debug) System.out.println("reinforceArmies called by "+getName());
 		if(numTimesCalled<1){
 		reinforce();
 		numTimesCalled++;}
