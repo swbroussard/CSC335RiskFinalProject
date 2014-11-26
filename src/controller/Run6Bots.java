@@ -46,30 +46,32 @@ public class Run6Bots {
 		if(intermediatePlayers + simplePlayers > 6) {
 			intermediatePlayers = 6 - simplePlayers;
 		}
-		int counter = 1;
-		//add players to list
-		for (int i = 0; i < simplePlayers; i++) {
-			players.add(new SimpleAIPlayer("Simple Player " + counter));
-			counter++;
-			if (debug) System.out.println("Simple player "+players.get(i).toString()+" added");
-		}
-		for (int i = 0; i < intermediatePlayers; i++) {
-			players.add(new IntermediateAIPlayer("Intermediate Player " + counter));	
-			counter++;
-			if (debug) System.out.println("Intermediate player "+players.get(i).toString()+" added");
-		}
+		
 		simpleWon = 0;
 		intermediateWon = 0;
 		
-		for (int i = 0; i < 1000; i++) { 
-			ArrayList<Player> temp = new ArrayList<Player>(players);
-			controller = new RiskController(temp);
+		for (int i = 1; i <= 1000; i++) { 
+			players = new ArrayList<Player>();
+			int counter = 1;
+			//add players to list
+			for (int j = 0; j < simplePlayers; j++) {
+				players.add(new SimpleAIPlayer("Simple Player " + counter));
+				counter++;
+				if (debug) System.out.println("Simple player "+players.get(j).toString()+" added");
+			}
+			for (int j = 0; j < intermediatePlayers; j++) {
+				players.add(new IntermediateAIPlayer("Intermediate Player " + counter));	
+				counter++;
+				if (debug) System.out.println("Intermediate player "+players.get(j).toString()+" added");
+			}
 			if (debug) System.out.println("Game "+i+" started");
+			controller = new RiskController(players);
+			
 			if (controller.getPlayers().get(0) instanceof SimpleAIPlayer) 
 				simpleWon++;
 			else
 				intermediateWon++;
-			if (debug) System.out.println("Player "+controller.getPlayers().get(0).getName() + " won");
+			System.out.println("Player "+controller.getPlayers().get(0).getName() + " won Game #" + i);
 		}
 		double simplePercent = simpleWon / 10.0;
 		double intermediatePercent = intermediateWon / 10.0;

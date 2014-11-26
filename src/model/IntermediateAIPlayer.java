@@ -13,6 +13,8 @@ import java.util.Random;
  */
 
 public class IntermediateAIPlayer extends Player{
+	private Random genRan;
+	
 	public IntermediateAIPlayer() {
 		super();
 	}
@@ -31,7 +33,6 @@ public class IntermediateAIPlayer extends Player{
 		if(debug) System.out.println("placeArmy called by "+getName());
 		// TODO place an troop one per turn or place all the armies on player turn in the beginning?
 		// Semi-intelligently chooses a territory with two or more armies to attack from
-		Random genRan = new Random();
 		genRan = new Random();
 		
 		//determines if you are still in territory selecting mode or if in army placing mode
@@ -100,32 +101,47 @@ public class IntermediateAIPlayer extends Player{
 
 			}
 		}//end of choosing empty territories
-		else {//place army in territory
+		else {//place army in territory			
 			int r = genRan.nextInt(getTerritoriesOwned().size());
 			getTerritoriesOwned().get(r).setNumArmies(getNumArmies() + 1);
 			setNumArmies(getNumArmies() - 1);
 			if (debug) System.out.println("Army successfully placed in owned territory by "+getName());
-
 		}
 	}
 
 	
 	@Override
 	public Territory attackFrom() {
+//		if (debug) System.out.println("attackFrom called by "+getName());
+//		Territory attack = null;
+//		// Semi-intelligently chooses a territory adjacent to the parameter, owned by another player, to attack
+//		int x = 0;
+//		while(x < getTerritoriesOwned().size()){
+//			for(int i = 0; i< getTerritoriesOwned().get(x).getAdjacent().size(); i++){
+//				System.out.println("tst");
+//				if(getTerritoriesOwned().get(x).getAdjacent().get(i).getCurrentOwner()!= this){
+//					i = getTerritoriesOwned().size() -1;
+//					attack = getTerritoriesOwned().get(x);	
+//				}
+//			}
+//			x++;
+//		}
+//		System.out.println(attack.toString());
+//		return attack;
+		
 		if (debug) System.out.println("attackFrom called by "+getName());
-		Territory attack = null;
-		// Semi-intelligently chooses a territory adjacent to the parameter, owned by another player, to attack
-		int x = 0;
-		while(x < getTerritoriesOwned().size()){
-			for(int i = 0; i< getTerritoriesOwned().get(x).getAdjacent().size(); i++){
-				if(getTerritoriesOwned().get(x).getAdjacent().get(i).getCurrentOwner()!= this){
-					i = getTerritoriesOwned().size() -1;
-					attack = getTerritoriesOwned().get(x);	
+		Territory choosenTerritory = null;
+		while(choosenTerritory == null){
+			int r = genRan.nextInt(getTerritoriesOwned().size());
+			if(getTerritoriesOwned().get(r).getNumArmies() > 1) {
+				for(Territory t: getTerritoriesOwned().get(r).getAdjacent()) {
+					if(t.getCurrentOwner() != this) {
+						choosenTerritory = getTerritoriesOwned().get(r);
+					}
 				}
 			}
-			x++;
 		}
-		return attack;
+		return choosenTerritory;
 	}
 
 	@Override

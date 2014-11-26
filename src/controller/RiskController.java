@@ -122,7 +122,7 @@ public class RiskController {
 						}
 						Territory defender = p.attackTo(attacker);
 						if (debug) System.out.println("Attacking " + defender.toString());
-						if (debug) System.out.println(territories);
+						//if (debug) System.out.println(territories);
 						while (defender == null || defender.getCurrentOwner() == p) {
 							defender = p.attackTo(attacker);
 							if (debug) System.out.println("Attacking" + defender.toString());
@@ -660,7 +660,7 @@ public class RiskController {
 		attackingTerritory.setNumArmies(attackingTerritory.getNumArmies() - defenderWon);
 		defendingTerritory.setNumArmies(defendingTerritory.getNumArmies() - attackerWon);
 
-		if (defendingTerritory.getNumArmies() == 0) { // attacker conquered defending territory
+		if (defendingTerritory.getNumArmies() <= 0) { // attacker conquered defending territory
 			
 			if (defendingTerritory.getCurrentOwner().getTerritoriesOwned().size() == 1) {
 				// attacker conquered defender's last territory
