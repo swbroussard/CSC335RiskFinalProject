@@ -12,6 +12,7 @@ import javax.swing.SwingConstants;
 
 import controller.RiskController;
 
+@SuppressWarnings("serial")
 public class RiskGUI extends JFrame{
 	private RiskController controller;
 	private JFrame frame;

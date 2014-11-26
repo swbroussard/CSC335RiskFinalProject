@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 
 import model.*;
 
+@SuppressWarnings({ "unused", "serial" })
 public class MapPanel extends JPanel{
 	private BufferedImage map;
 	private ArrayList<Territory> territories;

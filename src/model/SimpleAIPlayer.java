@@ -98,40 +98,40 @@ public class SimpleAIPlayer extends Player {
 
 		//rewriting because previous is not randomized. - Becca
 		//first check to determine if the territories are all owned.  if they are not then select a territory
-		boolean allSelected = true;
-		for(Territory t: getAllTerritories()) {
-			if(t.getCurrentOwner() == null) {
-				allSelected = false;
-			}
-		}   
+		//boolean allSelected = true;
+		/*for(Territory t: getAllTerritories()) {
+			//if(t.getCurrentOwner() == null) {
+				//allSelected = false;
+			//}
+		//} 
 		
 		//select a territory if one is available.
-		if(allSelected == false) {
-			int r = randomGen.nextInt(42);
-			boolean territorySelected = false;
-			while(!territorySelected) {
-				Territory selected = getAllTerritories().get(r);
-				if(selected.getCurrentOwner() == null) {
-					selected.setCurrentOwner(this);
-					selected.setNumArmies(1);
-					territorySelected = true;
-					addTerritory(selected);
-					setNumArmies(getNumArmies() - 1);
-					if (debug) System.out.println("Army successfully placed in new territory by "+getName());
-				}
-				else
-					r = randomGen.nextInt(42);
+			if(t.getCurrentOwner() == null && this.getNumArmies() != 0) {
+				int r = randomGen.nextInt(42);
+				boolean territorySelected = false;
+				while(!territorySelected) {
+					Territory selected = getAllTerritories().get(r);
+					if(selected.getCurrentOwner() == null) {
+						selected.setCurrentOwner(this);
+						selected.setNumArmies(1);
+						territorySelected = true;
+						addTerritory(selected);
+						setNumArmies(getNumArmies() - 1);
+						if (debug) System.out.println("Army successfully placed in new territory by "+getName());
+					}
+					else
+						r = randomGen.nextInt(42);
+				}	
 			}
-		}
 
-		//if territory is not available, add an army to one you own.
-		else{
-			int r = randomGen.nextInt(getTerritoriesOwned().size());
-			getTerritoriesOwned().get(r).setNumArmies(getNumArmies() + 1);
-			setNumArmies(getNumArmies() - 1);
-			if (debug) System.out.println("Army successfully placed in owned territory by "+getName());
-		}
-
+			//if territory is not available, add an army to one you own.
+			else {
+				int r = randomGen.nextInt(getTerritoriesOwned().size());
+				getTerritoriesOwned().get(r).setNumArmies(getNumArmies() + 1);
+				setNumArmies(getNumArmies() - 1);
+				if (debug) System.out.println("Army successfully placed in owned territory by "+getName());
+			}
+		}*/
 
 	}
 
