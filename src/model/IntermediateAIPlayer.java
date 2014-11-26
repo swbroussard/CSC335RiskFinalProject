@@ -3,7 +3,7 @@ package model;
 import java.util.Random;
 
 /**
- * More intelligent then Simple AI
+ * More intelligent than Simple AI
  * 
  * Strategy: randomly places first in a territory, then add other troops in adjacent
  * territories. Only attack the fewest amount enemy troops.
@@ -29,14 +29,12 @@ public class IntermediateAIPlayer extends Player{
 	@Override
 	public void placeArmy() {
 		if (debug) System.out.println("placeArmy called by "+getName());
-		// TODO place an troop one per turn or place all the armies on player turn in the beginning?
 		// Semi-intelligently chooses a territory with two or more armies to attack from
 		Random genRan;
 		Random genRandom;
 		genRan = new Random();
 		genRandom = new Random();
 		int randomTerritoryIndex = getAllTerritories().size();
-		//int randomNeighbor = getAllTerritories().size();
 		Territory firstPick = getAllTerritories().get(genRan.nextInt(randomTerritoryIndex));
 		Territory nextPick = null;
 		boolean boolFirstPick = false;
@@ -71,11 +69,10 @@ public class IntermediateAIPlayer extends Player{
 		int x = 0;
 		while(x < getTerritoriesOwned().size()){
 			for(int i = 0; i< getTerritoriesOwned().get(x).getAdjacent().size(); i++){
-			if(getTerritoriesOwned().get(x).getAdjacent().get(i).getCurrentOwner()!= this){
-				i = getTerritoriesOwned().size() -1;
-				attack = getTerritoriesOwned().get(x);
-					
-			}
+				if(getTerritoriesOwned().get(x).getAdjacent().get(i).getCurrentOwner()!= this){
+					i = getTerritoriesOwned().size() -1;
+					attack = getTerritoriesOwned().get(x);	
+				}
 			}
 			x++;
 		}
@@ -85,27 +82,22 @@ public class IntermediateAIPlayer extends Player{
 	@Override
 	public Territory attackTo(Territory attackFrom) {
 		if (debug) System.out.println("attackTo called by "+getName());
-		// TODO Auto-generated method stub
 		// Semi-intelligently chooses a territory and places one army there
 		int lowTroop = 1000;
 		Territory attack = null;
 		for(int i = 0; i< attackFrom.getAdjacent().size(); i++){
 			if(attackFrom.getAdjacent().get(i).getCurrentOwner()!= this){
-			if(attackFrom.getAdjacent().get(i).getNumArmies() < lowTroop){
-				lowTroop = attackFrom.getAdjacent().get(i).getNumArmies();
-				attack = attackFrom.getAdjacent().get(i);
+				if(attackFrom.getAdjacent().get(i).getNumArmies() < lowTroop){
+					lowTroop = attackFrom.getAdjacent().get(i).getNumArmies();
+					attack = attackFrom.getAdjacent().get(i);
+				}
 			}
-		}
 		}
 		return attack;
 	}
-	
 
-	
-	
 	/**
 	 * TODO: Fix all Jeremy's nonSense below
-	 * TODO style (indentation) please! Done by steven.
 	 */
 	
 	private int numTroopsTake = 0;

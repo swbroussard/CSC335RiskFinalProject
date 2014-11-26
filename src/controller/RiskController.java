@@ -33,7 +33,7 @@ public class RiskController {
 	 * @param myPlayers
 	 */
 	public RiskController(ArrayList<Player> myPlayers) {
-		//if (debug) System.out.println("New RiskController created");
+		if (debug) System.out.println("New RiskController created");
 		setPlayers(myPlayers);
 		setUpTerritories();
 		sendTerritoriesToPlayers();
@@ -54,7 +54,7 @@ public class RiskController {
 	 * and has them place armies on territories in turn. 
 	 */
 	public void populateBoard() {
-		//if (debug) System.out.println("populateBoard called");
+		if (debug) System.out.println("populateBoard called");
 		int temp;
 		switch(players.size()) {
 		case 2:
@@ -121,11 +121,11 @@ public class RiskController {
 							attacker = p.attackFrom();
 						}
 						Territory defender = p.attackTo(attacker);
-						System.out.println("Attacking " + defender.toString());
-						System.out.println(territories);
+						if (debug) System.out.println("Attacking " + defender.toString());
+						if (debug) System.out.println(territories);
 						while (defender == null || defender.getCurrentOwner() == p) {
 							defender = p.attackTo(attacker);
-							System.out.println("Attacking" + defender.toString());
+							if (debug) System.out.println("Attacking" + defender.toString());
 						}
 						
 						attack(attacker, defender);
@@ -137,7 +137,7 @@ public class RiskController {
 //			}
 		}
 		if(players.size() == 1) {
-			System.out.println(players.get(0).getName() + " won the game");
+			if (debug) System.out.println(players.get(0).getName() + " won the game");
 		}
 		//return players.get(0);
 	}
@@ -150,7 +150,6 @@ public class RiskController {
 		if (debug) System.out.println("setUpTerritories called");
 		territories = new ArrayList<Territory>();
 
-		// TODO: ITERATION 2 - need to set map color for each territory (instance variable in Territory)
 		alaska = new Territory("Alaska", Continent.NORTH_AMERICA, -9884371);
 		alberta = new Territory("Alberta", Continent.NORTH_AMERICA, -2991525);
 		centralAmerica = new Territory("Central America", Continent.NORTH_AMERICA, -7330782);
@@ -581,7 +580,7 @@ public class RiskController {
 	 * Helper method for initial deck setup. Instantiates the cards in the deck and adds them to the deck. 
 	 */
 	private void setUpDeck() {
-		//if (debug) System.out.println("setUpDeck called");
+		if (debug) System.out.println("setUpDeck called");
 		// TODO: ITERATION 2 - hard code deck of cards
 		deckOfCards = new ArrayList<Card>();
 		deckOfCards.add(new Card());
@@ -640,7 +639,7 @@ public class RiskController {
 		Collections.sort(defendingDiceValues);
 		Collections.reverse(defendingDiceValues);
 
-		System.out.println("Attacking: " + attackingDiceValues + "\t" + "Defending: " + defendingDiceValues);
+		if (debug) System.out.println("Attacking: " + attackingDiceValues + "\t" + "Defending: " + defendingDiceValues);
 
 		int attackerWon = 0;
 		int defenderWon = 0;
@@ -665,11 +664,11 @@ public class RiskController {
 			
 			if (defendingTerritory.getCurrentOwner().getTerritoriesOwned().size() == 1) {
 				// attacker conquered defender's last territory
-				System.out.println(defendingTerritory.getCurrentOwner().getName() + " has been eliminated");
+				if (debug) System.out.println(defendingTerritory.getCurrentOwner().getName() + " has been eliminated");
 				players.remove(defendingTerritory.getCurrentOwner());
 			}
 			
-			System.out.println(defendingTerritory.getName() + " now belongs to the attacker");
+			if (debug) System.out.println(defendingTerritory.getName() + " now belongs to the attacker");
 			// defending territory now belongs to attacker
 			defendingTerritory.getCurrentOwner().getTerritoriesOwned().remove(defendingTerritory);
 			defendingTerritory.setCurrentOwner(attackingTerritory.getCurrentOwner());
@@ -679,7 +678,7 @@ public class RiskController {
 			defendingTerritory.setNumArmies(attackingDiceValues.size());
 			attackingTerritory.setNumArmies(attackingTerritory.getNumArmies() - attackingDiceValues.size());
 		}
-		System.out.println(territories + "\n");
+		if (debug) System.out.println(territories + "\n");
 	}
 
 	/**

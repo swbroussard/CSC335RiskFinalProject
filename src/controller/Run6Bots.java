@@ -17,7 +17,7 @@ import model.SimpleAIPlayer;
  */
 
 public class Run6Bots {
-	boolean debug = true;
+	boolean debug = false;
 	private RiskController controller;
 	private ArrayList<Player> players;
 	private int simpleWon, intermediateWon;
@@ -28,14 +28,12 @@ public class Run6Bots {
 	 */
 	public Run6Bots() {
 		Scanner scan = new Scanner(System.in);
-		System.out.println("Choose your players, you must have between 2 and 6 players");
+		System.out.println("Choose your players. You must have between 2 and 6 players");
 		System.out.println("Enter the number of SimpleAIPlayers");
 		int simplePlayers = Integer.parseInt(scan.next());
 		System.out.println("Enter the number of IntermediateAIPlayers");
 		int intermediatePlayers = Integer.parseInt(scan.next());
-//		int simplePlayers = 1;
-//		int intermediatePlayers = 2;
-//		
+
 		players = new ArrayList<Player>();
 
 		//make sure user has entered no more than 6 players
@@ -62,17 +60,10 @@ public class Run6Bots {
 		}
 		simpleWon = 0;
 		intermediateWon = 0;
-		// for (int i = 0; i < 1000; i++) { TODO while debugging just run two games; change this when ready to run 1000 games
-//		controller = new RiskController(players);
-		for (int i = 0; i < 1000; i++) {
-			controller = new RiskController(players);
+		for (int i = 0; i < 1000; i++) { // limited success with getting this to run more than 150-175 times
+			ArrayList<Player> temp = new ArrayList<Player>(players);
+			controller = new RiskController(temp);
 			if (debug) System.out.println("Game "+i+" started");
-			//empty while loop to wait for end of game
-//			int m = 0;
-//			while(controller.getPlayers().size() > 1) {
-//				System.out.println(m);
-//				m++;
-//			}
 			if (controller.getPlayers().get(0) instanceof SimpleAIPlayer) 
 				simpleWon++;
 			else
@@ -81,8 +72,8 @@ public class Run6Bots {
 		}
 		double simplePercent = simpleWon / 10.0;
 		double intermediatePercent = intermediateWon / 10.0;
-		System.out.println("SimpleAIPlayers won " + simpleWon + " times (" + simplePercent + "%.");
-		System.out.println("IntermediateAIPlayers won " + intermediateWon + " times" + " (" + intermediatePercent + "%.");
+		System.out.println("SimpleAIPlayers won " + simpleWon + " times (" + simplePercent + "%).");
+		System.out.println("IntermediateAIPlayers won " + intermediateWon + " times" + " (" + intermediatePercent + "%).");
 		scan.close();
 	}
 

@@ -82,7 +82,6 @@ public class SimpleAIPlayer extends Player {
 	@Override
 	public void placeArmy() {
 		if (debug) System.out.println("placeArmy called by "+getName());
-
 		//first check to determine if the territories are all owned.  if they are not then select a territory
 		boolean allSelected = true;
 		for(Territory t: getAllTerritories()) {

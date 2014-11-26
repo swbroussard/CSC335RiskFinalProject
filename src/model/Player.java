@@ -174,7 +174,7 @@ public abstract class Player {
 	 */
 
 	public boolean canAttack() {
-		System.out.println("canAttack is called");
+		if (debug) System.out.println("canAttack is called");
 		if(doneAttacking)
 			return false;
 		for (Territory t : territoriesOwned) {
@@ -308,7 +308,7 @@ public abstract class Player {
 	 */
 	//TODO: Dice - is this necessary, move dice to controller?
 	public void rollDice(){
-		System.out.println("rollDice is called by "+name);
+		if (debug) System.out.println("rollDice is called by "+name);
 		for(int i = 0; i < getAttackingDice().size(); i++){
 			getAttackingDice().get(i).rollDice();
 		}
@@ -318,8 +318,5 @@ public abstract class Player {
 	}
 
 	//TODO: create the search algorithm - what is this?
-
-
-
 
 }
