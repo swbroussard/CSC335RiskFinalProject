@@ -1,8 +1,9 @@
-package controller;
+package test;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import controller.RiskController;
 import model.IntermediateAIPlayer;
 import model.Player;
 import model.SimpleAIPlayer;
