@@ -4,29 +4,25 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import model.Player;
 import controller.RiskController;
 
 public class RiskGUI extends JFrame{
 	private RiskController controller;
 	private JFrame frame;
-	private JPanel buttonPanel, labelPanel;
+	private JPanel labelPanel;
 	private MapPanel mapPanel;
+	private SidePanel startingSidePanel;
+	private JLabel label;
 	
 	public RiskGUI() {
 		super();
-		controller = new RiskController(new ArrayList<Player>());
+		controller = new RiskController();
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setSize(1160, 680);
@@ -38,12 +34,12 @@ public class RiskGUI extends JFrame{
 		JPanel mapAndLabelPanel = new JPanel();
 		mapAndLabelPanel.setLayout(new BorderLayout());
 		
-		mapPanel = new MapPanel(controller.getTerritories());
+		mapPanel = new MapPanel(this);
 	
 		mapAndLabelPanel.add(mapPanel, BorderLayout.CENTER);
 		
-		setUpButtonSidePanel();
-		basePanel.add(buttonPanel, BorderLayout.EAST);
+		startingSidePanel = new SidePanel(this);
+		basePanel.add(startingSidePanel, BorderLayout.EAST);
 		
 		setUpLabelPanel();
 		mapAndLabelPanel.add(labelPanel, BorderLayout.SOUTH);
@@ -54,19 +50,12 @@ public class RiskGUI extends JFrame{
 		frame.setVisible(true);
 	}
 	
-	public void setUpButtonSidePanel() {
-		buttonPanel = new JPanel();
-		buttonPanel.setPreferredSize(new Dimension(200, 600));
-		buttonPanel.setBackground(Color.GREEN);
-		buttonPanel.setVisible(true);
-	}
-	
 	public void setUpLabelPanel() {
 		labelPanel = new JPanel();
 		labelPanel.setPreferredSize(new Dimension(960, 40));
 		labelPanel.setVisible(true);
 		
-		JLabel label = new JLabel();
+		label = new JLabel();
 		label.setSize(900, 50);
 		label.setFont(new Font("Arial", Font.BOLD, 16));
 		label.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -76,7 +65,16 @@ public class RiskGUI extends JFrame{
 		labelPanel.add(label);
 	}
 	
+	public void setLabel(String message) {
+		label.setText(message);
+	}
+	
+	public RiskController getController() {
+		return controller;
+	}
+	
 	public static void main(String[] args) {
 		new RiskGUI();
 	}
+	
 }

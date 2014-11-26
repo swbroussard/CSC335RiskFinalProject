@@ -20,16 +20,18 @@ import model.*;
 public class MapPanel extends JPanel{
 	private BufferedImage map;
 	private ArrayList<Territory> territories;
+	private RiskGUI gui;
 	
-	public MapPanel(ArrayList<Territory> territories) {
+	public MapPanel(RiskGUI gui) {
 		super();
-		this.territories = territories;
+		this.gui = gui;
+		territories = gui.getController().getTerritories();
 		this.setPreferredSize(new Dimension(960, 640));
 		this.setBackground(Color.RED);
 		this.setVisible(true);
 		
 		try {
-			map = ImageIO.read(new File("images/RiskMap.jpeg"));
+			map = ImageIO.read(new File("images/RiskMap.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -56,7 +58,7 @@ public class MapPanel extends JPanel{
 			
 			for(Territory t : territories) {
 				if(t.getColor() == rgb) {
-					System.out.println(t.getName());
+					gui.setLabel("You have selected " + t.getName());
 				}
 			}
 		}
