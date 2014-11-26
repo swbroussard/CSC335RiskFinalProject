@@ -13,8 +13,6 @@ public abstract class Player {
 	private int numArmies; // number of un-placed armies
 	private ArrayList<Territory> territoriesOwned, allTerritories;
 	private ArrayList<Card> cards;
-	private List<Dice> attackingDice;
-	private List<Dice> defendingDice;
 	private boolean doneAttacking;
 
 	//abstract methods to implement in subclasses
@@ -57,16 +55,8 @@ public abstract class Player {
 	 * Default constructor for the player that initializes the territories owned, 
 	 * cards and the dice
 	 */
-	//TODO: Dice - I think we should take the dice out of the player. 
 	public Player() {
 		if (debug) System.out.println("player constructor (no arguments) is called");
-		setAttackingDice(new ArrayList<Dice>());
-		setDefendingDice(new ArrayList<Dice>());
-		attackingDice.add(new Dice());
-		attackingDice.add(new Dice());
-		attackingDice.add(new Dice());
-		defendingDice.add(new Dice());
-		defendingDice.add(new Dice());
 		
 		territoriesOwned = new ArrayList<Territory>();
 		cards = new ArrayList<Card>();
@@ -77,18 +67,10 @@ public abstract class Player {
 	 * the Player.  
 	 * @param name the name of the player being initialized
 	 */
-	//TODO: Dice - I think we should take the dice out of the player. 
 	public Player(String name) {
 		if (debug) System.out.println("player constructor (String) is called");
 		this.name = name;
-		setAttackingDice(new ArrayList<Dice>());
-		setDefendingDice(new ArrayList<Dice>());
-		attackingDice.add(new Dice());
-		attackingDice.add(new Dice());
-		attackingDice.add(new Dice());
-		defendingDice.add(new Dice());
-		defendingDice.add(new Dice());
-
+		
 		territoriesOwned = new ArrayList<Territory>();
 		cards = new ArrayList<Card>();
 	}
@@ -246,45 +228,6 @@ public abstract class Player {
 		this.doneAttacking = doneAttacking;
 	}
 
-	//TODO: Dice - do we need these methods?
-	/**
-	 * holds the attacking dice
-	 * @return attackingDice
-	 */
-	public List<Dice> getAttackingDice() {
-		if (debug) System.out.println("getAttackingDice is called by "+name);
-		return attackingDice;
-	}
-	/**
-	 * 
-	 * @param attackingDice
-	 * sets the attacking dice
-	 */
-	public void setAttackingDice(List<Dice> attackingDice) {
-		if (debug) System.out.println("setAttackingDice called by "+name);
-		this.attackingDice = attackingDice;
-	}
-
-	/**
-	 * 
-	 * @return defendingDice
-	 * gets the defending dice
-	 */
-	public List<Dice> getDefendingDice() {
-		if (debug) System.out.println("getDefendingDice called by "+name);
-		return defendingDice;
-	}
-	/**
-	 * 
-	 * @param defendingDice
-	 * sets the defending dice
-	 */
-	public void setDefendingDice(List<Dice> defendingDice) {
-		if (debug) System.out.println("setDefendingDice called by "+name);
-		this.defendingDice = defendingDice;
-	}
-	
-
 	/**
 	 * instantiates a new ArrayList of Territories and copys the parameter
 	 * list to the instance variable
@@ -303,20 +246,5 @@ public abstract class Player {
 	}
 
 
-	/**
-	 * used to roll dice for the purpose of attacking territories
-	 */
-	//TODO: Dice - is this necessary, move dice to controller?
-	public void rollDice(){
-		if (debug) System.out.println("rollDice is called by "+name);
-		for(int i = 0; i < getAttackingDice().size(); i++){
-			getAttackingDice().get(i).rollDice();
-		}
-		for(int i = 0; i < getAttackingDice().size(); i++){
-			getAttackingDice().get(i).rollDice();
-		}
-	}
-
-	//TODO: create the search algorithm - what is this?
 
 }

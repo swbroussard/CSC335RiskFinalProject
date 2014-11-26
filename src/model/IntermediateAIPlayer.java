@@ -28,36 +28,85 @@ public class IntermediateAIPlayer extends Player{
 	 */
 	@Override
 	public void placeArmy() {
-		if (debug) System.out.println("placeArmy called by "+getName());
+		if(debug) System.out.println("placeArmy called by "+getName());
+		// TODO place an troop one per turn or place all the armies on player turn in the beginning?
 		// Semi-intelligently chooses a territory with two or more armies to attack from
-		Random genRan;
-		Random genRandom;
+		Random genRan = new Random();
 		genRan = new Random();
-		genRandom = new Random();
-		int randomTerritoryIndex = getAllTerritories().size();
-		Territory firstPick = getAllTerritories().get(genRan.nextInt(randomTerritoryIndex));
-		Territory nextPick = null;
-		boolean boolFirstPick = false;
 		
-		if(boolFirstPick == false) {
-			//first troop is place at a territory randomly
-			firstPick.setCurrentOwner(this);
-			firstPick.setNumArmies(1);
-			boolFirstPick = true;
-		}
-		else{
-			nextPick = getTerritoriesOwned().get(genRandom.nextInt(firstPick.getAdjacent().size()));
-			if(nextPick.getCurrentOwner() != null){
-				nextPick = getTerritoriesOwned().get(genRandom.nextInt(firstPick.getAdjacent().size()));
-			}
-			else{
-				nextPick.setCurrentOwner(this);
-				nextPick.setNumArmies(1);
+		//determines if you are still in territory selecting mode or if in army placing mode
+		boolean allSelected = true;
+		for(Territory t: getAllTerritories()) {
+			if(t.getCurrentOwner() == null) {
+				allSelected = false;
 			}
 		}
-		//second and more troops are put around the first troop in the 
-		//beginning
 		
+		if(allSelected == false) {
+			//if it is the first territory to select
+			if(getTerritoriesOwned().size() == 0) {
+				int r = genRan.nextInt(42);
+				boolean territorySelected = false;
+				while(!territorySelected) {
+					Territory selected = getAllTerritories().get(r);
+					if(selected.getCurrentOwner() == null) {
+						selected.setCurrentOwner(this);
+						selected.setNumArmies(1);
+						territorySelected = true;
+						addTerritory(selected);
+						setNumArmies(getNumArmies() - 1);
+						if(debug) System.out.println("Army successfully placed in " + selected.getName() + " by "+getName());
+					}
+					else
+						r = genRan.nextInt(42);
+				}
+			}
+			//choosing territories after the first one, want to cluster territories if possible. 
+			else {
+				boolean territoryChoosen = false;
+				//nextPick = getTerritoriesOwned().get(genRandom.nextInt(firstPick.getAdjacent().size()));
+				for(int i = 0; i < 7; i++) {//try to cluster 7 times, then just pick a random one
+					int n = 0;
+					if(debug) System.out.println("itr " + i);
+					while(!territoryChoosen && n < getTerritoriesOwned().size()) {
+						Territory clusterAround = getTerritoriesOwned().get(n);
+						Territory selected = clusterAround.getAdjacent().get(genRan.nextInt(clusterAround.getAdjacent().size()));
+						if(selected.getCurrentOwner() == null) {
+							selected.setCurrentOwner(this);
+							selected.setNumArmies(1);
+							territoryChoosen = true;
+							addTerritory(selected);
+							setNumArmies(getNumArmies() - 1);
+							if(debug) System.out.println("Army successfully placed in " + selected.getName() + " by "+getName());
+							if(debug) System.out.println(getAllTerritories());
+						}
+						n++;
+					}
+				}
+				int r = genRan.nextInt(42);
+				while(!territoryChoosen) {
+					Territory selected = getAllTerritories().get(r);
+					if(selected.getCurrentOwner() == null) {
+						selected.setCurrentOwner(this);
+						selected.setNumArmies(1);
+						territoryChoosen = true;
+						addTerritory(selected);
+						setNumArmies(getNumArmies() - 1);
+						if(debug) System.out.println("Army successfully placed in " + selected.getName() + " by "+getName());
+					}
+					else
+						r = genRan.nextInt(42);
+				}
+
+			}
+		}//end of choosing empty territories
+		else {//place army in territory
+			int r = genRan.nextInt(getTerritoriesOwned().size());
+			getTerritoriesOwned().get(r).setNumArmies(getNumArmies() + 1);
+			setNumArmies(getNumArmies() - 1);
+			if (debug) System.out.println("Army successfully placed in owned territory by "+getName());
+
+		}
 	}
 
 	

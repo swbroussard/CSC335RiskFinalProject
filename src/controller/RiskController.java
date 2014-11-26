@@ -77,7 +77,7 @@ public class RiskController {
 			p.setNumArmies(temp);
 		}
 		//for testing purposes, set one player to have no extra armies.
-		players.get(players.size() - 1).setNumArmies(2);
+		//players.get(players.size() - 1).setNumArmies(2);
 		
 
 		while (getPlayers().get(0).getNumArmies() > 0) {

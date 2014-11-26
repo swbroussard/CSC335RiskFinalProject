@@ -145,6 +145,8 @@ public class Territory {
 	 * @return String
 	 */
 	public String toString() {
+		if(currentOwner == null)
+			return getName();
 		return getName() + " " + getNumArmies() + " (" + currentOwner.getName() + ")";
 	}
 }

@@ -34,7 +34,7 @@ public class Run6Bots {
 		System.out.println("Enter the number of IntermediateAIPlayers");
 		int intermediatePlayers = Integer.parseInt(scan.next());
 
-		players = new ArrayList<Player>();
+		
 
 		//make sure user has entered no more than 6 players
 		if(simplePlayers > 6) {
@@ -60,9 +60,9 @@ public class Run6Bots {
 		}
 		simpleWon = 0;
 		intermediateWon = 0;
-		ArrayList<Player> temp;
+		
 		for (int i = 0; i < 1000; i++) { 
-			temp = new ArrayList<Player>(players);
+			ArrayList<Player> temp = new ArrayList<Player>(players);
 			controller = new RiskController(temp);
 			if (debug) System.out.println("Game "+i+" started");
 			if (controller.getPlayers().get(0) instanceof SimpleAIPlayer) 
