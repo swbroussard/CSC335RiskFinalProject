@@ -60,8 +60,9 @@ public class Run6Bots {
 		}
 		simpleWon = 0;
 		intermediateWon = 0;
-		for (int i = 0; i < 1000; i++) { // limited success with getting this to run more than 150-175 times
-			ArrayList<Player> temp = new ArrayList<Player>(players);
+		ArrayList<Player> temp;
+		for (int i = 0; i < 1000; i++) { 
+			temp = new ArrayList<Player>(players);
 			controller = new RiskController(temp);
 			if (debug) System.out.println("Game "+i+" started");
 			if (controller.getPlayers().get(0) instanceof SimpleAIPlayer) 
