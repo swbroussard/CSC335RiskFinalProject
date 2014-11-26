@@ -12,19 +12,19 @@ import model.*;
  *
  */
 public class RiskController {
-	boolean debug = true;
+	boolean debug = false;
 	private ArrayList<Territory> territories;
 	private Territory alaska, alberta, centralAmerica, easternUS, greenland, northwest,
-		ontario, quebec, westernUS, argentina, brazil, peru, venezuela, 
-		greatBritain, iceland, northernEurope, scandinavia, southernEurope, 
-		ukraine, westernEurope, congo, eastAfrica, egypt, madagascar, northAfrica,
-		southAfrica, afghanistan, china, india, irkutsk, japan, kamchatka, 
-		middleEast, mongolia, siam, siberia, ural, yakutsk, easternAustralia,
-		indonesia, newGuinea, westernAustralia;
+	ontario, quebec, westernUS, argentina, brazil, peru, venezuela, 
+	greatBritain, iceland, northernEurope, scandinavia, southernEurope, 
+	ukraine, westernEurope, congo, eastAfrica, egypt, madagascar, northAfrica,
+	southAfrica, afghanistan, china, india, irkutsk, japan, kamchatka, 
+	middleEast, mongolia, siam, siberia, ural, yakutsk, easternAustralia,
+	indonesia, newGuinea, westernAustralia;
 	private ArrayList<Player> players;
 	private ArrayList<Card> deckOfCards;
 	static Random rand;
-	
+
 	/**
 	 * Constructs a new <code>RiskController</code> object from a given <code>ArrayList<Player></code>. 
 	 * Calls helper methods to set up all possible territories, give each <code>Player</code> that list, 
@@ -41,14 +41,14 @@ public class RiskController {
 		populateBoard();
 		playGame();
 	}
-	
+
 	/**
 	 * Constructor for the GUI
 	 */
 	public RiskController() {
 		setUpTerritories();
 	}
-	
+
 	/**
 	 * Helper method for the first stage of gameplay. Allots each <code>Player</code> the appropriate number of armies, 
 	 * and has them place armies on territories in turn. 
@@ -76,14 +76,18 @@ public class RiskController {
 		for (Player p : getPlayers()) {
 			p.setNumArmies(temp);
 		}
+		//for testing purposes, set one player to have no extra armies.
+		players.get(players.size() - 1).setNumArmies(2);
+		
 
 		while (getPlayers().get(0).getNumArmies() > 0) {
 			for (Player p : players)
-				p.placeArmy();
+				if(p.getNumArmies() > 0)
+					p.placeArmy();
 			// TODO: ITERATION 2 - for a human player, maybe we could add the option to place multiple territories at once
 		} // all armies placed for all players
 	}
-	
+
 	/**
 	 * Helper method for the second (main) stage of gameplay. While there is more than one <code>Player</code>
 	 * left in the game, has players take turns. A turn has three stages: First, the player is given armies
@@ -94,35 +98,50 @@ public class RiskController {
 	public void playGame() {
 		if (debug) System.out.println("playGame called");
 		while (getPlayers().size() > 1) {
-			//would an enhanced for loop be an issue if a player gets eliminated before their turn
-			//i think we would get a null pointer exception -Becca
-			int counter = 0;
-			while(counter < players.size()) {
-			//for (Player p : getPlayers()) {
-				Player p = players.get(counter);
-				if (debug) System.out.println(p.getName()+"'s turn");
-				p.addArmies();
-				while (p.getNumArmies() > 0)
-					p.placeArmy();
-				while (p.canAttack()) {
-					Territory attacker = p.attackFrom();
-					// check if human user wants to attack or no
-					if (attacker == null)
-						break;
-					Territory defender = p.attackTo(attacker);
-					attack(attacker, defender);
-				} 
-				p.setDoneAttacking(false);
-				// TODO: ITERATION 2 - fortify if desired
-				counter++;
-			}
+//		for(int i = 0; i < 15; i++) {
+//		if (debug) System.out.println("Round " + i);
+//			if(players.size() == 1) {
+//				i = 15;
+//			}
+//			else {
+				//would an enhanced for loop be an issue if a player gets eliminated before their turn
+				//i think we would get a null pointer exception -Becca
+				int counter = 0;
+				while(counter < players.size()) {
+					//for (Player p : getPlayers()) {
+					Player p = players.get(counter);
+					if (debug) System.out.println(p.getName()+"'s turn");
+					p.addArmies();
+					while (p.getNumArmies() > 0) {
+						p.placeArmy();
+					}
+					while (p.canAttack()) {
+						Territory attacker = p.attackFrom();
+						while (attacker == null || attacker.getCurrentOwner() != p) {
+							attacker = p.attackFrom();
+						}
+						Territory defender = p.attackTo(attacker);
+						System.out.println("Attacking " + defender.toString());
+						System.out.println(territories);
+						while (defender == null || defender.getCurrentOwner() == p) {
+							defender = p.attackTo(attacker);
+							System.out.println("Attacking" + defender.toString());
+						}
+						
+						attack(attacker, defender);
+					} 
+					p.setDoneAttacking(false);
+					// TODO: ITERATION 2 - fortify if desired
+					counter++;
+				}
+//			}
 		}
 		if(players.size() == 1) {
 			System.out.println(players.get(0).getName() + " won the game");
 		}
 		//return players.get(0);
 	}
-	
+
 	/**
 	 * Helper method for initial territory setup. Instantiates the 42 territories on a Risk world map, 
 	 * assigning them the proper continent and neighbors. 
@@ -130,7 +149,7 @@ public class RiskController {
 	private void setUpTerritories() {
 		if (debug) System.out.println("setUpTerritories called");
 		territories = new ArrayList<Territory>();
-		
+
 		// TODO: ITERATION 2 - need to set map color for each territory (instance variable in Territory)
 		alaska = new Territory("Alaska", Continent.NORTH_AMERICA, -9884371);
 		alberta = new Territory("Alberta", Continent.NORTH_AMERICA, -2991525);
@@ -141,12 +160,12 @@ public class RiskController {
 		ontario = new Territory("Ontario", Continent.NORTH_AMERICA, -4116688);
 		quebec = new Territory("Quebec", Continent.NORTH_AMERICA, -4173227);
 		westernUS = new Territory("Western United States", Continent.NORTH_AMERICA, -6470845);
-		
+
 		argentina = new Territory("Argentina", Continent.SOUTH_AMERICA, -602202);
 		brazil = new Territory("Brazil", Continent.SOUTH_AMERICA, -1734364);
 		peru = new Territory("Peru", Continent.SOUTH_AMERICA, -5282278);
 		venezuela = new Territory("Venezuela", Continent.SOUTH_AMERICA, -1400494);
-		
+
 		greatBritain = new Territory("Great Britain", Continent.EUROPE, -10509133);
 		iceland = new Territory("Iceland", Continent.EUROPE, -3411720);
 		northernEurope = new Territory("Northern Europe", Continent.EUROPE, -10103052);
@@ -154,14 +173,14 @@ public class RiskController {
 		southernEurope = new Territory("Southern Europe", Continent.EUROPE, -14655374);
 		ukraine = new Territory("Ukraine", Continent.EUROPE, -13857884);
 		westernEurope = new Territory("Western Europe", Continent.EUROPE, -14431749);
-		
+
 		congo = new Territory("Congo", Continent.AFRICA, -6338922);
 		eastAfrica = new Territory("East Africa", Continent.AFRICA, -1283872);
 		egypt = new Territory("Egypt", Continent.AFRICA, -11525300);
 		madagascar = new Territory("Madagascar", Continent.AFRICA, -3109438);
 		northAfrica = new Territory("North Africa", Continent.AFRICA, -1331481);
 		southAfrica = new Territory("South Africa", Continent.AFRICA, -9030543);
-		
+
 		afghanistan = new Territory("Afghanistan", Continent.ASIA, -8089504);
 		china = new Territory("China", Continent.ASIA, -9791385);
 		india = new Territory("India", Continent.ASIA, -6045093);
@@ -174,19 +193,19 @@ public class RiskController {
 		siberia = new Territory("Siberia", Continent.ASIA, -12756942);
 		ural = new Territory("Ural", Continent.ASIA, -11181775);
 		yakutsk = new Territory("Yakutsk", Continent.ASIA, -3614050);
-		
+
 		easternAustralia = new Territory("Eastern Australia", Continent.AUSTRALIA, -5632);
 		indonesia = new Territory("Indonesia", Continent.AUSTRALIA, -147129);
 		newGuinea = new Territory("New Guinea", Continent.AUSTRALIA, -4157144);
 		westernAustralia = new Territory("Western Australia", Continent.AUSTRALIA, -1605);
-		
+
 		// adjacent for Alaska
 		ArrayList<Territory> adjacent = new ArrayList<Territory>();
 		adjacent.add(northwest);
 		adjacent.add(alberta);
 		adjacent.add(kamchatka);
 		alaska.setAdjacent(adjacent);
-		
+
 		// adjacent for Alberta
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(alaska);
@@ -194,14 +213,14 @@ public class RiskController {
 		adjacent.add(westernUS);
 		adjacent.add(ontario);
 		alberta.setAdjacent(adjacent);
-		
+
 		// adjacent for Central America
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(westernUS);
 		adjacent.add(easternUS);
 		adjacent.add(venezuela);
 		centralAmerica.setAdjacent(adjacent);
-		
+
 		// adjacent for Eastern United States
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(quebec);
@@ -209,7 +228,7 @@ public class RiskController {
 		adjacent.add(ontario);
 		adjacent.add(centralAmerica);
 		easternUS.setAdjacent(adjacent);
-		
+
 		// adjacent for Greenland
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(northwest);
@@ -217,7 +236,7 @@ public class RiskController {
 		adjacent.add(quebec);
 		adjacent.add(iceland);
 		greenland.setAdjacent(adjacent);
-		
+
 		// adjacent for Northwest Territories
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(alaska);
@@ -225,7 +244,7 @@ public class RiskController {
 		adjacent.add(ontario);
 		adjacent.add(greenland);
 		northwest.setAdjacent(adjacent);
-		
+
 		// adjacent for Ontario
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(northwest);
@@ -235,14 +254,14 @@ public class RiskController {
 		adjacent.add(easternUS);
 		adjacent.add(quebec);
 		ontario.setAdjacent(adjacent);
-		
+
 		// adjacent for Quebec
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(greenland);
 		adjacent.add(easternUS);
 		adjacent.add(ontario);
 		quebec.setAdjacent(adjacent);
-		
+
 		// adjacent for Western United States
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(alberta);
@@ -250,13 +269,13 @@ public class RiskController {
 		adjacent.add(easternUS);
 		adjacent.add(centralAmerica);
 		westernUS.setAdjacent(adjacent);
-		
+
 		// adjacent for Argentina
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(peru);
 		adjacent.add(brazil);
 		argentina.setAdjacent(adjacent);
-		
+
 		// adjacent for Brazil
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(venezuela);
@@ -264,21 +283,21 @@ public class RiskController {
 		adjacent.add(argentina);
 		adjacent.add(northAfrica);
 		brazil.setAdjacent(adjacent);
-		
+
 		// adjacent for Peru
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(venezuela);
 		adjacent.add(brazil);
 		adjacent.add(argentina);
 		peru.setAdjacent(adjacent);
-		
+
 		// adjacent for Venezuela
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(centralAmerica);
 		adjacent.add(peru);
 		adjacent.add(brazil);
 		venezuela.setAdjacent(adjacent);
-		
+
 		// adjacent for Great Britain
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(iceland);
@@ -286,14 +305,14 @@ public class RiskController {
 		adjacent.add(northernEurope);
 		adjacent.add(westernEurope);
 		greatBritain.setAdjacent(adjacent);
-		
+
 		// adjacent for Iceland
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(greenland);
 		adjacent.add(scandinavia);
 		adjacent.add(greatBritain);
 		iceland.setAdjacent(adjacent);
-		
+
 		// adjacent for Northern Europe
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(greatBritain);
@@ -302,7 +321,7 @@ public class RiskController {
 		adjacent.add(southernEurope);
 		adjacent.add(ukraine);
 		northernEurope.setAdjacent(adjacent);
-		
+
 		// adjacent for Scandinavia
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(iceland);
@@ -310,7 +329,7 @@ public class RiskController {
 		adjacent.add(northernEurope);
 		adjacent.add(ukraine);
 		scandinavia.setAdjacent(adjacent);
-		
+
 		// adjacent for Southern Europe
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(westernEurope);
@@ -320,7 +339,7 @@ public class RiskController {
 		adjacent.add(middleEast);
 		adjacent.add(ukraine);
 		southernEurope.setAdjacent(adjacent);
-		
+
 		// adjacent for Ukraine
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(scandinavia);
@@ -330,7 +349,7 @@ public class RiskController {
 		adjacent.add(afghanistan);
 		adjacent.add(ural);
 		ukraine.setAdjacent(adjacent);
-		
+
 		// adjacent for Western Europe
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(greatBritain);
@@ -338,14 +357,14 @@ public class RiskController {
 		adjacent.add(southernEurope);
 		adjacent.add(northAfrica);
 		westernEurope.setAdjacent(adjacent);
-		
+
 		// adjacent for Congo
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(northAfrica);
 		adjacent.add(eastAfrica);
 		adjacent.add(southAfrica);
 		congo.setAdjacent(adjacent);
-		
+
 		// adjacent for East Africa
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(middleEast);
@@ -354,7 +373,7 @@ public class RiskController {
 		adjacent.add(southAfrica);
 		adjacent.add(madagascar);
 		eastAfrica.setAdjacent(adjacent);
-		
+
 		// adjacent for Egypt
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(middleEast);
@@ -362,13 +381,13 @@ public class RiskController {
 		adjacent.add(northAfrica);
 		adjacent.add(eastAfrica);
 		egypt.setAdjacent(adjacent);
-		
+
 		// adjacent for Madagascar
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(eastAfrica);
 		adjacent.add(southAfrica);
 		madagascar.setAdjacent(adjacent);
-		
+
 		// adjacent for North Africa
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(westernEurope);
@@ -378,14 +397,14 @@ public class RiskController {
 		adjacent.add(eastAfrica);
 		adjacent.add(congo);
 		northAfrica.setAdjacent(adjacent);
-		
+
 		// adjacent for South Africa
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(congo);
 		adjacent.add(eastAfrica);
 		adjacent.add(madagascar);
 		southAfrica.setAdjacent(adjacent);
-		
+
 		// adjacent for Afghanistan
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(ukraine);
@@ -394,7 +413,7 @@ public class RiskController {
 		adjacent.add(india);
 		adjacent.add(china);
 		afghanistan.setAdjacent(adjacent);
-		
+
 		// adjacent for China
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(mongolia);
@@ -404,7 +423,7 @@ public class RiskController {
 		adjacent.add(india);
 		adjacent.add(siam);
 		china.setAdjacent(adjacent);
-		
+
 		// adjacent for India
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(middleEast);
@@ -412,7 +431,7 @@ public class RiskController {
 		adjacent.add(china);
 		adjacent.add(siam);
 		india.setAdjacent(adjacent);
-		
+
 		// adjacent for Irkutsk
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(kamchatka);
@@ -420,13 +439,13 @@ public class RiskController {
 		adjacent.add(siberia);
 		adjacent.add(mongolia);
 		irkutsk.setAdjacent(adjacent);
-		
+
 		// adjacent for Japan
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(kamchatka);
 		adjacent.add(mongolia);
 		japan.setAdjacent(adjacent);
-		
+
 		// adjacent for Kamchatka
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(yakutsk);
@@ -435,7 +454,7 @@ public class RiskController {
 		adjacent.add(japan);
 		adjacent.add(alaska);
 		kamchatka.setAdjacent(adjacent);
-		
+
 		// adjacent for Middle East
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(ukraine);
@@ -445,7 +464,7 @@ public class RiskController {
 		adjacent.add(afghanistan);
 		adjacent.add(india);
 		middleEast.setAdjacent(adjacent);
-		
+
 		// adjacent for Mongolia
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(kamchatka);
@@ -454,7 +473,7 @@ public class RiskController {
 		adjacent.add(siberia);
 		adjacent.add(china);
 		mongolia.setAdjacent(adjacent);
-		
+
 		// adjacent for Siam
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(china);
@@ -462,7 +481,7 @@ public class RiskController {
 		adjacent.add(indonesia);
 		adjacent.add(newGuinea);
 		siam.setAdjacent(adjacent);
-		
+
 		// adjacent for Siberia
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(ural);
@@ -471,7 +490,7 @@ public class RiskController {
 		adjacent.add(irkutsk);
 		adjacent.add(yakutsk);
 		siberia.setAdjacent(adjacent);
-		
+
 		// adjacent for Ural
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(ukraine);
@@ -479,41 +498,41 @@ public class RiskController {
 		adjacent.add(siberia);
 		adjacent.add(china);
 		ural.setAdjacent(adjacent);
-		
+
 		// adjacent for Yakutsk
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(siberia);
 		adjacent.add(irkutsk);
 		adjacent.add(kamchatka);
 		yakutsk.setAdjacent(adjacent);
-		
+
 		// adjacent for Eastern Australia
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(newGuinea);
 		adjacent.add(westernAustralia);
 		easternAustralia.setAdjacent(adjacent);
-		
+
 		// adjacent for Indonesia
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(siam);
 		adjacent.add(newGuinea);
 		adjacent.add(westernAustralia);
 		indonesia.setAdjacent(adjacent);
-		
+
 		// adjacent for New Guinea
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(indonesia);
 		adjacent.add(westernAustralia);
 		adjacent.add(easternAustralia);
 		newGuinea.setAdjacent(adjacent);
-		
+
 		// adjacent for Western Australia
 		adjacent = new ArrayList<Territory>();
 		adjacent.add(indonesia);
 		adjacent.add(easternAustralia);
 		adjacent.add(newGuinea);
 		westernAustralia.setAdjacent(adjacent);
-		
+
 		territories.add(alaska);
 		territories.add(alberta);
 		territories.add(centralAmerica);
@@ -557,17 +576,17 @@ public class RiskController {
 		territories.add(newGuinea);
 		territories.add(westernAustralia);
 	}
-	
+
 	/**
 	 * Helper method for initial deck setup. Instantiates the cards in the deck and adds them to the deck. 
 	 */
 	private void setUpDeck() {
-		if (debug) System.out.println("setUpDeck called");
+		//if (debug) System.out.println("setUpDeck called");
 		// TODO: ITERATION 2 - hard code deck of cards
 		deckOfCards = new ArrayList<Card>();
 		deckOfCards.add(new Card());
 	}
-	
+
 	/**
 	 * Simulates a dice roll by returning a pseudorandom integer between 1 and 6 inclusive. 
 	 * @return int
@@ -576,7 +595,7 @@ public class RiskController {
 		rand = new Random();
 		return rand.nextInt(5) + 1;
 	}
-	
+
 	/**
 	 * Helper method to handle attacks, called by <code>playGame</code>. Based on the number of armies
 	 * in the attacking and defending territory, simulates the appropriate dice rolls, then moves armies
@@ -589,12 +608,12 @@ public class RiskController {
 				+" (owner - "+attackingTerritory.getCurrentOwner().getName()+")"
 				+"\nDefender - "+defendingTerritory.getName()+" (owner - "
 				+defendingTerritory.getCurrentOwner().getName()+")");
-		
-//		List<Dice> attackingDice = attackingTerritory.getCurrentOwner().getAttackingDice();
-//		List<Dice> defendingDice = defendingTerritory.getCurrentOwner().getDefendingDice();
+
+		//		List<Dice> attackingDice = attackingTerritory.getCurrentOwner().getAttackingDice();
+		//		List<Dice> defendingDice = defendingTerritory.getCurrentOwner().getDefendingDice();
 		ArrayList<Integer> attackingDiceValues = new ArrayList<Integer>();
 		ArrayList<Integer> defendingDiceValues = new ArrayList<Integer>();
-		
+
 		int attackingNumDice;
 		int defendingNumDice;
 		if(attackingTerritory.getNumArmies() == 2) 
@@ -603,49 +622,53 @@ public class RiskController {
 			attackingNumDice = 2;
 		else
 			attackingNumDice = 3;
-		
+
 		if(defendingTerritory.getNumArmies() == 1)
 			defendingNumDice = 1;
 		else
 			defendingNumDice = 2;
-		
+
 		for (int i = 0; i < attackingNumDice; i++) {
 			attackingDiceValues.add(rollDice());
 		}
 		for (int i = 0; i < defendingNumDice; i++) {
 			defendingDiceValues.add(rollDice());
 		}
-		
+
 		Collections.sort(attackingDiceValues);
 		Collections.reverse(attackingDiceValues);
 		Collections.sort(defendingDiceValues);
 		Collections.reverse(defendingDiceValues);
-		
-		System.out.println("Attacking: " + attackingDiceValues);
-		System.out.println("Defending: " + defendingDiceValues);
-		
+
+		System.out.println("Attacking: " + attackingDiceValues + "\t" + "Defending: " + defendingDiceValues);
+
 		int attackerWon = 0;
 		int defenderWon = 0;
-		
+
 		for (int i = 0; i < 4; i++) {
 			if(attackingDiceValues.size() <= i || defendingDiceValues.size() <= i) {
-				
+
 			}
-			else if (attackingDiceValues.get(i) > defendingDiceValues.get(i))
-				attackerWon++;
-			else // defender wins ties
-				defenderWon++;
+			else {
+				if (attackingDiceValues.get(i) > defendingDiceValues.get(i)) {
+					attackerWon++;
+				}
+				else { // defender wins ties
+					defenderWon++;
+				}
+			}
 		}
 		attackingTerritory.setNumArmies(attackingTerritory.getNumArmies() - defenderWon);
 		defendingTerritory.setNumArmies(defendingTerritory.getNumArmies() - attackerWon);
-		
-		if (defendingTerritory.getNumArmies() == 0) {
-			// attacker conquered defending territory
+
+		if (defendingTerritory.getNumArmies() == 0) { // attacker conquered defending territory
+			
 			if (defendingTerritory.getCurrentOwner().getTerritoriesOwned().size() == 1) {
 				// attacker conquered defender's last territory
-				System.out.println(defendingTerritory.getCurrentOwner().getName() + " has lost the game");
-				getPlayers().remove(defendingTerritory.getCurrentOwner());
+				System.out.println(defendingTerritory.getCurrentOwner().getName() + " has been eliminated");
+				players.remove(defendingTerritory.getCurrentOwner());
 			}
+			
 			System.out.println(defendingTerritory.getName() + " now belongs to the attacker");
 			// defending territory now belongs to attacker
 			defendingTerritory.getCurrentOwner().getTerritoriesOwned().remove(defendingTerritory);
@@ -658,7 +681,7 @@ public class RiskController {
 		}
 		System.out.println(territories + "\n");
 	}
-	
+
 	/**
 	 * Getter for <code>territories</code>
 	 * @return territories
@@ -682,7 +705,7 @@ public class RiskController {
 	public void setPlayers(ArrayList<Player> players) {
 		this.players = players;
 	}
-	
+
 	/**
 	 * Helper method for game setup. Gives each player access to the list of all territories on the Risk world map. 
 	 */

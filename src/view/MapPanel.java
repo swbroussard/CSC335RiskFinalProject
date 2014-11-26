@@ -55,7 +55,6 @@ public class MapPanel extends JPanel{
 			int x = e.getX();
 			int y = e.getY();
 			int rgb = map.getRGB(x, y);
-			System.out.println(rgb);
 			
 			for(Territory t : territories) {
 				if(t.getColor() == rgb) {

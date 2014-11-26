@@ -8,7 +8,10 @@ import model.Player;
 import model.SimpleAIPlayer;
 
 /**
- * This class tests <code>RiskController</code> by running 1000 games among <code>SimpleAIPlayer</code>s and <code>IntermediateAIPlayer</code>s, and reporting the number of winners for each type of AI. 
+ * This class tests <code>RiskController</code> by running 1000 games among 
+ * <code>SimpleAIPlayer</code>s and <code>IntermediateAIPlayer</code>s, and 
+ * reporting the number of winners for each type of AI. 
+ * 
  * @author Elizabeth Harris, Becca Simon
  *
  */
@@ -20,7 +23,8 @@ public class Run6Bots {
 	private int simpleWon, intermediateWon;
 
 	/**
-	 * Constructs a new <code>Run6Bots</code>, reads in the number and type of players from the command line, and reports the percentages of wins for each type of player. 
+	 * Constructs a new <code>Run6Bots</code>, reads in the number and type of players 
+	 * from the command line, and reports the percentages of wins for each type of player. 
 	 */
 	public Run6Bots() {
 		Scanner scan = new Scanner(System.in);
@@ -59,7 +63,8 @@ public class Run6Bots {
 		simpleWon = 0;
 		intermediateWon = 0;
 		// for (int i = 0; i < 1000; i++) { TODO while debugging just run two games; change this when ready to run 1000 games
-		for (int i = 0; i < 2; i++) {
+//		controller = new RiskController(players);
+		for (int i = 0; i < 1000; i++) {
 			controller = new RiskController(players);
 			if (debug) System.out.println("Game "+i+" started");
 			//empty while loop to wait for end of game
@@ -72,7 +77,7 @@ public class Run6Bots {
 				simpleWon++;
 			else
 				intermediateWon++;
-			if (debug) System.out.println("Player "+controller.getPlayers().get(0).toString()+ "won");
+			if (debug) System.out.println("Player "+controller.getPlayers().get(0).getName() + " won");
 		}
 		double simplePercent = simpleWon / 10.0;
 		double intermediatePercent = intermediateWon / 10.0;

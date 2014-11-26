@@ -174,7 +174,7 @@ public abstract class Player {
 	 */
 
 	public boolean canAttack() {
-		//System.out.println("canAttack is called");
+		System.out.println("canAttack is called");
 		if(doneAttacking)
 			return false;
 		for (Territory t : territoriesOwned) {
