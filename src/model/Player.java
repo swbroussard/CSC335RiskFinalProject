@@ -1,7 +1,8 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import model.Card.CardType;
 /**
  * 
  * @author Jeremy Jalnos, Steven Broussard, Becca Simon
@@ -16,7 +17,6 @@ public abstract class Player {
 	private boolean doneAttacking;
 
 	//abstract methods to implement in subclasses
-	// TODO If you get the chance, please go through and delete comments and methods we don't need anymore 
 
 	/** 
 	 * During the start of the game, choose a territory in which to claim, then
@@ -59,7 +59,7 @@ public abstract class Player {
 		if (debug) System.out.println("player constructor (no arguments) is called");
 		
 		territoriesOwned = new ArrayList<Territory>();
-		cards = new ArrayList<Card>();
+		setCards(new ArrayList<Card>());
 	}
 
 	/**
@@ -72,7 +72,7 @@ public abstract class Player {
 		this.name = name;
 		
 		territoriesOwned = new ArrayList<Territory>();
-		cards = new ArrayList<Card>();
+		setCards(new ArrayList<Card>());
 	}
 
 	/**
@@ -84,17 +84,21 @@ public abstract class Player {
 	 * which continent it is.  Continent bonuses: Asia (7 armies), 
 	 * North America (5 armies), Europe (5 armies), Africa (3 armies),
 	 * Australia (2 armies) and South America (2 armies).
+	 * If the player turns in a set of cards, they get a bonus number of armies, 
+	 * and if the player owns the territory on the face of one of the cards being
+	 * turned in, they get an additional two armies for that territory. 
 	 */
 
-	public void addArmies() {
+	public boolean addArmies(int cardBonus) {
 		if (debug) System.out.println("addArmies is called by "+name);
+		// minimum armies
 		if(territoriesOwned.size() / 3 <= 3 ) {
 			numArmies += 3;
 		}
 		else
 			numArmies += (territoriesOwned.size() / 3);
 
-
+		// continent bonus
 		int northAmerica = 0;
 		int southAmerica = 0;
 		int europe = 0;
@@ -134,6 +138,13 @@ public abstract class Player {
 		if(australia == 4){
 			numArmies += 2;
 		}
+		
+		// card bonus
+		if (canTurnInCards()) {
+			numArmies += cardBonus;
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -169,6 +180,124 @@ public abstract class Player {
 		}
 		return false;
 	}
+	
+	/**
+	 * Determines if the player can turn in a set of three cards, and if possible, 
+	 * turns in a set of cards. A set of cards consists of three of a kind (cannon,
+	 * horseman, or foot soldier), one of each kind, or a wild card plus any two. 
+	 * @return true if the player can turn in a set of cards, false if they cannot. 
+	 */
+	public boolean canTurnInCards() {
+		int cannon = 0, horseman = 0, footSoldier = 0, wild = 0;
+		int cardsRemoved = 0; 
+		for (Card c : cards) {
+			switch (c.getCardType()) {
+				case CANNON: cannon++; break;
+				case HORSEMAN: horseman++; break;
+				case FOOT_SOLDIER: footSoldier++; break;
+				case WILD: wild++; break;
+			}
+		}
+
+		if (cannon == 3) {
+			for (Card c : cards) {
+				if (c.getCardType() == CardType.CANNON) {
+					if (cardsRemoved == 3)
+						break;
+					removeCard(c);
+					cardsRemoved++;
+				}
+			}
+			return true;
+		}
+		
+		else if (horseman == 3) {
+			for (Card c : cards) {
+				if (c.getCardType() == CardType.HORSEMAN) {
+					if (cardsRemoved == 3)
+						break;
+					removeCard(c);
+					cardsRemoved++;
+				}
+			}
+			return true;
+		}
+		
+		else if (footSoldier == 3) {
+			for (Card c : cards) {
+				if (c.getCardType() == CardType.FOOT_SOLDIER) {
+					if (cardsRemoved == 3)
+						break;
+					removeCard(c);
+					cardsRemoved++;
+				}
+			}
+			return true;
+		}
+		
+		else if (cannon >= 1 && horseman >= 1 && footSoldier >= 1) {
+			int cannonsRemoved = 0, horsemenRemoved = 0, footSoldiersRemoved = 0;
+			for (Card c : cards) {
+				if (cannonsRemoved < 1 && c.getCardType() == CardType.CANNON) {
+					removeCard(c);
+					cannonsRemoved++;
+				}
+				else if (horsemenRemoved < 1 && c.getCardType() == CardType.HORSEMAN) {
+					removeCard(c);
+					horsemenRemoved++;
+				}
+				else if (footSoldiersRemoved < 1 && c.getCardType() == CardType.FOOT_SOLDIER) {
+					removeCard(c);
+					footSoldiersRemoved++;
+				}
+			}
+			return true;
+		}
+		
+		else if (wild >= 1) {
+			int wildCardsRemoved = 0;
+			for (Card c : cards) {
+				if (cardsRemoved == 2 && wildCardsRemoved == 1)
+					break;
+				if (cardsRemoved < 2 && c.getCardType() != CardType.WILD) {
+					removeCard(c);
+					cardsRemoved++;
+				}
+				else if (wildCardsRemoved < 1 && c.getCardType() == CardType.WILD) {
+					removeCard(c);
+					wildCardsRemoved++;
+				} 
+			}
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Helper method for canTurnInCards. Removes a card from the player's hand and
+	 * puts it back in the deck of cards. Checks whether the player owns the territory
+	 * on the card's face, and adds two armies to that territory if so. 
+	 * @param c the Card to be removed
+	 */
+	private void removeCard(Card c) {
+		for (Territory t : territoriesOwned) {
+			if (t.equals(c.getCardTerritory()))
+				t.setNumArmies(t.getNumArmies() + 2);
+		}
+		cards.remove(c);
+		c.setInDeck(true);
+	}
+
+	/**
+	 * Represents a player drawing a card from the deck. Takes the card passed by
+	 * the deck, adds it to the player's hand, and removes it from the deck. 
+	 * @param c
+	 */
+	public void issueCard(Card c) {
+		cards.add(c);
+		c.setInDeck(false);
+	}
 
 	//set methods
 	/**
@@ -188,6 +317,23 @@ public abstract class Player {
 		this.numArmies = numArmies;
 		if (debug) System.out.println("set armies: " + numArmies+" called by "+name); 
 	}
+	
+	/**
+	 * @param cards
+	 */
+	public void setCards(ArrayList<Card> cards) {
+		this.cards = cards;
+	}
+
+	/**
+	 * sets the value of the doneAttacking instance variable to the parameter
+	 * @param doneAttacking true if the player is ending their turn, false if the 
+	 * player is still playing.
+	 */
+	public void setDoneAttacking(boolean doneAttacking) {
+		if (debug) System.out.println("setDoneAttacking called by "+name);
+		this.doneAttacking = doneAttacking;
+	}
 
 	//get methods
 	/**
@@ -199,6 +345,7 @@ public abstract class Player {
 		if (debug) System.out.println("Get name has been called by"+name);
 		return name;
 	}
+	
 	/**
 	 * returns the number of armies the player has that they have not placed
 	 * @return the number of armies the player has to place
@@ -216,35 +363,31 @@ public abstract class Player {
 		if (debug) System.out.println("getTerritoryOwned is called by "+name);
 		return territoriesOwned;
 	}
-	
-	/**
-	 * sets the value of the doneAttacking instance variable to the parameter
-	 * @param doneAttacking true if the player is ending their turn, false if the 
-	 * player is still playing.
-	 */
-	
-	public void setDoneAttacking(boolean doneAttacking) {
-		if (debug) System.out.println("setDoneAttacking called by "+name);
-		this.doneAttacking = doneAttacking;
-	}
 
 	/**
 	 * instantiates a new ArrayList of Territories and copys the parameter
 	 * list to the instance variable
 	 * @param territories all the territories used in the game
 	 */
-	
 	public void setAllTerritories(ArrayList<Territory> territories) {
 		if (debug) System.out.println("setAllTerritories called by "+name);
 		allTerritories = new ArrayList<Territory>();
 		allTerritories = territories;
 	}
 	
+	/**
+	 * @return the list of all territories in the game
+	 */
 	public ArrayList<Territory> getAllTerritories() {
 		if (debug) System.out.println("getAllTerritories called by "+name);
 		return allTerritories;
 	}
 
-
-
+	/**
+	 * @return the player's hand of cards
+	 */
+	public ArrayList<Card> getCards() {
+		return cards;
+	}
+	
 }
