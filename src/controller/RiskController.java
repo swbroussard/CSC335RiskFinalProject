@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -189,53 +190,53 @@ public class RiskController {
 		if (debug) System.out.println("setUpTerritories called");
 		territories = new ArrayList<Territory>();
 
-		alaska = new Territory("Alaska", Continent.NORTH_AMERICA, -9884371);
-		alberta = new Territory("Alberta", Continent.NORTH_AMERICA, -2991525);
-		centralAmerica = new Territory("Central America", Continent.NORTH_AMERICA, -7330782);
-		easternUS = new Territory("Eastern United States", Continent.NORTH_AMERICA, -1753279);
-		greenland = new Territory("Greenland", Continent.NORTH_AMERICA, -5427408);
-		northwest = new Territory("Northwest Territory", Continent.NORTH_AMERICA, -1794915);
-		ontario = new Territory("Ontario", Continent.NORTH_AMERICA, -4116688);
-		quebec = new Territory("Quebec", Continent.NORTH_AMERICA, -4173227);
-		westernUS = new Territory("Western United States", Continent.NORTH_AMERICA, -6470845);
+		alaska = new Territory("Alaska", Continent.NORTH_AMERICA, -9884371, new Point(47, 122));
+		alberta = new Territory("Alberta", Continent.NORTH_AMERICA, -2991525, new Point(128, 175));
+		centralAmerica = new Territory("Central America", Continent.NORTH_AMERICA, -7330782, new Point(139, 307));
+		easternUS = new Territory("Eastern United States", Continent.NORTH_AMERICA, -1753279, new Point(206, 262));
+		greenland = new Territory("Greenland", Continent.NORTH_AMERICA, -5427408, new Point(313, 76));
+		northwest = new Territory("Northwest Territory", Continent.NORTH_AMERICA, -1794915, new Point(110, 132));
+		ontario = new Territory("Ontario", Continent.NORTH_AMERICA, -4116688, new Point(211, 183));
+		quebec = new Territory("Quebec", Continent.NORTH_AMERICA, -4173227, new Point(276, 206));
+		westernUS = new Territory("Western United States", Continent.NORTH_AMERICA, -6470845, new Point(141, 224));
 
-		argentina = new Territory("Argentina", Continent.SOUTH_AMERICA, -602202);
-		brazil = new Territory("Brazil", Continent.SOUTH_AMERICA, -1734364);
-		peru = new Territory("Peru", Continent.SOUTH_AMERICA, -5282278);
-		venezuela = new Territory("Venezuela", Continent.SOUTH_AMERICA, -1400494);
+		argentina = new Territory("Argentina", Continent.SOUTH_AMERICA, -602202, new Point(191, 516));
+		brazil = new Territory("Brazil", Continent.SOUTH_AMERICA, -1734364, new Point(263, 409));
+		peru = new Territory("Peru", Continent.SOUTH_AMERICA, -5282278, new Point(165, 436));
+		venezuela = new Territory("Venezuela", Continent.SOUTH_AMERICA, -1400494, new Point(260, 340));
 
-		greatBritain = new Territory("Great Britain", Continent.EUROPE, -10509133);
-		iceland = new Territory("Iceland", Continent.EUROPE, -3411720);
-		northernEurope = new Territory("Northern Europe", Continent.EUROPE, -10103052);
-		scandinavia = new Territory("Scandinavia", Continent.EUROPE, -15186346);
-		southernEurope = new Territory("Southern Europe", Continent.EUROPE, -14655374);
-		ukraine = new Territory("Ukraine", Continent.EUROPE, -13857884);
-		westernEurope = new Territory("Western Europe", Continent.EUROPE, -14431749);
+		greatBritain = new Territory("Great Britain", Continent.EUROPE, -10509133, new Point(371, 224));
+		iceland = new Territory("Iceland", Continent.EUROPE, -3411720, new Point(374, 168));
+		northernEurope = new Territory("Northern Europe", Continent.EUROPE, -10103052, new Point(445, 218));
+		scandinavia = new Territory("Scandinavia", Continent.EUROPE, -15186346, new Point(485, 121));
+		southernEurope = new Territory("Southern Europe", Continent.EUROPE, -14655374, new Point(458, 259));
+		ukraine = new Territory("Ukraine", Continent.EUROPE, -13857884, new Point(548, 184));
+		westernEurope = new Territory("Western Europe", Continent.EUROPE, -14431749, new Point(369, 284));
 
-		congo = new Territory("Congo", Continent.AFRICA, -6338922);
-		eastAfrica = new Territory("East Africa", Continent.AFRICA, -1283872);
-		egypt = new Territory("Egypt", Continent.AFRICA, -11525300);
-		madagascar = new Territory("Madagascar", Continent.AFRICA, -3109438);
-		northAfrica = new Territory("North Africa", Continent.AFRICA, -1331481);
-		southAfrica = new Territory("South Africa", Continent.AFRICA, -9030543);
+		congo = new Territory("Congo", Continent.AFRICA, -6338922, new Point(473, 430));
+		eastAfrica = new Territory("East Africa", Continent.AFRICA, -1283872, new Point(499, 380));
+		egypt = new Territory("Egypt", Continent.AFRICA, -11525300, new Point(456, 340));
+		madagascar = new Territory("Madagascar", Continent.AFRICA, -3109438, new Point(570, 526));
+		northAfrica = new Territory("North Africa", Continent.AFRICA, -1331481, new Point(384, 356));
+		southAfrica = new Territory("South Africa", Continent.AFRICA, -9030543, new Point(455, 502));
 
-		afghanistan = new Territory("Afghanistan", Continent.ASIA, -8089504);
-		china = new Territory("China", Continent.ASIA, -9791385);
-		india = new Territory("India", Continent.ASIA, -6045093);
-		irkutsk = new Territory("Irkutsk", Continent.ASIA, -6968177);
-		japan = new Territory("Japan", Continent.ASIA, -3552384);
-		kamchatka = new Territory("Kamchatka", Continent.ASIA, -7353461);
-		middleEast = new Territory("Middle East", Continent.ASIA, -6968177);
-		mongolia = new Territory("Mongolia", Continent.ASIA, -8876477);
-		siam = new Territory("Siam", Continent.ASIA, -10988236);
-		siberia = new Territory("Siberia", Continent.ASIA, -12756942);
-		ural = new Territory("Ural", Continent.ASIA, -11181775);
-		yakutsk = new Territory("Yakutsk", Continent.ASIA, -3614050);
+		afghanistan = new Territory("Afghanistan", Continent.ASIA, -8089504, new Point(593, 238));
+		china = new Territory("China", Continent.ASIA, -9791385, new Point(682, 264));
+		india = new Territory("India", Continent.ASIA, -6045093, new Point(635, 312));
+		irkutsk = new Territory("Irkutsk", Continent.ASIA, -8811661, new Point(741, 188));
+		japan = new Territory("Japan", Continent.ASIA, -3552384, new Point(866, 251));
+		kamchatka = new Territory("Kamchatka", Continent.ASIA, -7353461, new Point(871, 133));
+		middleEast = new Territory("Middle East", Continent.ASIA, -6968177, new Point(562, 371));
+		mongolia = new Territory("Mongolia", Continent.ASIA, -8876477, new Point(751, 233));
+		siam = new Territory("Siam", Continent.ASIA, -10988236, new Point(764, 355));
+		siberia = new Territory("Siberia", Continent.ASIA, -12756942, new Point(684, 124));
+		ural = new Territory("Ural", Continent.ASIA, -11181775, new Point(627, 165));
+		yakutsk = new Territory("Yakutsk", Continent.ASIA, -3614050, new Point(774, 128));
 
-		easternAustralia = new Territory("Eastern Australia", Continent.AUSTRALIA, -5632);
-		indonesia = new Territory("Indonesia", Continent.AUSTRALIA, -147129);
-		newGuinea = new Territory("New Guinea", Continent.AUSTRALIA, -4157144);
-		westernAustralia = new Territory("Western Australia", Continent.AUSTRALIA, -1605);
+		easternAustralia = new Territory("Eastern Australia", Continent.AUSTRALIA, -5632, new Point(865, 533));
+		indonesia = new Territory("Indonesia", Continent.AUSTRALIA, -147129, new Point(705, 443));
+		newGuinea = new Territory("New Guinea", Continent.AUSTRALIA, -4157144, new Point(858, 408));
+		westernAustralia = new Territory("Western Australia", Continent.AUSTRALIA, -1605, new Point(703, 529));
 
 		// adjacent for Alaska
 		ArrayList<Territory> adjacent = new ArrayList<Territory>();

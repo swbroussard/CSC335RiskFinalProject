@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 /**
@@ -15,6 +16,7 @@ public class Territory {
 	private ArrayList<Territory> adjacent;
 	private Continent continent;
 	private int color;
+	private Point armyLabel;
 	
 	/**
 	 * Constructs a new <code>Territory</code> so that <code>name</code> and <code>continent</code> are set to their respective parameters, <code>numArmies</code> is zero, and <code>adjacent</code> is set to an empty <code>ArrayList<Territory></code>.  
@@ -40,6 +42,16 @@ public class Territory {
 		numArmies = 0;
 		color = colorRGB;
 		adjacent = new ArrayList<Territory>();
+		armyLabel = new Point(0, 0);
+	}
+	
+	public Territory(String name, Continent continent, int colorRGB, Point armyLabel) {
+		this.name = name;
+		currentOwner = null;
+		numArmies = 0;
+		color = colorRGB;
+		adjacent = new ArrayList<Territory>();
+		this.armyLabel = armyLabel;
 	}
 	
 	/**
@@ -138,6 +150,10 @@ public class Territory {
 	 */
 	public Continent getContinent() {
 		return continent;
+	}
+	
+	public Point getLabelPosition() {
+		return armyLabel;
 	}
 	
 	/**

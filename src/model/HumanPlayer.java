@@ -2,6 +2,9 @@ package model;
 
 public class HumanPlayer extends Player{
 
+	public HumanPlayer(String name){
+		super(name);
+	}
 	@Override
 	public void placeArmy() {
 		// choose one of your territories and place one army there

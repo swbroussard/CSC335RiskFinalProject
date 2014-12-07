@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import model.Card.CardType;
@@ -15,6 +16,7 @@ public abstract class Player {
 	private ArrayList<Territory> territoriesOwned, allTerritories;
 	private ArrayList<Card> cards;
 	private boolean doneAttacking;
+	private Color color;
 
 	//abstract methods to implement in subclasses
 
@@ -318,6 +320,10 @@ public abstract class Player {
 		if (debug) System.out.println("set armies: " + numArmies+" called by "+name); 
 	}
 	
+	public void setColor(Color labelColor) {
+		color = labelColor;
+	}
+	
 	/**
 	 * @param cards
 	 */
@@ -381,6 +387,10 @@ public abstract class Player {
 	public ArrayList<Territory> getAllTerritories() {
 		if (debug) System.out.println("getAllTerritories called by "+name);
 		return allTerritories;
+	}
+	
+	public Color getColor() {
+		return color;
 	}
 
 	/**

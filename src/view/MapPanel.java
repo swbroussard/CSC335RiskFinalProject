@@ -3,6 +3,7 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.*;
@@ -32,7 +34,7 @@ public class MapPanel extends JPanel{
 		this.setVisible(true);
 		
 		try {
-			map = ImageIO.read(new File("images/RiskMap.jpg"));
+			map = ImageIO.read(new File("images/RiskMap2.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -46,6 +48,16 @@ public class MapPanel extends JPanel{
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawImage(map, 0, 0, 960, 640, null);
+		
+		g2.setFont(new Font("Arial", Font.BOLD, 12));
+		for(Territory t: territories) {
+			if(t.getCurrentOwner() == null)
+				g2.setColor(Color.BLACK);
+			else
+				g2.setColor(t.getCurrentOwner().getColor());
+			g2.drawString("" + t.getNumArmies(), (int) t.getLabelPosition().getX(), (int) t.getLabelPosition().getY());
+			
+		}
 	}
 	
 	private class MapListener implements MouseListener {

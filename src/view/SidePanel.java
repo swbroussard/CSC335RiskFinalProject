@@ -18,7 +18,7 @@ public class SidePanel extends JPanel{
 		this.gui = gui;
 		
 		this.setPreferredSize(new Dimension(200, 600));
-		this.setBackground(Color.BLACK);
+		//this.setBackground(Color.BLACK);
 		this.setVisible(true);
 		//this.setLayout(new GridLayout(4, 1));
 		
