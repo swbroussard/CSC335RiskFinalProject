@@ -107,6 +107,8 @@ public class IntermediateAIPlayer extends Player{
 			setNumArmies(getNumArmies() - 1);
 			if (debug) System.out.println("Army successfully placed in owned territory by "+getName());
 		}
+		this.setChanged();
+		notifyObservers();
 	}
 
 	

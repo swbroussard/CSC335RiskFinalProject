@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
@@ -18,46 +20,39 @@ import javax.swing.SwingConstants;
 
 import model.HumanPlayer;
 import model.IntermediateAIPlayer;
+import model.ObserverMessages;
 import model.Player;
 import model.SimpleAIPlayer;
+import model.Territory;
 import controller.RiskController;
 
 @SuppressWarnings("serial")
-public class RiskGUI extends JFrame{
+public class RiskGUI extends JFrame implements Observer{
 	private RiskController controller;
 	private JFrame frame;
 	private JPanel labelPanel;
 	private MapPanel mapPanel;
-	private SidePanel startingSidePanel;
+	private SidePanel sidePanel;
 	private JLabel label;
 	private ArrayList<Player> players;
+	private HumanPlayer human;
+	private TypeOfPlay typeOfPlay;
 
 	public RiskGUI() {
-		super();
-		players = new ArrayList<Player>();
-		determineNumberOfPlayers();
-		while(players.size() > 6 || players.size() < 2) {
-			JOptionPane.showMessageDialog(null, "You must select between 2 and 6 players", "Error!",
-					JOptionPane.ERROR_MESSAGE);
-			players = new ArrayList<Player>();
-			determineNumberOfPlayers();
-		}
-		switch(players.size()) {
-		case 6:
-			players.get(5).setColor(Color.BLUE);
-		case 5:
-			players.get(4).setColor(Color.GREEN);
-		case 4:
-			players.get(3).setColor(Color.MAGENTA);
-		case 3:
-			players.get(2).setColor(Color.ORANGE);
-		case 2:
-			players.get(1).setColor(Color.RED);
-		case 1:
-			players.get(0).setColor(Color.BLACK);
-		}
-		controller = new RiskController();
+		super();	
+		setUpPlayers();
 		
+		controller = new RiskController();
+		controller.setPlayers(players);
+		controller.sendTerritoriesToPlayers();
+		
+		
+		setUpFrame();
+		
+		controller.populateBoard();
+	}
+	
+	public void setUpFrame() {
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setSize(1160, 680);
@@ -73,8 +68,8 @@ public class RiskGUI extends JFrame{
 
 		mapAndLabelPanel.add(mapPanel, BorderLayout.CENTER);
 
-		startingSidePanel = new SidePanel(this);
-		basePanel.add(startingSidePanel, BorderLayout.EAST);
+		sidePanel = new SidePanel(this);
+		basePanel.add(sidePanel, BorderLayout.EAST);
 
 		setUpLabelPanel();
 		mapAndLabelPanel.add(labelPanel, BorderLayout.SOUTH);
@@ -83,9 +78,40 @@ public class RiskGUI extends JFrame{
 
 		frame.add(basePanel);
 		frame.setVisible(true);
-		
 	}
 
+	public void setUpPlayers() {
+		players = new ArrayList<Player>();
+		determineNumberOfPlayers();
+		while(players.size() > 6 || players.size() < 2) {
+			JOptionPane.showMessageDialog(null, "You must select between 2 and 6 players", "Error!",
+					JOptionPane.ERROR_MESSAGE);
+			players = new ArrayList<Player>();
+			determineNumberOfPlayers();
+		}
+		switch(players.size()) {
+		case 6:
+			players.get(5).setColor(Color.BLUE);
+			players.get(5).addObserver(this);
+		case 5:
+			players.get(4).setColor(Color.BLACK);
+			players.get(4).addObserver(this);
+		case 4:
+			players.get(3).setColor(Color.MAGENTA);
+			players.get(3).addObserver(this);
+		case 3:
+			players.get(2).setColor(Color.ORANGE);
+			players.get(2).addObserver(this);
+		case 2:
+			players.get(1).setColor(Color.RED);
+			players.get(1).addObserver(this);
+		case 1:
+			players.get(0).setColor(Color.GREEN);
+			players.get(0).addObserver(this);
+		}
+		
+	}
+	
 	public void determineNumberOfPlayers() {
 		JLabel instructions = new JLabel("Instructions: Select your players.  You must have between 2 and 6 players");
 		JLabel simpleLabel = new JLabel("Select the number of Simple Players: ");
@@ -100,7 +126,7 @@ public class RiskGUI extends JFrame{
 		JRadioButton simple4 = new JRadioButton("4");
 		JRadioButton simple5 = new JRadioButton("5");
 
-		simple0.setSelected(true);
+		simple1.setSelected(true);
 
 		simple0.setActionCommand("S0");
 		simple1.setActionCommand("S1");
@@ -176,10 +202,13 @@ public class RiskGUI extends JFrame{
 		Object[] message = {instructions, simpleLabel, simple0, simple1, simple2, simple3, simple4,
 				simple5, intermediateLabel, intermediate0, intermediate1, intermediate2, intermediate3,
 				intermediate4, intermediate5, humanLabel, humanYes, humanNo};
+		
 		//Create the JOptionPane
 		int option = JOptionPane.showConfirmDialog(null, message, "Select your opponents",
 				JOptionPane.OK_CANCEL_OPTION);
-
+		if(option == JOptionPane.CANCEL_OPTION) {
+			System.exit(0);
+		}
 
 	}
 
@@ -208,6 +237,37 @@ public class RiskGUI extends JFrame{
 
 	public static void main(String[] args) {
 		new RiskGUI();
+	}
+	
+	private void addHumanPlayer() {
+		human = new HumanPlayer("Human", this);
+		players.add(human);
+	}
+	
+	public void territorySelected(Territory t) {
+		if(typeOfPlay == TypeOfPlay.SELECT_TERRITORY) {
+			if(t.getCurrentOwner() != null) {
+				label.setText("That territory is already occupied, please try again");
+			}
+			else {
+				//System.out.println("NumArmies = " + human.getNumArmies());
+				t.setCurrentOwner(human);
+				t.setNumArmies(1);
+				human.setNumArmies(human.getNumArmies() - 1);
+				human.addTerritory(t);
+				mapPanel.repaint();
+				//System.out.println("NumArmies = " + human.getNumArmies());
+			}
+		}
+		else if(typeOfPlay == TypeOfPlay.PLACE_ARMY) {
+			if(t.getCurrentOwner() != human) {
+				label.setText("You dont own that territory...");
+			}
+			else {
+				t.setNumArmies(t.getNumArmies() + 1);
+				human.setNumArmies(human.getNumArmies() - 1);
+			}
+		}
 	}
 
 	private class RadioButtonListener implements ActionListener {
@@ -242,7 +302,7 @@ public class RiskGUI extends JFrame{
 				players.add(new IntermediateAIPlayer("Intermediate Player 1"));
 				break;
 			case "YES":
-				players.add(new HumanPlayer("Human"));
+				addHumanPlayer();
 				break;
 			default:
 				break;
@@ -255,6 +315,32 @@ public class RiskGUI extends JFrame{
 		}
 	}
 
+	@Override
+	public void update(Observable o, Object arg) {
+		if(arg == ObserverMessages.HUMAN_PLACE_ARMY) {
+			boolean allTaken = true;
+			for(Territory t: controller.getTerritories()) {
+				if(t.getCurrentOwner() == null)
+					allTaken = false;
+			}
+			if(!allTaken) {
+				label.setText("Please select a Territory to claim");
+				typeOfPlay = TypeOfPlay.SELECT_TERRITORY;
+			}
+			
+			else {
+				label.setText("You have " + human.getNumArmies() + " armies left to place.  "
+					+ "Please select a territory to place an army.");
+				typeOfPlay = TypeOfPlay.PLACE_ARMY;
+			}
+		}
+		
+		mapPanel.repaint();
+		
+	}
 
+	private enum TypeOfPlay {
+		SELECT_TERRITORY, PLACE_ARMY
+	}
 
 }

@@ -44,6 +44,8 @@ public class MapPanel extends JPanel{
 		//mapPanel.add(map, BorderLayout.CENTER);
 	}
 	
+	
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
@@ -71,8 +73,10 @@ public class MapPanel extends JPanel{
 			for(Territory t : territories) {
 				if(t.getColor() == rgb) {
 					gui.setLabel("You have selected " + t.getName());
+					gui.territorySelected(t);
 				}
 			}
+			
 		}
 
 		@Override
@@ -96,4 +100,6 @@ public class MapPanel extends JPanel{
 		}
 		
 	}
+	
+	
 }

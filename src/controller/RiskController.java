@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.Timer;
 
 import model.*;
 import model.Card.CardType;
@@ -51,6 +52,7 @@ public class RiskController {
 	 */
 	public RiskController() {
 		setUpTerritories();
+		setUpDeck();
 	}
 
 	/**
@@ -62,15 +64,20 @@ public class RiskController {
 		int temp;
 		switch(players.size()) {
 		case 2:
-			temp = 40; break;
+			temp = 40; 
+			break;
 		case 3:
-			temp = 35; break;
+			temp = 35; 
+			break;
 		case 4:
-			temp = 30; break;
+			temp = 30; 
+			break;
 		case 5:
-			temp = 25; break;
+			temp = 25; 
+			break;
 		case 6:
-			temp = 20; break;
+			temp = 20; 
+			break;
 		default:
 			temp = 0;
 			System.out.println("Illegal number of players.\n"
@@ -85,9 +92,16 @@ public class RiskController {
 		
 
 		while (getPlayers().get(0).getNumArmies() > 0) {
-			for (Player p : players)
+			for (Player p : players) {
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				if(p.getNumArmies() > 0)
 					p.placeArmy();
+			}
 			// TODO: ITERATION 2 - for a human player, maybe we could add the option to place multiple territories at once
 		} // all armies placed for all players
 	}
@@ -200,10 +214,10 @@ public class RiskController {
 		quebec = new Territory("Quebec", Continent.NORTH_AMERICA, -4173227, new Point(276, 206));
 		westernUS = new Territory("Western United States", Continent.NORTH_AMERICA, -6470845, new Point(141, 224));
 
-		argentina = new Territory("Argentina", Continent.SOUTH_AMERICA, -602202, new Point(191, 516));
-		brazil = new Territory("Brazil", Continent.SOUTH_AMERICA, -1734364, new Point(263, 409));
-		peru = new Territory("Peru", Continent.SOUTH_AMERICA, -5282278, new Point(165, 436));
-		venezuela = new Territory("Venezuela", Continent.SOUTH_AMERICA, -1400494, new Point(260, 340));
+		argentina = new Territory("Argentina", Continent.SOUTH_AMERICA, -602202, new Point(192, 517));
+		brazil = new Territory("Brazil", Continent.SOUTH_AMERICA, -1734364, new Point(263, 410));
+		peru = new Territory("Peru", Continent.SOUTH_AMERICA, -5282278, new Point(166, 437));
+		venezuela = new Territory("Venezuela", Continent.SOUTH_AMERICA, -1400494, new Point(260, 343));
 
 		greatBritain = new Territory("Great Britain", Continent.EUROPE, -10509133, new Point(371, 224));
 		iceland = new Territory("Iceland", Continent.EUROPE, -3411720, new Point(374, 168));
@@ -233,7 +247,7 @@ public class RiskController {
 		ural = new Territory("Ural", Continent.ASIA, -11181775, new Point(627, 165));
 		yakutsk = new Territory("Yakutsk", Continent.ASIA, -3614050, new Point(774, 128));
 
-		easternAustralia = new Territory("Eastern Australia", Continent.AUSTRALIA, -5632, new Point(865, 533));
+		easternAustralia = new Territory("Eastern Australia", Continent.AUSTRALIA, -5632, new Point(865, 550));
 		indonesia = new Territory("Indonesia", Continent.AUSTRALIA, -147129, new Point(705, 443));
 		newGuinea = new Territory("New Guinea", Continent.AUSTRALIA, -4157144, new Point(858, 408));
 		westernAustralia = new Territory("Western Australia", Continent.AUSTRALIA, -1605, new Point(703, 529));
@@ -804,4 +818,5 @@ public class RiskController {
 			p.setAllTerritories(territories);
 		}
 	}
+	
 }

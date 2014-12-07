@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Observable;
 
 import model.Card.CardType;
 /**
@@ -9,7 +10,7 @@ import model.Card.CardType;
  * @author Jeremy Jalnos, Steven Broussard, Becca Simon
  *
  */
-public abstract class Player {
+public abstract class Player extends Observable{
 	boolean debug = false;
 	private String name;
 	private int numArmies; // number of un-placed armies
@@ -399,5 +400,7 @@ public abstract class Player {
 	public ArrayList<Card> getCards() {
 		return cards;
 	}
+	
+	
 	
 }

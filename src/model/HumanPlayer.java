@@ -1,13 +1,28 @@
 package model;
 
-public class HumanPlayer extends Player{
+import view.RiskGUI;
 
-	public HumanPlayer(String name){
+public class HumanPlayer extends Player{
+	private RiskGUI gui;
+	
+	public HumanPlayer(String name, RiskGUI gui){
 		super(name);
+		this.gui = gui;
 	}
+	
 	@Override
 	public void placeArmy() {
-		// choose one of your territories and place one army there
+		int temp = getNumArmies();
+		//System.out.println("Temp num before: " + temp);
+		this.setChanged();
+		notifyObservers(ObserverMessages.HUMAN_PLACE_ARMY);
+		
+		while(temp == getNumArmies()) {
+		//	System.out.println("Temp num in while: " + temp + " Num Armies in while: " + getNumArmies());
+				
+		}
+		
+		return;
 	}
 
 	@Override
