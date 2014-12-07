@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Random;
 
 import model.*;
+import model.Card.CardType;
 
 /**
  * Controls the game of Risk, as the name suggests. Maintains a list of <code>Player</code>s and every possible <code>Territory</code>. Handles gameplay, including board setup and turns, until a winner is declared.  
@@ -23,6 +24,8 @@ public class RiskController {
 	indonesia, newGuinea, westernAustralia;
 	private ArrayList<Player> players;
 	private ArrayList<Card> deckOfCards;
+	private int cardBonus;
+	private int numCards;
 	static Random rand;
 
 	/**
@@ -106,12 +109,14 @@ public class RiskController {
 //			else {
 				//would an enhanced for loop be an issue if a player gets eliminated before their turn
 				//i think we would get a null pointer exception -Becca
+				boolean conquered = false;
 				int counter = 0;
 				while(counter < players.size()) {
 					//for (Player p : getPlayers()) {
 					Player p = players.get(counter);
 					if (debug) System.out.println(p.getName()+"'s turn");
-					p.addArmies();
+					if (p.addArmies(cardBonus))
+						incrementCardBonus();
 					while (p.getNumArmies() > 0) {
 						p.placeArmy();
 					}
@@ -127,10 +132,14 @@ public class RiskController {
 							defender = p.attackTo(attacker);
 							if (debug) System.out.println("Attacking" + defender.toString());
 						}
-						
-						attack(attacker, defender);
+						if (attack(attacker, defender))
+							conquered = true;
 					} 
 					p.setDoneAttacking(false);
+					if (conquered) {
+						issueCard(p);
+						conquered = false;
+					}
 					// TODO: ITERATION 2 - fortify if desired
 					counter++;
 				}
@@ -140,6 +149,36 @@ public class RiskController {
 			if (debug) System.out.println(players.get(0).getName() + " won the game");
 		}
 		//return players.get(0);
+	}
+
+	/**
+	 * Deals a card from the top of the deck to the current player. Called when
+	 * the player has conquered at least one territory on his turn.  
+	 * @param p the player who has earned a card
+	 */
+	private void issueCard(Player p) {
+		if (numCards == 42)
+			numCards = 0;
+		Card c = deckOfCards.get(numCards);
+		do {
+			c = deckOfCards.get(numCards);
+			numCards++;
+		} while (!c.isInDeck()); 
+		p.issueCard(c);
+	}
+
+	/**
+	 * Keeps track of how many armies are awarded as a bonus for turning in cards. 
+	 */
+	private void incrementCardBonus() {
+		switch (cardBonus) {
+			case 4: cardBonus = 6; break;
+			case 6: cardBonus = 8; break;
+			case 8: cardBonus = 10; break;
+			case 10: cardBonus = 12; break;
+			case 12: cardBonus = 15; break;
+			default: cardBonus += 5;
+		}
 	}
 
 	/**
@@ -581,14 +620,58 @@ public class RiskController {
 	 */
 	private void setUpDeck() {
 		if (debug) System.out.println("setUpDeck called");
-		// TODO: ITERATION 2 - hard code deck of cards
 		deckOfCards = new ArrayList<Card>();
-		deckOfCards.add(new Card());
+		deckOfCards.add(new Card(CardType.FOOT_SOLDIER, afghanistan));
+		deckOfCards.add(new Card(CardType.FOOT_SOLDIER, alaska));
+		deckOfCards.add(new Card(CardType.FOOT_SOLDIER, alberta));
+		deckOfCards.add(new Card(CardType.FOOT_SOLDIER, argentina));
+		deckOfCards.add(new Card(CardType.CANNON, brazil));
+		deckOfCards.add(new Card(CardType.HORSEMAN, centralAmerica));
+		deckOfCards.add(new Card(CardType.HORSEMAN, china));
+		deckOfCards.add(new Card(CardType.HORSEMAN, congo));
+		deckOfCards.add(new Card(CardType.CANNON, eastAfrica));
+		deckOfCards.add(new Card(CardType.FOOT_SOLDIER, easternAustralia));
+		deckOfCards.add(new Card(CardType.CANNON, easternUS));
+		deckOfCards.add(new Card(CardType.FOOT_SOLDIER, egypt));
+		deckOfCards.add(new Card(CardType.HORSEMAN, greatBritain));
+		deckOfCards.add(new Card(CardType.HORSEMAN, greenland));
+		deckOfCards.add(new Card(CardType.FOOT_SOLDIER, iceland));
+		deckOfCards.add(new Card(CardType.FOOT_SOLDIER, india));
+		deckOfCards.add(new Card(CardType.HORSEMAN, indonesia));
+		deckOfCards.add(new Card(CardType.FOOT_SOLDIER, irkutsk));
+		deckOfCards.add(new Card(CardType.FOOT_SOLDIER, japan));
+		deckOfCards.add(new Card(CardType.HORSEMAN, kamchatka));
+		deckOfCards.add(new Card(CardType.FOOT_SOLDIER, madagascar));
+		deckOfCards.add(new Card(CardType.CANNON, middleEast));
+		deckOfCards.add(new Card(CardType.CANNON, mongolia));
+		deckOfCards.add(new Card(CardType.HORSEMAN, newGuinea));
+		deckOfCards.add(new Card(CardType.FOOT_SOLDIER, northAfrica));
+		deckOfCards.add(new Card(CardType.HORSEMAN, northernEurope));
+		deckOfCards.add(new Card(CardType.CANNON, northwest));
+		deckOfCards.add(new Card(CardType.HORSEMAN, ontario));
+		deckOfCards.add(new Card(CardType.HORSEMAN, peru));
+		deckOfCards.add(new Card(CardType.CANNON, quebec));
+		deckOfCards.add(new Card(CardType.CANNON, scandinavia));
+		deckOfCards.add(new Card(CardType.CANNON, siam));
+		deckOfCards.add(new Card(CardType.CANNON, siberia));
+		deckOfCards.add(new Card(CardType.CANNON, southAfrica));
+		deckOfCards.add(new Card(CardType.HORSEMAN, southernEurope));
+		deckOfCards.add(new Card(CardType.CANNON, ukraine));
+		deckOfCards.add(new Card(CardType.HORSEMAN, ural));
+		deckOfCards.add(new Card(CardType.CANNON, venezuela));
+		deckOfCards.add(new Card(CardType.CANNON, westernAustralia));
+		deckOfCards.add(new Card(CardType.FOOT_SOLDIER, westernEurope));
+		deckOfCards.add(new Card(CardType.FOOT_SOLDIER, westernUS));
+		deckOfCards.add(new Card(CardType.WILD, null));
+		deckOfCards.add(new Card(CardType.WILD, null));
+		deckOfCards.add(new Card(CardType.HORSEMAN, yakutsk));
+		
+		Collections.shuffle(deckOfCards);
 	}
 
 	/**
 	 * Simulates a dice roll by returning a pseudorandom integer between 1 and 6 inclusive. 
-	 * @return int
+	 * @return int result of dice roll
 	 */
 	private int rollDice() {
 		rand = new Random();
@@ -601,8 +684,9 @@ public class RiskController {
 	 * and reassigns territory ownership depending on the outcome of the rolls. 
 	 * @param attackingTerritory
 	 * @param defendingTerritory
+	 * @return true if the attacking territory conquered the defending territory, false otherwise
 	 */
-	private void attack(Territory attackingTerritory, Territory defendingTerritory){
+	private boolean attack(Territory attackingTerritory, Territory defendingTerritory){
 		if (debug) System.out.println("Attacker - "+attackingTerritory.getName()
 				+" (owner - "+attackingTerritory.getCurrentOwner().getName()+")"
 				+"\nDefender - "+defendingTerritory.getName()+" (owner - "
@@ -665,6 +749,10 @@ public class RiskController {
 			if (defendingTerritory.getCurrentOwner().getTerritoriesOwned().size() == 1) {
 				// attacker conquered defender's last territory
 				if (debug) System.out.println(defendingTerritory.getCurrentOwner().getName() + " has been eliminated");
+				for (Card c : defendingTerritory.getCurrentOwner().getCards()) {
+					attackingTerritory.getCurrentOwner().getCards().add(c);
+				}
+				attackingTerritory.getCurrentOwner().canTurnInCards();
 				players.remove(defendingTerritory.getCurrentOwner());
 			}
 			
@@ -677,8 +765,10 @@ public class RiskController {
 			// TODO: ITERATION 2 - can choose the number of armies to move (>= number of dice rolled)
 			defendingTerritory.setNumArmies(attackingDiceValues.size());
 			attackingTerritory.setNumArmies(attackingTerritory.getNumArmies() - attackingDiceValues.size());
+			return true;
 		}
 		if (debug) System.out.println(territories + "\n");
+		return false;
 	}
 
 	/**

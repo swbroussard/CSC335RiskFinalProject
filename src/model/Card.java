@@ -6,22 +6,37 @@ package model;
  *
  */
 public class Card {
-	private String cardType;
+	public enum CardType {
+		CANNON, HORSEMAN, FOOT_SOLDIER, WILD;
+	}
+	
+	private CardType type;
 	private Territory cardTerritory;
+	private boolean inDeck = true;
 	
 	/**
 	 * Constructor
 	 */
-	public Card() {
-		
+	public Card(CardType c, Territory t) {
+		type = c;
+		cardTerritory = t;
+	}
+	
+	/**
+	 * Compares one card to another
+	 * @param c the card to be compared to the current card
+	 * @return true if the cards' territories and types are equal, false otherwise. 
+	 */
+	public boolean equals(Card c) {
+		return (c.type == this.type) && (c.cardTerritory.equals(this.cardTerritory));
 	}
 	
 	/**
 	 * Setter for <code>cardType</code>
 	 * @param cardType
 	 */
-	public void setCardType(String cardType) {
-		this.cardType = cardType;
+	public void setCardType(CardType c) {
+		this.type = c;
 	}
 	
 	/**
@@ -36,8 +51,8 @@ public class Card {
 	 * Getter for <code>cardType</code>
 	 * @return cardType
 	 */
-	public String getCardType() {
-		return cardType;
+	public CardType getCardType() {
+		return type;
 	}
 	
 	/**
@@ -46,5 +61,20 @@ public class Card {
 	 */
 	public Territory getCardTerritory() {
 		return cardTerritory;
+	}
+
+	/**
+	 * @return true if the current card is in the game's deck
+	 */
+	public boolean isInDeck() {
+		return inDeck;
+	}
+
+	/**
+	 * @param inDeck boolean value representing whether the current card is in
+	 * the game's deck
+	 */
+	public void setInDeck(boolean inDeck) {
+		this.inDeck = inDeck;
 	}
 }
