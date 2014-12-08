@@ -4,10 +4,13 @@ import view.RiskGUI;
 
 public class HumanPlayer extends Player{
 	private RiskGUI gui;
+	private Territory currentTerritory;
+	private boolean territoryChosen;
 	
 	public HumanPlayer(String name, RiskGUI gui){
 		super(name);
 		this.gui = gui;
+		territoryChosen = false;
 	}
 	
 	@Override
@@ -18,8 +21,7 @@ public class HumanPlayer extends Player{
 		notifyObservers(ObserverMessages.HUMAN_PLACE_ARMY);
 		
 		while(temp == getNumArmies()) {
-		//	System.out.println("Temp num in while: " + temp + " Num Armies in while: " + getNumArmies());
-				
+			//System.out.println("Temp num in while: " + temp + " Num Armies in while: " + getNumArmies());
 		}
 		
 		return;
@@ -27,6 +29,11 @@ public class HumanPlayer extends Player{
 
 	@Override
 	public Territory attackFrom() {
+		this.setChanged();
+		notifyObservers(ObserverMessages.HUMAN_SELECT_ATTACK_FROM);
+		while (!territoryChosen) {
+			//System.out.println("waiting for attackFrom territory to be chosen");
+		}
 		// choose one of your territories with two or more armies to attack from
 		// if you no longer want to attack, return null
 		return null;
@@ -34,6 +41,11 @@ public class HumanPlayer extends Player{
 
 	@Override
 	public Territory attackTo(Territory attackFrom) {
+		this.setChanged();
+		notifyObservers(ObserverMessages.HUMAN_SELECT_ATTACK_TO);
+		while (!territoryChosen) {
+			//System.out.println("waiting for attackTo territory to be chosen");
+		}
 		// choose another player's territory adjacent to attackFrom
 		return null;
 	}
@@ -43,6 +55,22 @@ public class HumanPlayer extends Player{
 	@Override
 	public void reinforceArmies(Territory takeArmy, Territory reinforceThis) {
 		
+	}
+
+	public boolean isTerritoryChosen() {
+		return territoryChosen;
+	}
+
+	public void setTerritoryChosen(boolean territoryChosen) {
+		this.territoryChosen = territoryChosen;
+	}
+
+	public Territory getCurrentTerritory() {
+		return currentTerritory;
+	}
+
+	public void setCurrentTerritory(Territory currentTerritory) {
+		this.currentTerritory = currentTerritory;
 	}
 
 }

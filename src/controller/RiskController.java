@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-import java.util.Timer;
 
 import model.*;
 import model.Card.CardType;
@@ -94,15 +93,15 @@ public class RiskController {
 		while (getPlayers().get(0).getNumArmies() > 0) {
 			for (Player p : players) {
 				try {
-					Thread.sleep(2000);
+					Thread.sleep(200);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				if(p.getNumArmies() > 0)
 					p.placeArmy();
 			}
-			// TODO: ITERATION 2 - for a human player, maybe we could add the option to place multiple territories at once
+			// TODO: ITERATION 2 - for a human player, maybe we could add the option to place multiple armies at once
+			// during the second stage of gameplay. 
 		} // all armies placed for all players
 	}
 

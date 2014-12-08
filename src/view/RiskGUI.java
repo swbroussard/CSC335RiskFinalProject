@@ -268,6 +268,23 @@ public class RiskGUI extends JFrame implements Observer{
 				human.setNumArmies(human.getNumArmies() - 1);
 			}
 		}
+		else if (typeOfPlay == TypeOfPlay.ATTACK_FROM) {
+			if (t.getCurrentOwner() != human) {
+				label.setText("You don't own that territory!");
+			}
+			else {
+				human.setTerritoryChosen(true);
+				human.setCurrentTerritory(t);
+			}
+		}
+		else if (typeOfPlay == TypeOfPlay.ATTACK_TO){
+			if (t.getCurrentOwner() == human) {
+				label.setText("You can't attack yourself!");
+			}
+			else {
+				human.setTerritoryChosen(true);
+			}
+		}
 	}
 
 	private class RadioButtonListener implements ActionListener {
@@ -335,12 +352,23 @@ public class RiskGUI extends JFrame implements Observer{
 			}
 		}
 		
-		mapPanel.repaint();
+		else if (arg == ObserverMessages.HUMAN_SELECT_ATTACK_FROM) {
+			label.setText("Please select one of your territories to attack from.");
+			typeOfPlay = TypeOfPlay.ATTACK_FROM;
+			//((HumanPlayer) o).setTerritoryChosen(true); 
+		}
 		
+		else if (arg == ObserverMessages.HUMAN_SELECT_ATTACK_TO) {
+			//((HumanPlayer) o).setTerritoryChosen(true);
+			label.setText("Please select an enemy territory to attack.");
+			typeOfPlay = TypeOfPlay.ATTACK_TO;
+		}
+
+		mapPanel.repaint();
 	}
 
 	private enum TypeOfPlay {
-		SELECT_TERRITORY, PLACE_ARMY
+		SELECT_TERRITORY, PLACE_ARMY, ATTACK_FROM, ATTACK_TO
 	}
 
 }
