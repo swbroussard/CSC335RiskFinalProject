@@ -41,17 +41,25 @@ public class RiskGUI extends JFrame implements Observer{
 	public RiskGUI() {
 		super();	
 		setUpPlayers();
+
+		typeOfPlay = TypeOfPlay.DO_NOTHING;
 		
 		controller = new RiskController();
+		controller.addObserver(this);
 		controller.setPlayers(players);
 		controller.sendTerritoriesToPlayers();
-		
-		
+
+
 		setUpFrame();
-		
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		controller.populateBoard();
+		controller.playGame();
 	}
-	
+
 	public void setUpFrame() {
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -91,27 +99,27 @@ public class RiskGUI extends JFrame implements Observer{
 		}
 		switch(players.size()) {
 		case 6:
-			players.get(5).setColor(Color.BLUE);
+			players.get(5).setColor(new Color(140, 74, 255));
 			players.get(5).addObserver(this);
 		case 5:
-			players.get(4).setColor(Color.BLACK);
+			players.get(4).setColor(Color.YELLOW);
 			players.get(4).addObserver(this);
 		case 4:
 			players.get(3).setColor(Color.MAGENTA);
 			players.get(3).addObserver(this);
 		case 3:
-			players.get(2).setColor(Color.ORANGE);
+			players.get(2).setColor(new Color(255, 114, 0));//orange
 			players.get(2).addObserver(this);
 		case 2:
-			players.get(1).setColor(Color.RED);
+			players.get(1).setColor(Color.GREEN);
 			players.get(1).addObserver(this);
 		case 1:
-			players.get(0).setColor(Color.GREEN);
+			players.get(0).setColor(Color.CYAN);
 			players.get(0).addObserver(this);
 		}
-		
+
 	}
-	
+
 	public void determineNumberOfPlayers() {
 		JLabel instructions = new JLabel("Instructions: Select your players.  You must have between 2 and 6 players");
 		JLabel simpleLabel = new JLabel("Select the number of Simple Players: ");
@@ -125,22 +133,9 @@ public class RiskGUI extends JFrame implements Observer{
 		JRadioButton simple3 = new JRadioButton("3");
 		JRadioButton simple4 = new JRadioButton("4");
 		JRadioButton simple5 = new JRadioButton("5");
+		JRadioButton simple6 = new JRadioButton("6");
 
 		simple1.setSelected(true);
-
-		simple0.setActionCommand("S0");
-		simple1.setActionCommand("S1");
-		simple2.setActionCommand("S2");
-		simple3.setActionCommand("S3");
-		simple4.setActionCommand("S4");
-		simple5.setActionCommand("S5");
-
-		simple0.addActionListener(new RadioButtonListener());
-		simple1.addActionListener(new RadioButtonListener());
-		simple2.addActionListener(new RadioButtonListener());
-		simple3.addActionListener(new RadioButtonListener());
-		simple4.addActionListener(new RadioButtonListener());
-		simple5.addActionListener(new RadioButtonListener());
 
 		ButtonGroup simpleGroup = new ButtonGroup(); //only allows one radio button to be selected
 		simpleGroup.add(simple0);
@@ -149,6 +144,7 @@ public class RiskGUI extends JFrame implements Observer{
 		simpleGroup.add(simple3);
 		simpleGroup.add(simple4);
 		simpleGroup.add(simple5);
+		simpleGroup.add(simple6);
 
 		//Intermediate radio buttons
 		JRadioButton intermediate0 = new JRadioButton("0");
@@ -157,22 +153,9 @@ public class RiskGUI extends JFrame implements Observer{
 		JRadioButton intermediate3 = new JRadioButton("3");
 		JRadioButton intermediate4 = new JRadioButton("4");
 		JRadioButton intermediate5 = new JRadioButton("5");
+		JRadioButton intermediate6 = new JRadioButton("6");
 
-		intermediate0.setSelected(true);
-
-		intermediate0.setActionCommand("I0");
-		intermediate1.setActionCommand("I1");
-		intermediate2.setActionCommand("I2");
-		intermediate3.setActionCommand("I3");
-		intermediate4.setActionCommand("I4");
-		intermediate5.setActionCommand("I5");
-
-		intermediate0.addActionListener(new RadioButtonListener());
-		intermediate1.addActionListener(new RadioButtonListener());
-		intermediate2.addActionListener(new RadioButtonListener());
-		intermediate3.addActionListener(new RadioButtonListener());
-		intermediate4.addActionListener(new RadioButtonListener());
-		intermediate5.addActionListener(new RadioButtonListener());
+		intermediate1.setSelected(true);
 
 		ButtonGroup intermediateGroup = new ButtonGroup(); //only allows one radio button to be selected
 		intermediateGroup.add(intermediate0);
@@ -181,33 +164,104 @@ public class RiskGUI extends JFrame implements Observer{
 		intermediateGroup.add(intermediate3);
 		intermediateGroup.add(intermediate4);
 		intermediateGroup.add(intermediate5);
+		intermediateGroup.add(intermediate6);
 
 		//Add human radio buttons (yes/no)
 		JRadioButton humanYes = new JRadioButton("Yes");
 		JRadioButton humanNo = new JRadioButton("No");
 
-		humanYes.setSelected(true);
-
-		humanYes.setActionCommand("YES");
-		humanNo.setActionCommand("NO");
-
-		humanYes.addActionListener(new RadioButtonListener());
-		humanNo.addActionListener(new RadioButtonListener());
-
+		humanNo.setSelected(true);
+		
 		ButtonGroup humanGroup = new ButtonGroup();
 		humanGroup.add(humanYes);
 		humanGroup.add(humanNo);
 
 		//Add everything to the JOptionPane message
 		Object[] message = {instructions, simpleLabel, simple0, simple1, simple2, simple3, simple4,
-				simple5, intermediateLabel, intermediate0, intermediate1, intermediate2, intermediate3,
-				intermediate4, intermediate5, humanLabel, humanYes, humanNo};
-		
+				simple5, simple6, intermediateLabel, intermediate0, intermediate1, intermediate2, intermediate3,
+				intermediate4, intermediate5, intermediate6, humanLabel, humanYes, humanNo};
+
 		//Create the JOptionPane
 		int option = JOptionPane.showConfirmDialog(null, message, "Select your opponents",
 				JOptionPane.OK_CANCEL_OPTION);
 		if(option == JOptionPane.CANCEL_OPTION) {
 			System.exit(0);
+		}
+		else {
+			if(simple6.getSelectedObjects() != null) {
+				players.add(new SimpleAIPlayer("Simple Player 6"));		
+				players.add(new SimpleAIPlayer("Simple Player 5"));	
+				players.add(new SimpleAIPlayer("Simple Player 4"));		
+				players.add(new SimpleAIPlayer("Simple Player 3"));	
+				players.add(new SimpleAIPlayer("Simple Player 2"));
+				players.add(new SimpleAIPlayer("Simple Player 1"));
+			}
+			else if(simple5.getSelectedObjects() != null) {
+				players.add(new SimpleAIPlayer("Simple Player 5"));	
+				players.add(new SimpleAIPlayer("Simple Player 4"));		
+				players.add(new SimpleAIPlayer("Simple Player 3"));	
+				players.add(new SimpleAIPlayer("Simple Player 2"));
+				players.add(new SimpleAIPlayer("Simple Player 1"));
+			}
+			else if(simple4.getSelectedObjects() != null) {
+				players.add(new SimpleAIPlayer("Simple Player 4"));		
+				players.add(new SimpleAIPlayer("Simple Player 3"));	
+				players.add(new SimpleAIPlayer("Simple Player 2"));
+				players.add(new SimpleAIPlayer("Simple Player 1"));
+			}
+			else if(simple3.getSelectedObjects() != null) {
+				players.add(new SimpleAIPlayer("Simple Player 3"));	
+				players.add(new SimpleAIPlayer("Simple Player 2"));
+				players.add(new SimpleAIPlayer("Simple Player 1"));
+			}
+			else if(simple2.getSelectedObjects() != null) {
+				players.add(new SimpleAIPlayer("Simple Player 2"));
+				players.add(new SimpleAIPlayer("Simple Player 1"));
+			}
+			else if(simple1.getSelectedObjects() != null) {
+				players.add(new SimpleAIPlayer("Simple Player 1"));
+			}
+			else {}
+
+			if(intermediate6.getSelectedObjects() != null) {
+				players.add(new IntermediateAIPlayer("Intermediate Player 6"));		
+				players.add(new IntermediateAIPlayer("Intermediate Player 5"));	
+				players.add(new IntermediateAIPlayer("Intermediate Player 4"));		
+				players.add(new IntermediateAIPlayer("Intermediate Player 3"));	
+				players.add(new IntermediateAIPlayer("Intermediate Player 2"));
+				players.add(new IntermediateAIPlayer("Intermediate Player 1"));
+			}
+			else if(intermediate5.getSelectedObjects() != null) {
+				players.add(new IntermediateAIPlayer("Intermediate Player 5"));	
+				players.add(new IntermediateAIPlayer("Intermediate Player 4"));		
+				players.add(new IntermediateAIPlayer("Intermediate Player 3"));	
+				players.add(new IntermediateAIPlayer("Intermediate Player 2"));
+				players.add(new IntermediateAIPlayer("Intermediate Player 1"));
+			}
+			else if(intermediate4.getSelectedObjects() != null) {
+				players.add(new IntermediateAIPlayer("Intermediate Player 4"));		
+				players.add(new IntermediateAIPlayer("Intermediate Player 3"));	
+				players.add(new IntermediateAIPlayer("Intermediate Player 2"));
+				players.add(new IntermediateAIPlayer("Intermediate Player 1"));
+			}
+			else if(intermediate3.getSelectedObjects() != null) {
+				players.add(new IntermediateAIPlayer("Intermediate Player 3"));	
+				players.add(new IntermediateAIPlayer("Intermediate Player 2"));
+				players.add(new IntermediateAIPlayer("Intermediate Player 1"));
+			}
+			else if(intermediate2.getSelectedObjects() != null) {
+				players.add(new IntermediateAIPlayer("Intermediate Player 2"));
+				players.add(new IntermediateAIPlayer("Intermediate Player 1"));
+			}
+			else if(intermediate1.getSelectedObjects() != null) {
+				players.add(new IntermediateAIPlayer("Intermediate Player 1"));
+			}
+			else {}
+
+			if(humanYes.getSelectedObjects() != null) {
+				human = new HumanPlayer("Human", this);
+				players.add(human);
+			}
 		}
 
 	}
@@ -238,12 +292,7 @@ public class RiskGUI extends JFrame implements Observer{
 	public static void main(String[] args) {
 		new RiskGUI();
 	}
-	
-	private void addHumanPlayer() {
-		human = new HumanPlayer("Human", this);
-		players.add(human);
-	}
-	
+
 	public void territorySelected(Territory t) {
 		if(typeOfPlay == TypeOfPlay.SELECT_TERRITORY) {
 			if(t.getCurrentOwner() != null) {
@@ -256,6 +305,9 @@ public class RiskGUI extends JFrame implements Observer{
 				human.setNumArmies(human.getNumArmies() - 1);
 				human.addTerritory(t);
 				mapPanel.repaint();
+				label.setText("You have claimed the territory " + t.getName());
+				typeOfPlay = TypeOfPlay.DO_NOTHING;
+				human.setTerritoryChosen(true);
 				//System.out.println("NumArmies = " + human.getNumArmies());
 			}
 		}
@@ -266,6 +318,8 @@ public class RiskGUI extends JFrame implements Observer{
 			else {
 				t.setNumArmies(t.getNumArmies() + 1);
 				human.setNumArmies(human.getNumArmies() - 1);
+				label.setText("You have added an army to " + t.getName());
+				typeOfPlay = TypeOfPlay.DO_NOTHING;
 			}
 		}
 		else if (typeOfPlay == TypeOfPlay.ATTACK_FROM) {
@@ -275,89 +329,61 @@ public class RiskGUI extends JFrame implements Observer{
 			else {
 				human.setTerritoryChosen(true);
 				human.setCurrentTerritory(t);
+				label.setText("You are attacking from " + t.getName());
+				typeOfPlay = TypeOfPlay.DO_NOTHING;
 			}
 		}
 		else if (typeOfPlay == TypeOfPlay.ATTACK_TO){
 			if (t.getCurrentOwner() == human) {
 				label.setText("You can't attack yourself!");
 			}
+			if(!human.getCurrentTerritory().getAdjacent().contains(t)) {
+				label.setText("You must select a territory adjacent to the one you are attacking from.\n"
+						+ "You are attacking from " + t.getName());
+			}
 			else {
 				human.setTerritoryChosen(true);
+				human.setCurrentTerritory(t);
+				label.setText("You are attacking " + t.getName());
+				typeOfPlay = TypeOfPlay.DO_NOTHING;
 			}
 		}
-	}
-
-	private class RadioButtonListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			switch(e.getActionCommand()) {
-			case "S6" : 
-				players.add(new SimpleAIPlayer("Simple Player 6"));
-			case "S5" : 
-				players.add(new SimpleAIPlayer("Simple Player 5"));
-			case "S4" : 
-				players.add(new SimpleAIPlayer("Simple Player 4"));
-			case "S3" :
-				players.add(new SimpleAIPlayer("Simple Player 3"));
-			case "S2":
-				players.add(new SimpleAIPlayer("Simple Player 2"));
-			case "S1":
-				players.add(new SimpleAIPlayer("Simple Player 1"));
-				break;
-			case "I6" : 
-				players.add(new IntermediateAIPlayer("Intermediate Player 6"));
-			case "I5" : 
-				players.add(new IntermediateAIPlayer("Intermediate Player 5"));
-			case "I4" : 
-				players.add(new IntermediateAIPlayer("Intermediate Player 4"));
-			case "I3" :
-				players.add(new IntermediateAIPlayer("Intermediate Player 3"));
-			case "I2":
-				players.add(new IntermediateAIPlayer("Intermediate Player 2"));
-			case "I1":
-				players.add(new IntermediateAIPlayer("Intermediate Player 1"));
-				break;
-			case "YES":
-				addHumanPlayer();
-				break;
-			default:
-				break;
-			
-				
-				
-			}
-			//canvas.setColor(colorChooser.getColor());
-			//canvas.setVisible(true);
+		else {
+			label.setText("It is not your turn");
 		}
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if(arg == ObserverMessages.HUMAN_PLACE_ARMY) {
+		if(arg instanceof String) {
+			label.setText((String) arg); 
+		}
+		else if(arg == ObserverMessages.HUMAN_PLACE_ARMY) {
 			boolean allTaken = true;
 			for(Territory t: controller.getTerritories()) {
 				if(t.getCurrentOwner() == null)
 					allTaken = false;
 			}
 			if(!allTaken) {
-				label.setText("Please select a Territory to claim");
 				typeOfPlay = TypeOfPlay.SELECT_TERRITORY;
+				label.setText("Please select a Territory to claim");
+				
 			}
-			
+
 			else {
-				label.setText("You have " + human.getNumArmies() + " armies left to place.  "
-					+ "Please select a territory to place an army.");
 				typeOfPlay = TypeOfPlay.PLACE_ARMY;
+				label.setText("You have " + human.getNumArmies() + " armies left to place.  "
+						+ "Please select a territory to place an army.");
+				
 			}
 		}
-		
+
 		else if (arg == ObserverMessages.HUMAN_SELECT_ATTACK_FROM) {
 			label.setText("Please select one of your territories to attack from.");
 			typeOfPlay = TypeOfPlay.ATTACK_FROM;
 			//((HumanPlayer) o).setTerritoryChosen(true); 
 		}
-		
+
 		else if (arg == ObserverMessages.HUMAN_SELECT_ATTACK_TO) {
 			//((HumanPlayer) o).setTerritoryChosen(true);
 			label.setText("Please select an enemy territory to attack.");
@@ -368,7 +394,7 @@ public class RiskGUI extends JFrame implements Observer{
 	}
 
 	private enum TypeOfPlay {
-		SELECT_TERRITORY, PLACE_ARMY, ATTACK_FROM, ATTACK_TO
+		SELECT_TERRITORY, PLACE_ARMY, ATTACK_FROM, ATTACK_TO, DO_NOTHING
 	}
 
 }

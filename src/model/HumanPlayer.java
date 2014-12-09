@@ -15,16 +15,17 @@ public class HumanPlayer extends Player{
 	
 	@Override
 	public void placeArmy() {
-		int temp = getNumArmies();
-		//System.out.println("Temp num before: " + temp);
 		this.setChanged();
 		notifyObservers(ObserverMessages.HUMAN_PLACE_ARMY);
 		
-		while(temp == getNumArmies()) {
+		while(territoryChosen == false) {
+			if(territoryChosen == true) {
+				System.out.println("getting to here");
+				return;
+			}
 			//System.out.println("Temp num in while: " + temp + " Num Armies in while: " + getNumArmies());
 		}
 		
-		return;
 	}
 
 	@Override

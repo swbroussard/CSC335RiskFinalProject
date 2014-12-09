@@ -56,6 +56,8 @@ public class IntermediateAIPlayer extends Player{
 						territorySelected = true;
 						addTerritory(selected);
 						setNumArmies(getNumArmies() - 1);
+						setChanged();
+						notifyObservers("" + this.getName() + " claimed " + selected.getName());
 						if(debug) System.out.println("Army successfully placed in " + selected.getName() + " by "+getName());
 					}
 					else
@@ -78,6 +80,8 @@ public class IntermediateAIPlayer extends Player{
 							territoryChoosen = true;
 							addTerritory(selected);
 							setNumArmies(getNumArmies() - 1);
+							setChanged();
+							notifyObservers("" + this.getName() + " claimed " + selected.getName());
 							if(debug) System.out.println("Army successfully placed in " + selected.getName() + " by "+getName());
 							if(debug) System.out.println(getAllTerritories());
 						}
@@ -93,6 +97,8 @@ public class IntermediateAIPlayer extends Player{
 						territoryChoosen = true;
 						addTerritory(selected);
 						setNumArmies(getNumArmies() - 1);
+						setChanged();
+						notifyObservers("" + this.getName() + " claimed " + selected.getName());
 						if(debug) System.out.println("Army successfully placed in " + selected.getName() + " by "+getName());
 					}
 					else
@@ -103,12 +109,13 @@ public class IntermediateAIPlayer extends Player{
 		}//end of choosing empty territories
 		else {//place army in territory			
 			int r = genRan.nextInt(getTerritoriesOwned().size());
-			getTerritoriesOwned().get(r).setNumArmies(getNumArmies() + 1);
+			Territory selected = getTerritoriesOwned().get(r);
+			selected.setNumArmies(selected.getNumArmies() + 1);
 			setNumArmies(getNumArmies() - 1);
+			setChanged();
+			notifyObservers("" + this.getName() + " placed an army in " + selected.getName());
 			if (debug) System.out.println("Army successfully placed in owned territory by "+getName());
 		}
-		this.setChanged();
-		notifyObservers();
 	}
 
 	

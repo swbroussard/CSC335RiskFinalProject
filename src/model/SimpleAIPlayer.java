@@ -102,6 +102,8 @@ public class SimpleAIPlayer extends Player {
 					territorySelected = true;
 					addTerritory(selected);
 					setNumArmies(getNumArmies() - 1);
+					setChanged();
+					notifyObservers("" + this.getName() + " claimed " + selected.getName());
 					if (debug) System.out.println("Army successfully placed in new territory by "+getName());
 				}
 				else
@@ -112,12 +114,14 @@ public class SimpleAIPlayer extends Player {
 		//if territory is not available, add an army to one you own.
 		else{
 			int r = randomGen.nextInt(getTerritoriesOwned().size());
-			getTerritoriesOwned().get(r).setNumArmies(getNumArmies() + 1);
+			Territory selected = getTerritoriesOwned().get(r);
+			selected.setNumArmies(selected.getNumArmies() + 1);
 			setNumArmies(getNumArmies() - 1);
+			setChanged();
+			notifyObservers("" + this.getName() + " placed an army in " + selected.getName());
 			if (debug) System.out.println("Army successfully placed in owned territory by "+getName());
 		}
-		this.setChanged();
-		notifyObservers();
+		
 	}
 
 

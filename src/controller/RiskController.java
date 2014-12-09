@@ -3,6 +3,7 @@ package controller;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Observable;
 import java.util.Random;
 
 import model.*;
@@ -13,7 +14,7 @@ import model.Card.CardType;
  * @author Elizabeth Harris, Becca Simon
  *
  */
-public class RiskController {
+public class RiskController extends Observable{
 	boolean debug = false;
 	private ArrayList<Territory> territories;
 	private Territory alaska, alberta, centralAmerica, easternUS, greenland, northwest,
@@ -88,20 +89,19 @@ public class RiskController {
 		}
 		//for testing purposes, set one player to have no extra armies.
 		//players.get(players.size() - 1).setNumArmies(2);
-		
+
 
 		while (getPlayers().get(0).getNumArmies() > 0) {
 			for (Player p : players) {
 				try {
-					Thread.sleep(200);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 				if(p.getNumArmies() > 0)
 					p.placeArmy();
 			}
-			// TODO: ITERATION 2 - for a human player, maybe we could add the option to place multiple armies at once
-			// during the second stage of gameplay. 
+
 		} // all armies placed for all players
 	}
 
@@ -115,52 +115,49 @@ public class RiskController {
 	public void playGame() {
 		if (debug) System.out.println("playGame called");
 		while (getPlayers().size() > 1) {
-//		for(int i = 0; i < 15; i++) {
-//		if (debug) System.out.println("Round " + i);
-//			if(players.size() == 1) {
-//				i = 15;
-//			}
-//			else {
-				//would an enhanced for loop be an issue if a player gets eliminated before their turn
-				//i think we would get a null pointer exception -Becca
-				boolean conquered = false;
-				int counter = 0;
-				while(counter < players.size()) {
-					//for (Player p : getPlayers()) {
-					Player p = players.get(counter);
-					if (debug) System.out.println(p.getName()+"'s turn");
-					if (p.addArmies(cardBonus))
-						incrementCardBonus();
-					while (p.getNumArmies() > 0) {
-						p.placeArmy();
-					}
-					while (p.canAttack()) {
-						Territory attacker = p.attackFrom();
-						while (attacker == null || attacker.getCurrentOwner() != p) {
-							attacker = p.attackFrom();
-						}
-						Territory defender = p.attackTo(attacker);
-						if (debug) System.out.println("Attacking " + defender.toString());
-						//if (debug) System.out.println(territories);
-						while (defender == null || defender.getCurrentOwner() == p) {
-							defender = p.attackTo(attacker);
-							if (debug) System.out.println("Attacking" + defender.toString());
-						}
-						if (attack(attacker, defender))
-							conquered = true;
-					} 
-					p.setDoneAttacking(false);
-					if (conquered) {
-						issueCard(p);
-						conquered = false;
-					}
-					// TODO: ITERATION 2 - fortify if desired
-					counter++;
+			boolean conquered = false;
+			int counter = 0;
+			while(counter < players.size()) {
+				//for (Player p : getPlayers()) {
+				Player p = players.get(counter);
+				if (debug) System.out.println(p.getName()+"'s turn");
+				if (p.addArmies(cardBonus))
+					incrementCardBonus();
+				while (p.getNumArmies() > 0) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) { e.printStackTrace();}
+					p.placeArmy();
 				}
-//			}
+				while (p.canAttack()) {
+					Territory attacker = p.attackFrom();
+					while (attacker == null || attacker.getCurrentOwner() != p) {
+						attacker = p.attackFrom();
+					}
+					Territory defender = p.attackTo(attacker);
+					if (debug) System.out.println("Attacking " + defender.toString());
+					//if (debug) System.out.println(territories);
+					while (defender == null || defender.getCurrentOwner() == p) {
+						defender = p.attackTo(attacker);
+						if (debug) System.out.println("Attacking" + defender.toString());
+					}
+					if (attack(attacker, defender))
+						conquered = true;
+				} 
+				p.setDoneAttacking(false);
+				if (conquered) {
+					issueCard(p);
+					conquered = false;
+				}
+				// TODO: ITERATION 2 - fortify if desired
+				counter++;
+			}
+			//			}
 		}
 		if(players.size() == 1) {
 			if (debug) System.out.println(players.get(0).getName() + " won the game");
+			setChanged();
+			notifyObservers(players.get(0).getName() + " has won the game!");
 		}
 		//return players.get(0);
 	}
@@ -186,12 +183,12 @@ public class RiskController {
 	 */
 	private void incrementCardBonus() {
 		switch (cardBonus) {
-			case 4: cardBonus = 6; break;
-			case 6: cardBonus = 8; break;
-			case 8: cardBonus = 10; break;
-			case 10: cardBonus = 12; break;
-			case 12: cardBonus = 15; break;
-			default: cardBonus += 5;
+		case 4: cardBonus = 6; break;
+		case 6: cardBonus = 8; break;
+		case 8: cardBonus = 10; break;
+		case 10: cardBonus = 12; break;
+		case 12: cardBonus = 15; break;
+		default: cardBonus += 5;
 		}
 	}
 
@@ -203,53 +200,53 @@ public class RiskController {
 		if (debug) System.out.println("setUpTerritories called");
 		territories = new ArrayList<Territory>();
 
-		alaska = new Territory("Alaska", Continent.NORTH_AMERICA, -9884371, new Point(47, 122));
-		alberta = new Territory("Alberta", Continent.NORTH_AMERICA, -2991525, new Point(128, 175));
-		centralAmerica = new Territory("Central America", Continent.NORTH_AMERICA, -7330782, new Point(139, 307));
-		easternUS = new Territory("Eastern United States", Continent.NORTH_AMERICA, -1753279, new Point(206, 262));
-		greenland = new Territory("Greenland", Continent.NORTH_AMERICA, -5427408, new Point(313, 76));
-		northwest = new Territory("Northwest Territory", Continent.NORTH_AMERICA, -1794915, new Point(110, 132));
-		ontario = new Territory("Ontario", Continent.NORTH_AMERICA, -4116688, new Point(211, 183));
-		quebec = new Territory("Quebec", Continent.NORTH_AMERICA, -4173227, new Point(276, 206));
-		westernUS = new Territory("Western United States", Continent.NORTH_AMERICA, -6470845, new Point(141, 224));
+		alaska = new Territory("Alaska", Continent.NORTH_AMERICA, -9884371, new Point(39, 107));
+		alberta = new Territory("Alberta", Continent.NORTH_AMERICA, -2991525, new Point(120, 160));
+		centralAmerica = new Territory("Central America", Continent.NORTH_AMERICA, -7330782, new Point(131, 292));
+		easternUS = new Territory("Eastern United States", Continent.NORTH_AMERICA, -1753279, new Point(198, 247));
+		greenland = new Territory("Greenland", Continent.NORTH_AMERICA, -5427408, new Point(305, 61));
+		northwest = new Territory("Northwest Territory", Continent.NORTH_AMERICA, -1794915, new Point(102, 117));
+		ontario = new Territory("Ontario", Continent.NORTH_AMERICA, -4116688, new Point(203, 168));
+		quebec = new Territory("Quebec", Continent.NORTH_AMERICA, -4173227, new Point(268, 191));
+		westernUS = new Territory("Western United States", Continent.NORTH_AMERICA, -6470845, new Point(133, 209));
 
-		argentina = new Territory("Argentina", Continent.SOUTH_AMERICA, -602202, new Point(192, 517));
-		brazil = new Territory("Brazil", Continent.SOUTH_AMERICA, -1734364, new Point(263, 410));
-		peru = new Territory("Peru", Continent.SOUTH_AMERICA, -5282278, new Point(166, 437));
-		venezuela = new Territory("Venezuela", Continent.SOUTH_AMERICA, -1400494, new Point(260, 343));
+		argentina = new Territory("Argentina", Continent.SOUTH_AMERICA, -602202, new Point(184, 502));
+		brazil = new Territory("Brazil", Continent.SOUTH_AMERICA, -1734364, new Point(255, 395));
+		peru = new Territory("Peru", Continent.SOUTH_AMERICA, -5282278, new Point(158, 422));
+		venezuela = new Territory("Venezuela", Continent.SOUTH_AMERICA, -1400494, new Point(252, 328));
 
-		greatBritain = new Territory("Great Britain", Continent.EUROPE, -10509133, new Point(371, 224));
-		iceland = new Territory("Iceland", Continent.EUROPE, -3411720, new Point(374, 168));
-		northernEurope = new Territory("Northern Europe", Continent.EUROPE, -10103052, new Point(445, 218));
-		scandinavia = new Territory("Scandinavia", Continent.EUROPE, -15186346, new Point(485, 121));
-		southernEurope = new Territory("Southern Europe", Continent.EUROPE, -14655374, new Point(458, 259));
-		ukraine = new Territory("Ukraine", Continent.EUROPE, -13857884, new Point(548, 184));
-		westernEurope = new Territory("Western Europe", Continent.EUROPE, -14431749, new Point(369, 284));
+		greatBritain = new Territory("Great Britain", Continent.EUROPE, -10509133, new Point(364, 209));
+		iceland = new Territory("Iceland", Continent.EUROPE, -3411720, new Point(366, 154));
+		northernEurope = new Territory("Northern Europe", Continent.EUROPE, -10103052, new Point(437, 204));
+		scandinavia = new Territory("Scandinavia", Continent.EUROPE, -15186346, new Point(476, 105));
+		southernEurope = new Territory("Southern Europe", Continent.EUROPE, -14655374, new Point(450, 245));
+		ukraine = new Territory("Ukraine", Continent.EUROPE, -13857884, new Point(540, 168));
+		westernEurope = new Territory("Western Europe", Continent.EUROPE, -14431749, new Point(362, 269));
 
-		congo = new Territory("Congo", Continent.AFRICA, -6338922, new Point(473, 430));
+		congo = new Territory("Congo", Continent.AFRICA, -6338922, new Point(468, 430));
 		eastAfrica = new Territory("East Africa", Continent.AFRICA, -1283872, new Point(499, 380));
-		egypt = new Territory("Egypt", Continent.AFRICA, -11525300, new Point(456, 340));
-		madagascar = new Territory("Madagascar", Continent.AFRICA, -3109438, new Point(570, 526));
+		egypt = new Territory("Egypt", Continent.AFRICA, -11525300, new Point(456, 320));
+		madagascar = new Territory("Madagascar", Continent.AFRICA, -3109438, new Point(560, 520));
 		northAfrica = new Territory("North Africa", Continent.AFRICA, -1331481, new Point(384, 356));
 		southAfrica = new Territory("South Africa", Continent.AFRICA, -9030543, new Point(455, 502));
 
 		afghanistan = new Territory("Afghanistan", Continent.ASIA, -8089504, new Point(593, 238));
 		china = new Territory("China", Continent.ASIA, -9791385, new Point(682, 264));
 		india = new Territory("India", Continent.ASIA, -6045093, new Point(635, 312));
-		irkutsk = new Territory("Irkutsk", Continent.ASIA, -8811661, new Point(741, 188));
-		japan = new Territory("Japan", Continent.ASIA, -3552384, new Point(866, 251));
+		irkutsk = new Territory("Irkutsk", Continent.ASIA, -8811661, new Point(741, 175));
+		japan = new Territory("Japan", Continent.ASIA, -3552384, new Point(860, 241));
 		kamchatka = new Territory("Kamchatka", Continent.ASIA, -7353461, new Point(871, 133));
-		middleEast = new Territory("Middle East", Continent.ASIA, -6968177, new Point(562, 371));
-		mongolia = new Territory("Mongolia", Continent.ASIA, -8876477, new Point(751, 233));
-		siam = new Territory("Siam", Continent.ASIA, -10988236, new Point(764, 355));
+		middleEast = new Territory("Middle East", Continent.ASIA, -6968177, new Point(562, 350));
+		mongolia = new Territory("Mongolia", Continent.ASIA, -8876477, new Point(751, 220));
+		siam = new Territory("Siam", Continent.ASIA, -10988236, new Point(760, 355));
 		siberia = new Territory("Siberia", Continent.ASIA, -12756942, new Point(684, 124));
 		ural = new Territory("Ural", Continent.ASIA, -11181775, new Point(627, 165));
 		yakutsk = new Territory("Yakutsk", Continent.ASIA, -3614050, new Point(774, 128));
 
-		easternAustralia = new Territory("Eastern Australia", Continent.AUSTRALIA, -5632, new Point(865, 550));
-		indonesia = new Territory("Indonesia", Continent.AUSTRALIA, -147129, new Point(705, 443));
-		newGuinea = new Territory("New Guinea", Continent.AUSTRALIA, -4157144, new Point(858, 408));
-		westernAustralia = new Territory("Western Australia", Continent.AUSTRALIA, -1605, new Point(703, 529));
+		easternAustralia = new Territory("Eastern Australia", Continent.AUSTRALIA, -5632, new Point(865, 540));
+		indonesia = new Territory("Indonesia", Continent.AUSTRALIA, -147129, new Point(705, 433));
+		newGuinea = new Territory("New Guinea", Continent.AUSTRALIA, -4157144, new Point(858, 398));
+		westernAustralia = new Territory("Western Australia", Continent.AUSTRALIA, -1605, new Point(700, 519));
 
 		// adjacent for Alaska
 		ArrayList<Territory> adjacent = new ArrayList<Territory>();
@@ -679,7 +676,7 @@ public class RiskController {
 		deckOfCards.add(new Card(CardType.WILD, null));
 		deckOfCards.add(new Card(CardType.WILD, null));
 		deckOfCards.add(new Card(CardType.HORSEMAN, yakutsk));
-		
+
 		Collections.shuffle(deckOfCards);
 	}
 
@@ -705,7 +702,12 @@ public class RiskController {
 				+" (owner - "+attackingTerritory.getCurrentOwner().getName()+")"
 				+"\nDefender - "+defendingTerritory.getName()+" (owner - "
 				+defendingTerritory.getCurrentOwner().getName()+")");
-
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) { e.printStackTrace();}
+		setChanged();
+		notifyObservers(new String("" + attackingTerritory.getCurrentOwner().getName() + " is attacking " + 
+				defendingTerritory.getName() + " from " + attackingTerritory.getName()));
 		//		List<Dice> attackingDice = attackingTerritory.getCurrentOwner().getAttackingDice();
 		//		List<Dice> defendingDice = defendingTerritory.getCurrentOwner().getDefendingDice();
 		ArrayList<Integer> attackingDiceValues = new ArrayList<Integer>();
@@ -755,22 +757,33 @@ public class RiskController {
 				}
 			}
 		}
+		
 		attackingTerritory.setNumArmies(attackingTerritory.getNumArmies() - defenderWon);
 		defendingTerritory.setNumArmies(defendingTerritory.getNumArmies() - attackerWon);
 
 		if (defendingTerritory.getNumArmies() <= 0) { // attacker conquered defending territory
-			
+
 			if (defendingTerritory.getCurrentOwner().getTerritoriesOwned().size() == 1) {
 				// attacker conquered defender's last territory
 				if (debug) System.out.println(defendingTerritory.getCurrentOwner().getName() + " has been eliminated");
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) { e.printStackTrace();}
+				setChanged();
+				notifyObservers(defendingTerritory.getCurrentOwner().getName() + " has been eliminated");
 				for (Card c : defendingTerritory.getCurrentOwner().getCards()) {
 					attackingTerritory.getCurrentOwner().getCards().add(c);
 				}
 				attackingTerritory.getCurrentOwner().canTurnInCards();
 				players.remove(defendingTerritory.getCurrentOwner());
 			}
-			
+
 			if (debug) System.out.println(defendingTerritory.getName() + " now belongs to the attacker");
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) { e.printStackTrace();}
+			setChanged();
+			notifyObservers(defendingTerritory.getName() + " now belongs to " + attackingTerritory.getCurrentOwner().getName());
 			// defending territory now belongs to attacker
 			defendingTerritory.getCurrentOwner().getTerritoriesOwned().remove(defendingTerritory);
 			defendingTerritory.setCurrentOwner(attackingTerritory.getCurrentOwner());
@@ -782,6 +795,12 @@ public class RiskController {
 			return true;
 		}
 		if (debug) System.out.println(territories + "\n");
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) { e.printStackTrace();}
+		setChanged();
+		notifyObservers(new String("" + attackingTerritory.getCurrentOwner().getName() + " did not get " + 
+				defendingTerritory.getName()));
 		return false;
 	}
 
@@ -817,5 +836,5 @@ public class RiskController {
 			p.setAllTerritories(territories);
 		}
 	}
-	
+
 }

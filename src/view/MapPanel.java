@@ -50,15 +50,22 @@ public class MapPanel extends JPanel{
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawImage(map, 0, 0, 960, 640, null);
-		
-		g2.setFont(new Font("Arial", Font.BOLD, 12));
+
+		g2.setFont(new Font("Arial", Font.BOLD, 15));
 		for(Territory t: territories) {
-			if(t.getCurrentOwner() == null)
-				g2.setColor(Color.BLACK);
-			else
+			if(t.getCurrentOwner() == null) {
+				g2.setColor(Color.WHITE);
+			}
+			else {
 				g2.setColor(t.getCurrentOwner().getColor());
-			g2.drawString("" + t.getNumArmies(), (int) t.getLabelPosition().getX(), (int) t.getLabelPosition().getY());
+			}
+			g2.fillOval((int) t.getLabelPosition().getX(), (int) t.getLabelPosition().getY(), 21, 21);
 			
+			g2.setColor(Color.BLACK);
+			if(t.getNumArmies() < 10)
+				g2.drawString("" + t.getNumArmies(), (int) t.getLabelPosition().getX() + 7, (int) t.getLabelPosition().getY() + 16);
+			else//armies is double digit number
+				g2.drawString("" + t.getNumArmies(), (int) t.getLabelPosition().getX() + 2, (int) t.getLabelPosition().getY() + 15);
 		}
 	}
 	
@@ -69,7 +76,7 @@ public class MapPanel extends JPanel{
 			int x = e.getX();
 			int y = e.getY();
 			int rgb = map.getRGB(x, y);
-			
+			//System.out.println(rgb);
 			for(Territory t : territories) {
 				if(t.getColor() == rgb) {
 					gui.setLabel("You have selected " + t.getName());
