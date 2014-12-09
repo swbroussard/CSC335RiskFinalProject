@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -259,7 +257,7 @@ public class RiskGUI extends JFrame implements Observer{
 			else {}
 
 			if(humanYes.getSelectedObjects() != null) {
-				human = new HumanPlayer("Human", this);
+				human = new HumanPlayer("Human");
 				players.add(human);
 			}
 		}

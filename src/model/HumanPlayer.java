@@ -1,15 +1,11 @@
 package model;
 
-import view.RiskGUI;
-
 public class HumanPlayer extends Player{
-	private RiskGUI gui;
 	private Territory currentTerritory;
 	private boolean territoryChosen;
 	
-	public HumanPlayer(String name, RiskGUI gui){
+	public HumanPlayer(String name){
 		super(name);
-		this.gui = gui;
 		territoryChosen = false;
 	}
 	
