@@ -41,7 +41,7 @@ public class RiskGUI extends JFrame implements Observer{
 		setUpPlayers();
 
 		typeOfPlay = TypeOfPlay.DO_NOTHING;
-		
+
 		controller = new RiskController();
 		controller.addObserver(this);
 		controller.setPlayers(players);
@@ -133,7 +133,7 @@ public class RiskGUI extends JFrame implements Observer{
 		JRadioButton simple5 = new JRadioButton("5");
 		JRadioButton simple6 = new JRadioButton("6");
 
-		simple1.setSelected(true);
+		simple5.setSelected(true);
 
 		ButtonGroup simpleGroup = new ButtonGroup(); //only allows one radio button to be selected
 		simpleGroup.add(simple0);
@@ -153,7 +153,7 @@ public class RiskGUI extends JFrame implements Observer{
 		JRadioButton intermediate5 = new JRadioButton("5");
 		JRadioButton intermediate6 = new JRadioButton("6");
 
-		intermediate1.setSelected(true);
+		intermediate0.setSelected(true);
 
 		ButtonGroup intermediateGroup = new ButtonGroup(); //only allows one radio button to be selected
 		intermediateGroup.add(intermediate0);
@@ -168,8 +168,8 @@ public class RiskGUI extends JFrame implements Observer{
 		JRadioButton humanYes = new JRadioButton("Yes");
 		JRadioButton humanNo = new JRadioButton("No");
 
-		humanNo.setSelected(true);
-		
+		humanYes.setSelected(true);
+
 		ButtonGroup humanGroup = new ButtonGroup();
 		humanGroup.add(humanYes);
 		humanGroup.add(humanNo);
@@ -186,6 +186,11 @@ public class RiskGUI extends JFrame implements Observer{
 			System.exit(0);
 		}
 		else {
+			if(humanYes.getSelectedObjects() != null) {
+				human = new HumanPlayer("Human");
+				players.add(human);
+			}
+
 			if(simple6.getSelectedObjects() != null) {
 				players.add(new SimpleAIPlayer("Simple Player 6"));		
 				players.add(new SimpleAIPlayer("Simple Player 5"));	
@@ -256,10 +261,7 @@ public class RiskGUI extends JFrame implements Observer{
 			}
 			else {}
 
-			if(humanYes.getSelectedObjects() != null) {
-				human = new HumanPlayer("Human");
-				players.add(human);
-			}
+
 		}
 
 	}
@@ -318,17 +320,26 @@ public class RiskGUI extends JFrame implements Observer{
 				human.setNumArmies(human.getNumArmies() - 1);
 				label.setText("You have added an army to " + t.getName());
 				typeOfPlay = TypeOfPlay.DO_NOTHING;
+				human.setTerritoryChosen(true);
 			}
 		}
 		else if (typeOfPlay == TypeOfPlay.ATTACK_FROM) {
 			if (t.getCurrentOwner() != human) {
-				label.setText("You don't own that territory!");
+				label.setText("You don't own that territory!  Please select a Territory you own to attack from!");
 			}
 			else {
-				human.setTerritoryChosen(true);
-				human.setCurrentTerritory(t);
-				label.setText("You are attacking from " + t.getName());
-				typeOfPlay = TypeOfPlay.DO_NOTHING;
+				if(t.getNumArmies() > 1) {
+					for(Territory a: t.getAdjacent()) {
+						if(a.getCurrentOwner() != human) {
+							human.setTerritoryChosen(true);
+							human.setCurrentTerritory(t);
+							label.setText("You selected " + t.getName() + " to attack from.");
+							typeOfPlay = TypeOfPlay.DO_NOTHING;
+						}
+					}
+				}
+				else
+					label.setText("You cannot attack from that Territory! Please select another");
 			}
 		}
 		else if (typeOfPlay == TypeOfPlay.ATTACK_TO){
@@ -365,14 +376,14 @@ public class RiskGUI extends JFrame implements Observer{
 			if(!allTaken) {
 				typeOfPlay = TypeOfPlay.SELECT_TERRITORY;
 				label.setText("Please select a Territory to claim");
-				
+
 			}
 
 			else {
 				typeOfPlay = TypeOfPlay.PLACE_ARMY;
 				label.setText("You have " + human.getNumArmies() + " armies left to place.  "
 						+ "Please select a territory to place an army.");
-				
+
 			}
 		}
 
@@ -391,8 +402,12 @@ public class RiskGUI extends JFrame implements Observer{
 		mapPanel.repaint();
 	}
 
+	public Player getHumanPlayer() {
+		return human;
+	}
+
 	private enum TypeOfPlay {
-		SELECT_TERRITORY, PLACE_ARMY, ATTACK_FROM, ATTACK_TO, DO_NOTHING
+		SELECT_TERRITORY, PLACE_ARMY, ATTACK_FROM, ATTACK_TO, FORTIFY_FROM, FORTIFY_TO, DO_NOTHING
 	}
 
 }

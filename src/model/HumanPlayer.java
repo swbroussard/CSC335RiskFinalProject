@@ -13,14 +13,16 @@ public class HumanPlayer extends Player{
 	public void placeArmy() {
 		this.setChanged();
 		notifyObservers(ObserverMessages.HUMAN_PLACE_ARMY);
-		
 		while(territoryChosen == false) {
+			setChanged();
+			notifyObservers();
 			if(territoryChosen == true) {
-				System.out.println("getting to here");
+				territoryChosen = false;
 				return;
 			}
-			//System.out.println("Temp num in while: " + temp + " Num Armies in while: " + getNumArmies());
 		}
+		territoryChosen = false;
+		return;
 		
 	}
 
@@ -29,6 +31,12 @@ public class HumanPlayer extends Player{
 		this.setChanged();
 		notifyObservers(ObserverMessages.HUMAN_SELECT_ATTACK_FROM);
 		while (!territoryChosen) {
+			setChanged();
+			notifyObservers();
+			if(territoryChosen == true) {
+				territoryChosen = false;
+				return currentTerritory;
+			}
 			//System.out.println("waiting for attackFrom territory to be chosen");
 		}
 		// choose one of your territories with two or more armies to attack from
@@ -41,7 +49,12 @@ public class HumanPlayer extends Player{
 		this.setChanged();
 		notifyObservers(ObserverMessages.HUMAN_SELECT_ATTACK_TO);
 		while (!territoryChosen) {
-			//System.out.println("waiting for attackTo territory to be chosen");
+			setChanged();
+			notifyObservers();
+			if(territoryChosen == true) {
+				territoryChosen = false;
+				return currentTerritory;
+			}
 		}
 		// choose another player's territory adjacent to attackFrom
 		return null;

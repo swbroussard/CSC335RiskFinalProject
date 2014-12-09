@@ -11,7 +11,8 @@ import java.util.Random;
  * @author Steven W Broussard & Jeremy Jalnos
  *
  */
-
+//TODO: Need to add in an algorithm for ending the turn.  Right now the intermediate player continues attacking
+//until he has no where to attack from.
 public class IntermediateAIPlayer extends Player{
 	private Random genRan;
 	

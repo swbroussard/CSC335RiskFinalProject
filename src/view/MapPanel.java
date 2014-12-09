@@ -79,7 +79,7 @@ public class MapPanel extends JPanel{
 			//System.out.println(rgb);
 			for(Territory t : territories) {
 				if(t.getColor() == rgb) {
-					gui.setLabel("You have selected " + t.getName());
+//					gui.setLabel("You have selected " + t.getName());
 					gui.territorySelected(t);
 				}
 			}
