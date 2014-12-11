@@ -12,6 +12,7 @@ public class ExpertAiPlayer extends Player {
 	private ArrayList<Territory> ASI;
 	private ArrayList<Territory> AUS;
 	private int count = 0;
+	private String ChoosenContinent = "";
 
 	private void setNA() {
 		NA = new ArrayList<Territory>();
@@ -216,7 +217,7 @@ public class ExpertAiPlayer extends Player {
 			count++;
 			
 		}
-		String ChoosenContinent = "";
+		
 		ArrayList<String> ChooseContinent = new ArrayList<String>();
 		Territory selected = null;
 		if (debug)
@@ -359,11 +360,12 @@ public class ExpertAiPlayer extends Player {
 				}
 				int rc = genRan.nextInt(ChooseContinent.size());
 				System.out.println(ChooseContinent.get(rc).toString());
-				ChoosenContinent = ChooseContinent.get(rc).toString();
+				
 				if (ChooseContinent.get(rc) == "North America") {
 					for (int t = 0; t < NA.size(); t++) {
 						if (NA.get(t).getCurrentOwner() == null) {
 							selected = NA.get(t);
+							ChoosenContinent = "North America";
 							System.out.println("Selected: " + selected.toString());
 							break;
 						}
@@ -375,6 +377,7 @@ public class ExpertAiPlayer extends Player {
 					for (int t = 0; t < SA.size(); t++) {
 						if (SA.get(t).getCurrentOwner() == null) {
 							selected = SA.get(t);
+							ChoosenContinent = "South America";
 							System.out.println("Selected: " + selected.toString());
 							break;
 						}
@@ -386,6 +389,7 @@ public class ExpertAiPlayer extends Player {
 					for (int t = 0; t < EU.size(); t++) {
 						if (EU.get(t).getCurrentOwner() == null) {
 							selected = EU.get(t);
+							ChoosenContinent = "Europe";
 							System.out.println("Selected: " + selected.toString());
 							break;
 						}
@@ -397,6 +401,7 @@ public class ExpertAiPlayer extends Player {
 					for (int t = 0; t < AF.size(); t++) {
 						if (AF.get(t).getCurrentOwner() == null) {
 							selected = AF.get(t);
+							ChoosenContinent = "Africa";
 							System.out.println("Selected: " + selected.toString());
 							break;
 						}
@@ -407,6 +412,7 @@ public class ExpertAiPlayer extends Player {
 					for (int t = 0; t < ASI.size(); t++) {
 						if (ASI.get(t).getCurrentOwner() == null) {
 							selected = ASI.get(t);
+							ChoosenContinent = "Asia";
 							System.out.println("Selected: "+ selected.toString());
 							break;
 						}
@@ -418,6 +424,7 @@ public class ExpertAiPlayer extends Player {
 					for (int t = 0; t < AUS.size(); t++) {
 						if (AUS.get(t).getCurrentOwner() == null) {
 							selected = AUS.get(t);
+							ChoosenContinent = "Australia";
 							System.out.println("Selected: "+ selected.toString());
 							break;
 						}
@@ -448,21 +455,30 @@ public class ExpertAiPlayer extends Player {
 				// used to be else statement with random number generator.
 				// .nextInt
 			}// getTerritoriesOwned.size() if statement
+			else {
+				selected = null;
+//				setNA();
+//				setSA();
+//				setEU();
+//				setAF();
+//				setASI();
+//				setAUS();
 
 			if (ChoosenContinent.equals("North America")) {
 				int i = 0;
-				while (i < NA.size()) {
+				while (i < NA.size()+1) {
+					if(i!=NA.size()){
 					if (NA.get(i).getCurrentOwner() == null) {
-						NA.get(i).setCurrentOwner(this);
+						selected = NA.get(i);
 						break;
-					}
+					}}
 
-					if (i == NA.size()) {
+					else {
 						int n = 0;
 						while (n < getAllTerritories().size()) {
 							if (getAllTerritories().get(n).getCurrentOwner() == null) {
-								getAllTerritories().get(n)
-										.setCurrentOwner(this);
+								selected = getAllTerritories().get(n);
+										
 								break;
 							} else {
 								n++;
@@ -474,18 +490,19 @@ public class ExpertAiPlayer extends Player {
 			}
 			if (ChoosenContinent.equals("South America")) {
 				int i = 0;
-				while (i < SA.size()) {
+				while (i < SA.size()+1) {
+					if(i!=SA.size()){
 					if (SA.get(i).getCurrentOwner() == null) {
-						SA.get(i).setCurrentOwner(this);
+						selected = SA.get(i);
 						break;
-					}
+					}}
+					else{
 
-					if (i == SA.size()) {
+					
 						int n = 0;
 						while (n < getAllTerritories().size()) {
 							if (getAllTerritories().get(n).getCurrentOwner() == null) {
-								getAllTerritories().get(n)
-										.setCurrentOwner(this);
+								selected = getAllTerritories().get(n);
 								break;
 							} else {
 								n++;
@@ -497,18 +514,18 @@ public class ExpertAiPlayer extends Player {
 			}
 			if (ChoosenContinent.equals("Europe")) {
 				int i = 0;
-				while (i < EU.size()) {
+				while (i < EU.size()+1) {
+					if(i != EU.size()){
 					if (EU.get(i).getCurrentOwner() == null) {
-						EU.get(i).setCurrentOwner(this);
+						selected = EU.get(i);
 						break;
-					}
+					}}
 
-					if (i == EU.size()) {
+					else {
 						int n = 0;
 						while (n < getAllTerritories().size()) {
 							if (getAllTerritories().get(n).getCurrentOwner() == null) {
-								getAllTerritories().get(n)
-										.setCurrentOwner(this);
+								selected = getAllTerritories().get(n);
 								break;
 							} else {
 								n++;
@@ -520,18 +537,18 @@ public class ExpertAiPlayer extends Player {
 			}
 			if (ChoosenContinent.equals("Africa")) {
 				int i = 0;
-				while (i < AF.size()) {
+				while (i < AF.size()+1) {
+					if(i != AF.size()){
 					if (AF.get(i).getCurrentOwner() == null) {
-						AF.get(i).setCurrentOwner(this);
+						selected = AF.get(i);
 						break;
-					}
+					}}
 
-					if (i == AF.size()) {
+					else{
 						int n = 0;
 						while (n < getAllTerritories().size()) {
 							if (getAllTerritories().get(n).getCurrentOwner() == null) {
-								getAllTerritories().get(n)
-										.setCurrentOwner(this);
+								selected = getAllTerritories().get(n);
 								break;
 							} else {
 								n++;
@@ -543,18 +560,19 @@ public class ExpertAiPlayer extends Player {
 			}
 			if (ChoosenContinent.equals("Asia")) {
 				int i = 0;
-				while (i < ASI.size()) {
+				while (i < ASI.size()+1) {
+					if(i!=ASI.size()){
 					if (ASI.get(i).getCurrentOwner() == null) {
-						ASI.get(i).setCurrentOwner(this);
+						selected = ASI.get(i);
 						break;
 					}
-
-					if (i == ASI.size()) {
+					}
+					else{
+					
 						int n = 0;
 						while (n < getAllTerritories().size()) {
 							if (getAllTerritories().get(n).getCurrentOwner() == null) {
-								getAllTerritories().get(n)
-										.setCurrentOwner(this);
+								selected = getAllTerritories().get(n);
 								break;
 							} else {
 								n++;
@@ -566,18 +584,18 @@ public class ExpertAiPlayer extends Player {
 			}
 			if (ChoosenContinent.equals("Australia")) {
 				int i = 0;
-				while (i < AUS.size()) {
+				while (i < AUS.size()+1) {
+					if(i != AUS.size()){
 					if (AUS.get(i).getCurrentOwner() == null) {
-						AUS.get(i).setCurrentOwner(this);
+						selected = AUS.get(i);
 						break;
-					}
-
-					if (i == AUS.size()) {
+					}}
+					else{
+					
 						int n = 0;
 						while (n < getAllTerritories().size()) {
 							if (getAllTerritories().get(n).getCurrentOwner() == null) {
-								getAllTerritories().get(n)
-										.setCurrentOwner(this);
+								selected = getAllTerritories().get(n);
 								break;
 							} else {
 								n++;
@@ -587,9 +605,16 @@ public class ExpertAiPlayer extends Player {
 					i++;
 				}
 			}
-
+			
+			System.out.println("SelectedPlace: " + selected.toString());
+			selected.setCurrentOwner(this);
+			selected.setNumArmies(1);
+			// territorySelected = true;
+			addTerritory(selected);
+			setNumArmies(getNumArmies() - 1);
+			
 		}// allSelected if statement
-
+		}
 		// }//end of choosing empty territories
 		else {
 			int r = genRan.nextInt(getTerritoriesOwned().size());
