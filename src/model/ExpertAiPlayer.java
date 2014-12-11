@@ -774,11 +774,15 @@ public class ExpertAiPlayer extends Player {
 	private int maxArmy() {
 		int maxNumArmy = 0;
 		for (int i = 0; i < getTerritoriesOwned().size(); i++) {
+			if(i+1 == getTerritoriesOwned().size()){
 			if (getTerritoriesOwned().get(i).getNumArmies() < getTerritoriesOwned()
 					.get(i + 1).getNumArmies()
 					&& 1 + i != getTerritoriesOwned().size()) {
+				
 				maxNumArmy = getTerritoriesOwned().get(i + 1).getNumArmies();
 			}
+		}else{
+			break;}
 		}
 		return maxNumArmy;
 	}
@@ -789,6 +793,7 @@ public class ExpertAiPlayer extends Player {
 			System.out.println("attackTo called by " + getName());
 		// Semi-intelligently chooses a territory and places one army there
 		int lowTroop = 1000;
+		System.out.println("attackTo called by " + getName());
 		Territory attack = null;
 		for (int i = 0; i < attackFrom.getAdjacent().size(); i++) {
 			if (attackFrom.getAdjacent().get(i).getCurrentOwner() != this) {
