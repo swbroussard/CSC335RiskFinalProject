@@ -264,7 +264,7 @@ public class ExpertAiPlayer extends Player {
 						NumNA++;
 					}
 				}
-				if (isTaken == true && NumNA > 2) {
+				if (isTaken == true) {
 					NACompatible = false;
 				} else {
 					NACompatible = true;
@@ -278,7 +278,7 @@ public class ExpertAiPlayer extends Player {
 						NumSA++;
 					}
 				}
-				if (isTaken == true && NumSA > 2) {
+				if (isTaken == true) {
 					SACompatible = false;
 				} else {
 					SACompatible = true;
@@ -292,7 +292,7 @@ public class ExpertAiPlayer extends Player {
 						NumEU++;
 					}
 				}
-				if (isTaken == true && NumEU > 2) {
+				if (isTaken == true) {
 					EUCompatible = false;
 				} else {
 					EUCompatible = true;
@@ -305,7 +305,7 @@ public class ExpertAiPlayer extends Player {
 						NumAF++;
 					}
 				}
-				if (isTaken == true && NumAF > 2) {
+				if (isTaken == true) {
 					AFCompatible = false;
 				} else {
 					AFCompatible = true;
@@ -319,7 +319,7 @@ public class ExpertAiPlayer extends Player {
 						NumASI++;
 					}
 				}
-				if (isTaken == true && NumASI > 2) {
+				if (isTaken == true) {
 					ASICompatible = false;
 				} else {
 					ASICompatible = true;
@@ -333,7 +333,7 @@ public class ExpertAiPlayer extends Player {
 						NumAUS++;
 					}
 				}
-				if (isTaken == true && NumAUS > 2) {
+				if (isTaken == true) {
 					AUSCompatible = false;
 				} else {
 					AUSCompatible = true;
@@ -590,8 +590,9 @@ public class ExpertAiPlayer extends Player {
 						selected = AUS.get(i);
 						break;
 					}}
-					else{
 					
+					else{
+						
 						int n = 0;
 						while (n < getAllTerritories().size()) {
 							if (getAllTerritories().get(n).getCurrentOwner() == null) {
