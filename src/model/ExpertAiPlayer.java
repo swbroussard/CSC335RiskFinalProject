@@ -207,6 +207,7 @@ public class ExpertAiPlayer extends Player {
 	// TODO: work on this!
 	@Override
 	public void placeArmy() {
+		if(debug) System.out.println("placeArmy called by "+getName());
 		if(count == 0){
 			setNA();
 			setSA();
@@ -447,9 +448,11 @@ public class ExpertAiPlayer extends Player {
 				// territorySelected = true;
 				addTerritory(selected);
 				setNumArmies(getNumArmies() - 1);
-				if (debug)
-					System.out.println("Army successfully placed in "
-							+ selected.getName() + " by " + getName());
+				setChanged();
+				notifyObservers("" + this.getName() + " claimed " + selected.getName());
+				if(debug) System.out.println("Army successfully placed in " + selected.getName() + " by "+getName());
+				if(debug) System.out.println(getAllTerritories());
+				
 				// }//second if statement
 
 				// used to be else statement with random number generator.
@@ -613,18 +616,22 @@ public class ExpertAiPlayer extends Player {
 			// territorySelected = true;
 			addTerritory(selected);
 			setNumArmies(getNumArmies() - 1);
+			setChanged();
+			notifyObservers("" + this.getName() + " claimed " + selected.getName());
+			if(debug) System.out.println("Army successfully placed in " + selected.getName() + " by "+getName());
+			if(debug) System.out.println(getAllTerritories());
 			
 		}// allSelected if statement
 		}
 		// }//end of choosing empty territories
 		else {
 			int r = genRan.nextInt(getTerritoriesOwned().size());
-			getTerritoriesOwned().get(r).setNumArmies(getNumArmies() + 1);
+			Territory selected1 = getTerritoriesOwned().get(r);
+			selected1.setNumArmies(selected1.getNumArmies() + 1);
 			setNumArmies(getNumArmies() - 1);
-			if (debug)
-				System.out
-						.println("Army successfully placed in owned territory by "
-								+ getName());
+			setChanged();
+			notifyObservers("" + this.getName() + " placed an army in " + selected1.getName());
+			if (debug) System.out.println("Army successfully placed in owned territory by "+getName());
 		}
 	}
 
