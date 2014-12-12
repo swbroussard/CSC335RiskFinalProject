@@ -528,7 +528,6 @@ public class RiskController extends Observable{
 		adjacent.add(china);
 		adjacent.add(india);
 		adjacent.add(indonesia);
-		adjacent.add(newGuinea);
 		siam.setAdjacent(adjacent);
 
 		// adjacent for Siberia

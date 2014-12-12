@@ -61,6 +61,9 @@ public class SidePanel extends JPanel{
 			text += "<br>\t " + p.getName();
 		}
 		//text += "<br><br>" + gui.getCurrentPlayer().getName() + "\'s turn.";
+		
+		text += "<br><br>Continent Bonuses:<br>North America - 5<br>South America - 2"
+				+ "<br>Europe - 5<br>Africa - 3<br>Asia - 7<br>Australia - 2";
 		label.setText(text);
 	}
 	
