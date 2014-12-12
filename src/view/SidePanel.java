@@ -6,16 +6,22 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import model.Player;
 
 @SuppressWarnings("serial")
 public class SidePanel extends JPanel{
 	private JButton doneAttacking, doneFortifying, exit;
 	private RiskGUI gui;
+	private JLabel label;
 	
 	public SidePanel(RiskGUI gui) {
 		super();
 		this.gui = gui;
+		
+		updateLabel();
 		
 		this.setPreferredSize(new Dimension(200, 600));
 		this.setVisible(true);
@@ -42,9 +48,20 @@ public class SidePanel extends JPanel{
 			}
 		});
 		
+		this.add(label);
 		this.add(doneAttacking);
 		this.add(doneFortifying);
 		this.add(exit);
+	}
+	
+	public void updateLabel() {
+		label = new JLabel();
+		String text = new String("<html>Current Players: ");
+		for(Player p: gui.getPlayers()) {
+			text += "<br>\t " + p.getName();
+		}
+		//text += "<br><br>" + gui.getCurrentPlayer().getName() + "\'s turn.";
+		label.setText(text);
 	}
 	
 	public void doneAttacking() {

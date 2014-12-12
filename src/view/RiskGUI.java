@@ -3,6 +3,7 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -14,8 +15,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import model.ExpertAiPlayer;
 import model.HumanPlayer;
 import model.IntermediateAIPlayer;
 import model.ObserverMessages;
@@ -33,12 +36,15 @@ public class RiskGUI extends JFrame implements Observer{
 	private SidePanel sidePanel;
 	private JLabel label;
 	private ArrayList<Player> players;
+	private Player currentPlayer;
 	private HumanPlayer human;
 	private TypeOfPlay typeOfPlay;
 
 	public RiskGUI() {
 		super();	
 		setUpPlayers();
+		
+		currentPlayer = players.get(0);
 
 		typeOfPlay = TypeOfPlay.DO_NOTHING;
 
@@ -88,12 +94,12 @@ public class RiskGUI extends JFrame implements Observer{
 
 	public void setUpPlayers() {
 		players = new ArrayList<Player>();
-		determineNumberOfPlayers();
+		selectPlayers();
 		while(players.size() > 6 || players.size() < 2) {
 			JOptionPane.showMessageDialog(null, "You must select between 2 and 6 players", "Error!",
 					JOptionPane.ERROR_MESSAGE);
 			players = new ArrayList<Player>();
-			determineNumberOfPlayers();
+			selectPlayers();
 		}
 		switch(players.size()) {
 		case 6:
@@ -118,153 +124,354 @@ public class RiskGUI extends JFrame implements Observer{
 
 	}
 
-	public void determineNumberOfPlayers() {
-		JLabel instructions = new JLabel("Instructions: Select your players.  You must have between 2 and 6 players");
-		JLabel simpleLabel = new JLabel("Select the number of Simple Players: ");
-		JLabel intermediateLabel = new JLabel("Select the number of Intermediate Players: ");
-		JLabel humanLabel = new JLabel("Do you want to play?");
+	public void selectPlayers() {
+		JLabel instructionLabel = new JLabel();
+		instructionLabel.setText("<html>Instructions:"
+				+ "<br>Please select between 2-6 players and determine a level of difficulty for each."
+				+ "<br>If you do not want a player, select Not Playing."
+				+ "<br>Enter a name in the Name field or the default name will be used."
+				+ "<br> ----------------------------------------------------------------------");
 
-		//simpleAI radio buttons
-		JRadioButton simple0 = new JRadioButton("0");
-		JRadioButton simple1 = new JRadioButton("1");
-		JRadioButton simple2 = new JRadioButton("2");
-		JRadioButton simple3 = new JRadioButton("3");
-		JRadioButton simple4 = new JRadioButton("4");
-		JRadioButton simple5 = new JRadioButton("5");
-		JRadioButton simple6 = new JRadioButton("6");
 
-		simple5.setSelected(true);
 
-		ButtonGroup simpleGroup = new ButtonGroup(); //only allows one radio button to be selected
-		simpleGroup.add(simple0);
-		simpleGroup.add(simple1);
-		simpleGroup.add(simple2);
-		simpleGroup.add(simple3);
-		simpleGroup.add(simple4);
-		simpleGroup.add(simple5);
-		simpleGroup.add(simple6);
+		//Player 1
+		JLabel p1 = new JLabel("Player 1:");
 
-		//Intermediate radio buttons
-		JRadioButton intermediate0 = new JRadioButton("0");
-		JRadioButton intermediate1 = new JRadioButton("1");
-		JRadioButton intermediate2 = new JRadioButton("2");
-		JRadioButton intermediate3 = new JRadioButton("3");
-		JRadioButton intermediate4 = new JRadioButton("4");
-		JRadioButton intermediate5 = new JRadioButton("5");
-		JRadioButton intermediate6 = new JRadioButton("6");
 
-		intermediate0.setSelected(true);
+		JPanel p1NamePanel = new JPanel();
+		p1NamePanel.setLayout(new FlowLayout(FlowLayout.LEADING));
 
-		ButtonGroup intermediateGroup = new ButtonGroup(); //only allows one radio button to be selected
-		intermediateGroup.add(intermediate0);
-		intermediateGroup.add(intermediate1);
-		intermediateGroup.add(intermediate2);
-		intermediateGroup.add(intermediate3);
-		intermediateGroup.add(intermediate4);
-		intermediateGroup.add(intermediate5);
-		intermediateGroup.add(intermediate6);
+		JLabel p1Name = new JLabel("   Name: ");
+		JTextField p1EnterName = new JTextField();
+		p1EnterName.setText("Player 1");
+		p1EnterName.setSize(200, 20);
 
-		//Add human radio buttons (yes/no)
-		JRadioButton humanYes = new JRadioButton("Yes");
-		JRadioButton humanNo = new JRadioButton("No");
+		p1NamePanel.add(p1);
+		p1NamePanel.add(p1Name);
+		p1NamePanel.add(p1EnterName);
 
-		humanYes.setSelected(true);
 
-		ButtonGroup humanGroup = new ButtonGroup();
-		humanGroup.add(humanYes);
-		humanGroup.add(humanNo);
+		JPanel p1ButtonPanel = new JPanel();
+		p1ButtonPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
 
-		//Add everything to the JOptionPane message
-		Object[] message = {instructions, simpleLabel, simple0, simple1, simple2, simple3, simple4,
-				simple5, simple6, intermediateLabel, intermediate0, intermediate1, intermediate2, intermediate3,
-				intermediate4, intermediate5, intermediate6, humanLabel, humanYes, humanNo};
+		JRadioButton p1Human = new JRadioButton("Human");
+		JRadioButton p1Simple = new JRadioButton("Simple AI");
+		JRadioButton p1Inter = new JRadioButton("Intermediate AI");
+		JRadioButton p1Expert = new JRadioButton("Expert AI");
 
-		//Create the JOptionPane
+		ButtonGroup p1BG = new ButtonGroup();
+		p1BG.add(p1Human);
+		p1BG.add(p1Simple);
+		p1BG.add(p1Inter);
+		p1BG.add(p1Expert);
+
+		JLabel p1ButtonBuffer = new JLabel();
+		p1ButtonBuffer.setSize(50, 9);
+
+		p1ButtonPanel.add(p1ButtonBuffer);
+		p1ButtonPanel.add(p1Human);
+		p1ButtonPanel.add(p1Simple);
+		p1ButtonPanel.add(p1Inter);
+		p1ButtonPanel.add(p1Expert);
+
+
+		//Player 2
+		JLabel p2 = new JLabel("Player 2:");
+
+
+		JPanel p2NamePanel = new JPanel();
+		p2NamePanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+
+		JLabel p2Name = new JLabel("   Name: ");
+		JTextField p2EnterName = new JTextField();
+		p2EnterName.setText("Player 2");
+		p2EnterName.setSize(200, 20);
+
+		p2NamePanel.add(p2);
+		p2NamePanel.add(p2Name);
+		p2NamePanel.add(p2EnterName);
+
+
+		JPanel p2ButtonPanel = new JPanel();
+		p2ButtonPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+
+		JRadioButton p2Human = new JRadioButton("Human");
+		JRadioButton p2Simple = new JRadioButton("Simple AI");
+		JRadioButton p2Inter = new JRadioButton("Intermediate AI");
+		JRadioButton p2Expert = new JRadioButton("Expert AI");
+
+		ButtonGroup p2BG = new ButtonGroup();
+		p2BG.add(p2Human);
+		p2BG.add(p2Simple);
+		p2BG.add(p2Inter);
+		p2BG.add(p2Expert);
+
+		JLabel p2ButtonBuffer = new JLabel();
+		p2ButtonBuffer.setSize(50, 10);
+
+		p2ButtonPanel.add(p2ButtonBuffer);
+		p2ButtonPanel.add(p2Human);
+		p2ButtonPanel.add(p2Simple);
+		p2ButtonPanel.add(p2Inter);
+		p2ButtonPanel.add(p2Expert);
+
+
+		//Player 3
+		JLabel p3 = new JLabel("Player 3:");
+
+
+		JPanel p3NamePanel = new JPanel();
+		p3NamePanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+
+		JLabel p3Name = new JLabel("   Name: ");
+		JTextField p3EnterName = new JTextField();
+		p3EnterName.setText("Player 3");
+		p3EnterName.setSize(200, 20);
+
+		p3NamePanel.add(p3);
+		p3NamePanel.add(p3Name);
+		p3NamePanel.add(p3EnterName);
+
+
+		JPanel p3ButtonPanel = new JPanel();
+		p3ButtonPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+
+		JRadioButton p3Human = new JRadioButton("Human");
+		JRadioButton p3Simple = new JRadioButton("Simple AI");
+		JRadioButton p3Inter = new JRadioButton("Intermediate AI");
+		JRadioButton p3Expert = new JRadioButton("Expert AI");
+		JRadioButton p3NA = new JRadioButton("Not Playing");
+
+		ButtonGroup p3BG = new ButtonGroup();
+		p3BG.add(p3Human);
+		p3BG.add(p3Simple);
+		p3BG.add(p3Inter);
+		p3BG.add(p3Expert);
+		p3BG.add(p3NA);
+
+		JLabel p3ButtonBuffer = new JLabel();
+		p3ButtonBuffer.setSize(50, 9);
+
+		p3ButtonPanel.add(p3ButtonBuffer);
+		p3ButtonPanel.add(p3Human);
+		p3ButtonPanel.add(p3Simple);
+		p3ButtonPanel.add(p3Inter);
+		p3ButtonPanel.add(p3Expert);
+		p3ButtonPanel.add(p3NA);
+
+		//Player 4
+		JLabel p4 = new JLabel("Player 4:");
+
+
+		JPanel p4NamePanel = new JPanel();
+		p4NamePanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+
+		JLabel p4Name = new JLabel("   Name: ");
+		JTextField p4EnterName = new JTextField();
+		p4EnterName.setText("Player 4");
+		p4EnterName.setSize(200, 20);
+
+		p4NamePanel.add(p4);
+		p4NamePanel.add(p4Name);
+		p4NamePanel.add(p4EnterName);
+
+
+		JPanel p4ButtonPanel = new JPanel();
+		p4ButtonPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+
+		JRadioButton p4Human = new JRadioButton("Human");
+		JRadioButton p4Simple = new JRadioButton("Simple AI");
+		JRadioButton p4Inter = new JRadioButton("Intermediate AI");
+		JRadioButton p4Expert = new JRadioButton("Expert AI");
+		JRadioButton p4NA = new JRadioButton("Not Playing");
+
+		ButtonGroup p4BG = new ButtonGroup();
+		p4BG.add(p4Human);
+		p4BG.add(p4Simple);
+		p4BG.add(p4Inter);
+		p4BG.add(p4Expert);
+		p4BG.add(p4NA);
+
+		JLabel p4ButtonBuffer = new JLabel();
+		p4ButtonBuffer.setSize(50, 9);
+
+		p4ButtonPanel.add(p4ButtonBuffer);
+		p4ButtonPanel.add(p4Human);
+		p4ButtonPanel.add(p4Simple);
+		p4ButtonPanel.add(p4Inter);
+		p4ButtonPanel.add(p4Expert);
+		p4ButtonPanel.add(p4NA);
+
+
+		//Player 5
+		JLabel p5 = new JLabel("Player 5:");
+
+
+		JPanel p5NamePanel = new JPanel();
+		p5NamePanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+
+		JLabel p5Name = new JLabel("   Name: ");
+		JTextField p5EnterName = new JTextField();
+		p5EnterName.setText("Player 5");
+		p5EnterName.setSize(200, 20);
+
+		p5NamePanel.add(p5);
+		p5NamePanel.add(p5Name);
+		p5NamePanel.add(p5EnterName);
+
+
+		JPanel p5ButtonPanel = new JPanel();
+		p5ButtonPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+
+		JRadioButton p5Human = new JRadioButton("Human");
+		JRadioButton p5Simple = new JRadioButton("Simple AI");
+		JRadioButton p5Inter = new JRadioButton("Intermediate AI");
+		JRadioButton p5Expert = new JRadioButton("Expert AI");
+		JRadioButton p5NA = new JRadioButton("Not Playing");
+
+		ButtonGroup p5BG = new ButtonGroup();
+		p5BG.add(p5Human);
+		p5BG.add(p5Simple);
+		p5BG.add(p5Inter);
+		p5BG.add(p5Expert);
+		p5BG.add(p5NA);
+
+		JLabel p5ButtonBuffer = new JLabel();
+		p5ButtonBuffer.setSize(50, 9);
+
+		p5ButtonPanel.add(p5ButtonBuffer);
+		p5ButtonPanel.add(p5Human);
+		p5ButtonPanel.add(p5Simple);
+		p5ButtonPanel.add(p5Inter);
+		p5ButtonPanel.add(p5Expert);
+		p5ButtonPanel.add(p5NA);
+
+
+		//Player 6
+		JLabel p6 = new JLabel("Player 6:");
+
+
+		JPanel p6NamePanel = new JPanel();
+		p6NamePanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+
+		JLabel p6Name = new JLabel("   Name: ");
+		JTextField p6EnterName = new JTextField();
+		p6EnterName.setText("Player 6");
+		p6EnterName.setSize(200, 20);
+
+		p6NamePanel.add(p6);
+		p6NamePanel.add(p6Name);
+		p6NamePanel.add(p6EnterName);
+
+
+		JPanel p6ButtonPanel = new JPanel();
+		p6ButtonPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+
+		JRadioButton p6Human = new JRadioButton("Human");
+		JRadioButton p6Simple = new JRadioButton("Simple AI");
+		JRadioButton p6Inter = new JRadioButton("Intermediate AI");
+		JRadioButton p6Expert = new JRadioButton("Expert AI");
+		JRadioButton p6NA = new JRadioButton("Not Playing");
+
+		ButtonGroup p6BG = new ButtonGroup();
+		p6BG.add(p6Human);
+		p6BG.add(p6Simple);
+		p6BG.add(p6Inter);
+		p6BG.add(p6Expert);
+		p6BG.add(p6NA);
+
+		JLabel p6ButtonBuffer = new JLabel();
+		p6ButtonBuffer.setSize(50, 9);
+
+		p6ButtonPanel.add(p6ButtonBuffer);
+		p6ButtonPanel.add(p6Human);
+		p6ButtonPanel.add(p6Simple);
+		p6ButtonPanel.add(p6Inter);
+		p6ButtonPanel.add(p6Expert);
+		p6ButtonPanel.add(p6NA);
+
+		//set default selected
+		p1Human.setSelected(true);
+		p2Simple.setSelected(true);
+		p3NA.setSelected(true);
+		p4NA.setSelected(true);
+		p5NA.setSelected(true);
+		p6NA.setSelected(true);
+
+
+		Object[] message = {instructionLabel, p1NamePanel, p1ButtonPanel, p2NamePanel, 
+				p2ButtonPanel, p3NamePanel, p3ButtonPanel, p4NamePanel, p4ButtonPanel,
+				p5NamePanel, p5ButtonPanel, p6NamePanel, p6ButtonPanel};
 		int option = JOptionPane.showConfirmDialog(null, message, "Select your opponents",
 				JOptionPane.OK_CANCEL_OPTION);
 		if(option == JOptionPane.CANCEL_OPTION) {
 			System.exit(0);
 		}
-		else {
-			if(humanYes.getSelectedObjects() != null) {
-				human = new HumanPlayer("Human");
-				players.add(human);
-			}
+		//add the players to the arrray
+		else{
+			//add player 1
+			if(p1Human.isSelected())
+				players.add(new HumanPlayer(p1EnterName.getText()));
+			else if(p1Simple.isSelected())
+				players.add(new SimpleAIPlayer(p1EnterName.getText()));
+			else if(p1Inter.isSelected())
+				players.add(new IntermediateAIPlayer(p1EnterName.getText()));
+			else if(p1Expert.isSelected())
+				players.add(new ExpertAiPlayer(p1EnterName.getText()));
 
-			if(simple6.getSelectedObjects() != null) {
-				players.add(new SimpleAIPlayer("Simple Player 6"));		
-				players.add(new SimpleAIPlayer("Simple Player 5"));	
-				players.add(new SimpleAIPlayer("Simple Player 4"));		
-				players.add(new SimpleAIPlayer("Simple Player 3"));	
-				players.add(new SimpleAIPlayer("Simple Player 2"));
-				players.add(new SimpleAIPlayer("Simple Player 1"));
-			}
-			else if(simple5.getSelectedObjects() != null) {
-				players.add(new SimpleAIPlayer("Simple Player 5"));	
-				players.add(new SimpleAIPlayer("Simple Player 4"));		
-				players.add(new SimpleAIPlayer("Simple Player 3"));	
-				players.add(new SimpleAIPlayer("Simple Player 2"));
-				players.add(new SimpleAIPlayer("Simple Player 1"));
-			}
-			else if(simple4.getSelectedObjects() != null) {
-				players.add(new SimpleAIPlayer("Simple Player 4"));		
-				players.add(new SimpleAIPlayer("Simple Player 3"));	
-				players.add(new SimpleAIPlayer("Simple Player 2"));
-				players.add(new SimpleAIPlayer("Simple Player 1"));
-			}
-			else if(simple3.getSelectedObjects() != null) {
-				players.add(new SimpleAIPlayer("Simple Player 3"));	
-				players.add(new SimpleAIPlayer("Simple Player 2"));
-				players.add(new SimpleAIPlayer("Simple Player 1"));
-			}
-			else if(simple2.getSelectedObjects() != null) {
-				players.add(new SimpleAIPlayer("Simple Player 2"));
-				players.add(new SimpleAIPlayer("Simple Player 1"));
-			}
-			else if(simple1.getSelectedObjects() != null) {
-				players.add(new SimpleAIPlayer("Simple Player 1"));
-			}
-			else {}
+			//player 2
+			if(p2Human.isSelected())
+				players.add(new HumanPlayer(p2EnterName.getText()));
+			else if(p2Simple.isSelected())
+				players.add(new SimpleAIPlayer(p2EnterName.getText()));
+			else if(p2Inter.isSelected())
+				players.add(new IntermediateAIPlayer(p2EnterName.getText()));
+			else if(p2Expert.isSelected())
+				players.add(new ExpertAiPlayer(p2EnterName.getText()));
 
-			if(intermediate6.getSelectedObjects() != null) {
-				players.add(new IntermediateAIPlayer("Intermediate Player 6"));		
-				players.add(new IntermediateAIPlayer("Intermediate Player 5"));	
-				players.add(new IntermediateAIPlayer("Intermediate Player 4"));		
-				players.add(new IntermediateAIPlayer("Intermediate Player 3"));	
-				players.add(new IntermediateAIPlayer("Intermediate Player 2"));
-				players.add(new IntermediateAIPlayer("Intermediate Player 1"));
-			}
-			else if(intermediate5.getSelectedObjects() != null) {
-				players.add(new IntermediateAIPlayer("Intermediate Player 5"));	
-				players.add(new IntermediateAIPlayer("Intermediate Player 4"));		
-				players.add(new IntermediateAIPlayer("Intermediate Player 3"));	
-				players.add(new IntermediateAIPlayer("Intermediate Player 2"));
-				players.add(new IntermediateAIPlayer("Intermediate Player 1"));
-			}
-			else if(intermediate4.getSelectedObjects() != null) {
-				players.add(new IntermediateAIPlayer("Intermediate Player 4"));		
-				players.add(new IntermediateAIPlayer("Intermediate Player 3"));	
-				players.add(new IntermediateAIPlayer("Intermediate Player 2"));
-				players.add(new IntermediateAIPlayer("Intermediate Player 1"));
-			}
-			else if(intermediate3.getSelectedObjects() != null) {
-				players.add(new IntermediateAIPlayer("Intermediate Player 3"));	
-				players.add(new IntermediateAIPlayer("Intermediate Player 2"));
-				players.add(new IntermediateAIPlayer("Intermediate Player 1"));
-			}
-			else if(intermediate2.getSelectedObjects() != null) {
-				players.add(new IntermediateAIPlayer("Intermediate Player 2"));
-				players.add(new IntermediateAIPlayer("Intermediate Player 1"));
-			}
-			else if(intermediate1.getSelectedObjects() != null) {
-				players.add(new IntermediateAIPlayer("Intermediate Player 1"));
-			}
-			else {}
+			//add player 3
+			if(p3Human.isSelected())
+				players.add(new HumanPlayer(p3EnterName.getText()));
+			else if(p3Simple.isSelected())
+				players.add(new SimpleAIPlayer(p3EnterName.getText()));
+			else if(p3Inter.isSelected())
+				players.add(new IntermediateAIPlayer(p3EnterName.getText()));
+			else if(p3Expert.isSelected())
+				players.add(new ExpertAiPlayer(p3EnterName.getText()));
 
+			//add player 4
+			if(p4Human.isSelected())
+				players.add(new HumanPlayer(p4EnterName.getText()));
+			else if(p4Simple.isSelected())
+				players.add(new SimpleAIPlayer(p4EnterName.getText()));
+			else if(p4Inter.isSelected())
+				players.add(new IntermediateAIPlayer(p4EnterName.getText()));
+			else if(p4Expert.isSelected())
+				players.add(new ExpertAiPlayer(p4EnterName.getText()));
+
+			//add player 5
+			if(p5Human.isSelected())
+				players.add(new HumanPlayer(p5EnterName.getText()));
+			else if(p5Simple.isSelected())
+				players.add(new SimpleAIPlayer(p5EnterName.getText()));
+			else if(p5Inter.isSelected())
+				players.add(new IntermediateAIPlayer(p5EnterName.getText()));
+			else if(p5Expert.isSelected())
+				players.add(new ExpertAiPlayer(p5EnterName.getText()));
+
+			//add player 6
+			if(p6Human.isSelected())
+				players.add(new HumanPlayer(p6EnterName.getText()));
+			else if(p6Simple.isSelected())
+				players.add(new SimpleAIPlayer(p6EnterName.getText()));
+			else if(p6Inter.isSelected())
+				players.add(new IntermediateAIPlayer(p6EnterName.getText()));
+			else if(p6Expert.isSelected())
+				players.add(new ExpertAiPlayer(p6EnterName.getText()));
 
 		}
-
 	}
+
 
 	public void setUpLabelPanel() {
 		labelPanel = new JPanel();
@@ -364,8 +571,14 @@ public class RiskGUI extends JFrame implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
+		currentPlayer = (Player) o;
+		if(o instanceof HumanPlayer)
+			human = (HumanPlayer) o;
+
 		if(arg instanceof String) {
 			label.setText((String) arg); 
+			sidePanel.updateLabel();
+			sidePanel.repaint();
 		}
 		else if(arg == ObserverMessages.HUMAN_PLACE_ARMY) {
 			boolean allTaken = true;
@@ -398,12 +611,20 @@ public class RiskGUI extends JFrame implements Observer{
 			label.setText("Please select an enemy territory to attack.");
 			typeOfPlay = TypeOfPlay.ATTACK_TO;
 		}
-
+		//sidePanel.updateLabel();
 		mapPanel.repaint();
 	}
 
 	public Player getHumanPlayer() {
 		return human;
+	}
+
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+	
+	public Player getCurrentPlayer() {
+		return currentPlayer;
 	}
 
 	private enum TypeOfPlay {
