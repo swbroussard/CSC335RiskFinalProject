@@ -119,25 +119,16 @@ public class IntermediateAIPlayer extends Player{
 		}
 	}
 
+	//private int count = 0;
+	
+	/**
+	 * randomly chooses owned territories to attack from
+	 * @return Territory
+	 */
 	
 	@Override
 	public Territory attackFrom() {
-//		if (debug) System.out.println("attackFrom called by "+getName());
-//		Territory attack = null;
-//		// Semi-intelligently chooses a territory adjacent to the parameter, owned by another player, to attack
-//		int x = 0;
-//		while(x < getTerritoriesOwned().size()){
-//			for(int i = 0; i< getTerritoriesOwned().get(x).getAdjacent().size(); i++){
-//				System.out.println("tst");
-//				if(getTerritoriesOwned().get(x).getAdjacent().get(i).getCurrentOwner()!= this){
-//					i = getTerritoriesOwned().size() -1;
-//					attack = getTerritoriesOwned().get(x);	
-//				}
-//			}
-//			x++;
-//		}
-//		System.out.println(attack.toString());
-//		return attack;
+		//if(count <= 5){
 		
 		if (debug) System.out.println("attackFrom called by "+getName());
 		Territory choosenTerritory = null;
@@ -152,8 +143,14 @@ public class IntermediateAIPlayer extends Player{
 			}
 		}
 		return choosenTerritory;
-	}
-
+	//}
+		//return null;
+		}
+	/**
+	 * randomly attacks to adjacent enemy territory
+	 * @param attackForm
+	 * @return Territory
+	 */
 	@Override
 	public Territory attackTo(Territory attackFrom) {
 		if (debug) System.out.println("attackTo called by "+getName());
@@ -172,7 +169,7 @@ public class IntermediateAIPlayer extends Player{
 	}
 
 	/**
-	 * TODO: Fix all Jeremy's nonSense below
+	 * checks for adjacent territories owned by another player
 	 */
 	
 	private int numTroopsTake = 0;
@@ -232,6 +229,11 @@ public class IntermediateAIPlayer extends Player{
 
 	}// close helper method
 
+	/**
+	 * randomly puts reinforce armies around adjacent territories owned by other player
+	 * @param takeArmy, reinforceThis
+	 */
+	
 	@Override
 	public void reinforceArmies(Territory takeArmy, Territory reinforceThis) {
 		if (debug) System.out.println("reinforceArmies called by "+getName());

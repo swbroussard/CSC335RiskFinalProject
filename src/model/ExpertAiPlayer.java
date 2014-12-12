@@ -13,7 +13,10 @@ public class ExpertAiPlayer extends Player {
 	private ArrayList<Territory> AUS;
 	private int count = 0;
 	private String ChoosenContinent = "";
-
+	
+	/**
+	 * helper method to set territories in continent
+	 */
 	private void setNA() {
 		NA = new ArrayList<Territory>();
 		for (Territory t : getAllTerritories()) {
@@ -51,6 +54,10 @@ public class ExpertAiPlayer extends Player {
 		
 	}
 
+	/**
+	 * helper method to set territories in continent
+	 */
+	
 	private void setSA() {
 		SA = new ArrayList<Territory>();
 		for (Territory t : getAllTerritories()) {
@@ -72,6 +79,10 @@ public class ExpertAiPlayer extends Player {
 		
 	}
 
+	/**
+	 * helper method to set territories in continent
+	 */
+	
 	private void setEU() {
 		EU = new ArrayList<Territory>();
 		for (Territory t : getAllTerritories()) {
@@ -101,6 +112,10 @@ public class ExpertAiPlayer extends Player {
 		
 	}
 
+	/**
+	 * helper method to set territories in continent
+	 */
+	
 	private void setAF() {
 		AF = new ArrayList<Territory>();
 		for (Territory t : getAllTerritories()) {
@@ -127,6 +142,10 @@ public class ExpertAiPlayer extends Player {
 		
 	}
 
+	/**
+	 * helper method to set territories in continent
+	 */
+	
 	private void setASI() {
 		ASI = new ArrayList<Territory>();
 		for (Territory t : getAllTerritories()) {
@@ -171,7 +190,9 @@ public class ExpertAiPlayer extends Player {
 		}
 		
 	}
-
+	/**
+	 * helper method to set territories in continent
+	 */
 	private void setAUS() {
 		AUS = new ArrayList<Territory>();
 		for (Territory t : getAllTerritories()) {
@@ -193,6 +214,10 @@ public class ExpertAiPlayer extends Player {
 		
 	}
 		
+	/**
+	 * helper method to set territories in continent
+	 */
+	
 	// private Random genRan;
 	public ExpertAiPlayer() {
 		super();
@@ -204,6 +229,11 @@ public class ExpertAiPlayer extends Player {
 			System.out.println("New ExpertAIPlayer created: " + name);
 	}
 
+	/**
+	 * place an army down in an empty continent or less then two armies in the continent. After the first army is 
+	 * placed, then clusters around the it and try to take over the continent.
+	 */
+	
 	// TODO: work on this!
 	@Override
 	public void placeArmy() {
@@ -635,6 +665,13 @@ public class ExpertAiPlayer extends Player {
 		}
 	}
 
+	/**
+	 * finds the smallest army owned and adds the required amount of armies to defend itself from
+	 * the enemy in the adjacent territories
+	 * @param takeArmy
+	 * @param reinforceThis
+	 */
+	
 	// TODO: work on this!
 	@Override
 	public void reinforceArmies(Territory takeArmy, Territory reinforceThis) {
@@ -655,6 +692,10 @@ public class ExpertAiPlayer extends Player {
 
 	private int numTroopsTake = 0;
 	private int numTimesCalled = 0;
+	
+	/**
+	 * helper method for rienforceArmies
+	 */
 
 	public void reinforce() { // helper method for reinforce armies method
 		if (debug)
@@ -756,6 +797,11 @@ public class ExpertAiPlayer extends Player {
 
 	}// close helper method
 
+	/**
+	 * attack with the maximum armies
+	 * @return Territory
+	 */
+	
 	@Override
 	public Territory attackFrom() {
 		if (debug)
@@ -795,6 +841,12 @@ public class ExpertAiPlayer extends Player {
 		return maxNumArmy;
 	}
 
+	/**
+	 * attack to an army that is significantly smaller then its own
+	 * @param attackFrom
+	 * @return Territory
+	 */
+	
 	@Override
 	public Territory attackTo(Territory attackFrom) {
 		if (debug)
