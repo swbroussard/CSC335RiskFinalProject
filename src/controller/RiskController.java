@@ -149,7 +149,6 @@ public class RiskController extends Observable{
 					issueCard(p);
 					conquered = false;
 				}
-				// TODO: ITERATION 2 - fortify if desired
 				p.reinforceArmies();
 				counter++;
 			}

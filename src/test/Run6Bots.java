@@ -83,7 +83,7 @@ public class Run6Bots {
 				intermediateWon++;
 			else
 				expertWon++;
-			//System.out.println("Player "+controller.getPlayers().get(0).getName() + " won Game #" + i);
+			System.out.println("Player "+controller.getPlayers().get(0).getName() + " won Game #" + i);
 		}
 		double simplePercent = simpleWon / 10.0;
 		double intermediatePercent = intermediateWon / 10.0;

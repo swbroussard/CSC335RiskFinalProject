@@ -275,35 +275,30 @@ public class ExpertAIPlayer extends Player {
 						}
 					}
 					for(Territory t: getAllTerritories()) {
-						while(selected == null) {
-							if(t.getCurrentOwner() == null && t.getContinent() == chosenContinent) {
-								selected = t;
-							}
+						if(selected == null && t.getCurrentOwner() == null && t.getContinent() == chosenContinent) {
+							selected = t;
 						}
 					}
 				}
 				else {
-					for(int i = 0; i < 7; i++) {//try clustering around any territory
+					for(int i = 0; i < 10; i++) {//try clustering around any territory
 						int n = 0;
 						while(selected == null && n < getTerritoriesOwned().size()) {
 							Territory clusterAround = getTerritoriesOwned().get(n);
 							Territory temp = clusterAround.getAdjacent().get(genRan.nextInt(clusterAround.getAdjacent().size()));
-							if(temp.getCurrentOwner() == null) {
+							if(temp.getCurrentOwner() == null)
 								selected = temp;
-							}
 							n++;
-						}
-					}
-					for(Territory t: getAllTerritories()) {
-						while(selected == null) {
-							if(t.getCurrentOwner() == null) {
-								selected = t;
-							}
 						}
 					}
 				}
 
-				
+				while(selected == null) {
+					int n = genRan.nextInt(42);
+					if(getAllTerritories().get(n).getCurrentOwner() == null)
+						selected = getAllTerritories().get(n);
+				}
+
 				if(debug) System.out.println("SelectedPlace: " + selected.toString());
 				selected.setCurrentOwner(this);
 				selected.setNumArmies(1);
@@ -318,7 +313,19 @@ public class ExpertAIPlayer extends Player {
 		}//end of choosing empty territories
 		else {
 			int r = genRan.nextInt(getTerritoriesOwned().size());
-			selected = getTerritoriesOwned().get(r);
+			for(int i = 0; i < 10; i++) {
+				if(selected == null) {
+					Territory temp = getTerritoriesOwned().get(r);
+					for(Territory t: temp.getAdjacent()) {
+						if(t.getCurrentOwner() != this) {
+							selected = temp;
+						}
+					}
+				}
+			}
+			if(selected == null) {
+				selected = getTerritoriesOwned().get(genRan.nextInt(getTerritoriesOwned().size()));
+			}
 			selected.setNumArmies(selected.getNumArmies() + 1);
 			setNumArmies(getNumArmies() - 1);
 			setChanged();
@@ -343,11 +350,11 @@ public class ExpertAIPlayer extends Player {
 			reinforce();
 			numTimesCalled++;
 		} else {
-//			int x = takeArmy.getNumArmies();
-//			int y = reinforceThis.getNumArmies();
-//			takeArmy.setNumArmies(x -= numTroopsTake);
-//			reinforceThis.setNumArmies(y += numTroopsTake);
-//			numTimesCalled = 0;
+			//			int x = takeArmy.getNumArmies();
+			//			int y = reinforceThis.getNumArmies();
+			//			takeArmy.setNumArmies(x -= numTroopsTake);
+			//			reinforceThis.setNumArmies(y += numTroopsTake);
+			//			numTimesCalled = 0;
 		}
 
 	}
@@ -441,7 +448,7 @@ public class ExpertAIPlayer extends Player {
 			}
 		}// master for loop
 
-//		reinforceArmies(high, low);
+		//		reinforceArmies(high, low);
 
 	}// close helper method
 

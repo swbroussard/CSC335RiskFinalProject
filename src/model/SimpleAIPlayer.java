@@ -135,17 +135,36 @@ public class SimpleAIPlayer extends Player {
 	@Override
 	public void reinforceArmies() {
 		if (debug) System.out.println("reinforceArmies called by "+getName());
-		int takeArmyFrom = 0;
+		int armiesToMove = 0;
 		
-		Territory reinforceThis = null;
-		Territory takeArmy = getTerritoriesOwned().get(randomGen.nextInt(getTerritoriesOwned().size()-1));
-		if (takeArmy.getAdjacent().size() > 0)
-			reinforceThis = takeArmy.getAdjacent().get(randomGen.nextInt(takeArmy.getAdjacent().size()-1));
+		Territory reinforceThis;
+		Territory takeArmy;
+		boolean takeArmySelected = false;
+		do {
+			takeArmy = getTerritoriesOwned().get(randomGen.nextInt(getTerritoriesOwned().size()));
+			if(takeArmy.getCurrentOwner() == this && takeArmy.getNumArmies() > 1) {
+				for(Territory t : takeArmy.getAdjacent()) {
+					if(t.getCurrentOwner() == this) 
+						takeArmySelected = true;
+				}
+					
+			}
+		}while(!takeArmySelected);
+		boolean reinforceSelected = false;
+		do{
+			reinforceThis = takeArmy.getAdjacent().get(randomGen.nextInt(takeArmy.getAdjacent().size()));
+			if(reinforceThis.getCurrentOwner() == this) {
+				reinforceSelected = true;
+			}
+		}while(!reinforceSelected);
+			
+		do {
+		armiesToMove = randomGen.nextInt(takeArmy.getNumArmies() - 1);
+		}while(armiesToMove > 0);
 		
-		takeArmyFrom = randomGen.nextInt(takeArmy.getNumArmies() - 1);
 		if (reinforceThis != null) {
-			reinforceThis.setNumArmies(getNumArmies() + takeArmyFrom);
-			takeArmy.setNumArmies(getNumArmies() - takeArmyFrom);
+			reinforceThis.setNumArmies(takeArmy.getNumArmies() + armiesToMove);
+			takeArmy.setNumArmies(takeArmy.getNumArmies() - armiesToMove);
 		}
 	}
 
