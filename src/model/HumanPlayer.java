@@ -3,6 +3,8 @@ package model;
 public class HumanPlayer extends Player{
 	private Territory currentTerritory;
 	private boolean territoryChosen;
+	private int armies;
+	private boolean armiesChosen;
 	
 	public HumanPlayer(String name){
 		super(name);
@@ -60,11 +62,51 @@ public class HumanPlayer extends Player{
 		return null;
 	}
 
-
-
 	@Override
-	public void reinforceArmies(Territory takeArmy, Territory reinforceThis) {
+	public void reinforceArmies() {
+		Territory reinforceFrom = null, reinforceTo = null;
+		this.setChanged();
+		notifyObservers(ObserverMessages.HUMAN_SELECT_REINFORCE_FROM);
+		while (!territoryChosen) {
+			setChanged();
+			notifyObservers();
+			if (territoryChosen == true) {
+				territoryChosen = false;
+				reinforceFrom = currentTerritory;
+				break;
+			}
+		}
+		this.setChanged();
+		notifyObservers(ObserverMessages.HUMAN_SELECT_REINFORCE_TO);
+		while (!territoryChosen) {
+			setChanged();
+			notifyObservers();
+			if (territoryChosen == true) {
+				territoryChosen = false;
+				reinforceTo = currentTerritory;
+				break;
+			}
+		}
+		this.setChanged();
+		notifyObservers(ObserverMessages.HUMAN_SELECT_NUM_ARMIES);
+		while (!armiesChosen) {
+			setChanged();
+			notifyObservers();
+			if (armiesChosen == true) {
+				armiesChosen = false;
+				if (armies > reinforceFrom.getNumArmies() - 1) {
+					notifyObservers(ObserverMessages.HUMAN_TRY_AGAIN_ARMIES);
+					continue;
+				}
+				else {
+					notifyObservers();
+					break;
+				}
+			}
+		}
 		
+		reinforceFrom.setNumArmies(reinforceFrom.getNumArmies() - armies);
+		reinforceTo.setNumArmies(reinforceTo.getNumArmies() + armies);
 	}
 
 	public boolean isTerritoryChosen() {
@@ -81,6 +123,14 @@ public class HumanPlayer extends Player{
 
 	public void setCurrentTerritory(Territory currentTerritory) {
 		this.currentTerritory = currentTerritory;
+	}
+
+	public boolean getArmiesChosen() {
+		return armiesChosen;
+	}
+
+	public void setArmiesChosen(boolean armiesChosen) {
+		this.armiesChosen = armiesChosen;
 	}
 
 }

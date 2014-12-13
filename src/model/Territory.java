@@ -18,56 +18,16 @@ public class Territory {
 	private int color;
 	private Point armyLabel;
 	
-	/**
-	 * Constructs a new <code>Territory</code> so that <code>name</code> and <code>continent</code> are set to their respective parameters, <code>numArmies</code> is zero, and <code>adjacent</code> is set to an empty <code>ArrayList<Territory></code>.  
-	 * @param name
-	 * @param continent
-	 */
-	public Territory(String name, Continent continent) {
-		this.name = name;
-		currentOwner = null;
-		numArmies = 0;
-		adjacent = new ArrayList<Territory>();
-	}
-	
-	/**
-	 * Constructs a new <code>Territory</code> so that <code>name</code>, <code>continent</code>, and <code>color</code> are set to their respective parameters, <code>numArmies</code> is zero, and <code>adjacent</code> is set to an empty <code>ArrayList<Territory></code>.
-	 * @param name
-	 * @param continent
-	 * @param colorRGB
-	 */
-	public Territory(String name, Continent continent, int colorRGB) {
-		this.name = name;
-		currentOwner = null;
-		numArmies = 0;
-		color = colorRGB;
-		adjacent = new ArrayList<Territory>();
-		armyLabel = new Point(0, 0);
-	}
-	
 	public Territory(String name, Continent continent, int colorRGB, Point armyLabel) {
 		this.name = name;
+		this.continent = continent;
 		currentOwner = null;
 		numArmies = 0;
 		color = colorRGB;
 		adjacent = new ArrayList<Territory>();
 		this.armyLabel = armyLabel;
 	}
-	
-	/**
-	 * Unused constructor
-	 * @param name
-	 * @param adjacent
-	 * @param continent
-	 */
-	public Territory(String name, ArrayList<Territory> adjacent, Continent continent) {
-		this.name = name;
-		this.adjacent = adjacent;
-		this.continent = continent;
-		currentOwner = null;
-		numArmies = 0;
-	}
-	
+
 	/**
 	 * Setter for <code>currentOwner</code>
 	 * @param currentOwner

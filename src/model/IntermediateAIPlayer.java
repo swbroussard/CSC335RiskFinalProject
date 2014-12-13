@@ -225,7 +225,7 @@ public class IntermediateAIPlayer extends Player{
 			}
 		}// master for loop
 						
-		reinforceArmies(high, low);
+		//reinforceArmies(high, low);
 
 	}// close helper method
 
@@ -235,18 +235,31 @@ public class IntermediateAIPlayer extends Player{
 	 */
 	
 	@Override
-	public void reinforceArmies(Territory takeArmy, Territory reinforceThis) {
+	public void reinforceArmies() {
+		// TODO I made this logic pretty unsophisticated, so if you want to revise it by calling reinforce() or whatever, feel free. 
 		if (debug) System.out.println("reinforceArmies called by "+getName());
-		if(numTimesCalled<1){
+		
+		int takeArmyFrom = 0;
+		Territory reinforceThis = null, takeArmy = null;
+		do {
+			takeArmy = getTerritoriesOwned().get(genRan.nextInt(getTerritoriesOwned().size()-1));
+		} while (takeArmy.getAdjacent().size() == 0);
+		reinforceThis = takeArmy.getAdjacent().get(genRan.nextInt(takeArmy.getAdjacent().size()-1));
+		takeArmyFrom = genRan.nextInt(takeArmy.getNumArmies() - 1);
+		reinforceThis.setNumArmies(getNumArmies() + takeArmyFrom);
+		takeArmy.setNumArmies(getNumArmies() - takeArmyFrom);
+		
+		/*if(numTimesCalled<1){
 			reinforce();
 			numTimesCalled++;
 		}
+
 		else {
 			int x = takeArmy.getNumArmies();
 			int y = reinforceThis.getNumArmies();
 			takeArmy.setNumArmies(x -= numTroopsTake);
 			reinforceThis.setNumArmies(y += numTroopsTake);
 			numTimesCalled = 0;
-		}
+		}*/
 	}
 }
