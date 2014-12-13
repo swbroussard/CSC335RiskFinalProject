@@ -577,7 +577,9 @@ public class RiskGUI extends JFrame implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		currentPlayer = (Player) o;
+		if(o instanceof RiskController) {}
+		else
+			currentPlayer = (Player) o;
 		if(o instanceof HumanPlayer)
 			human = (HumanPlayer) o;
 
