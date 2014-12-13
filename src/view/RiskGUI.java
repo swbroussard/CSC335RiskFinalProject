@@ -5,11 +5,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -42,6 +48,7 @@ public class RiskGUI extends JFrame implements Observer{
 
 	public RiskGUI() {
 		super();	
+		splashScreen();
 		setUpPlayers();
 		
 		currentPlayer = players.get(0);
@@ -64,6 +71,21 @@ public class RiskGUI extends JFrame implements Observer{
 		controller.playGame();
 	}
 
+	public void splashScreen() {
+
+		ImageIcon logo = new ImageIcon("images/Risk_logo.png");
+		
+		JLabel about = new JLabel();
+		about.setText("<html>About This Game"
+				+ "<br>Risk is a turn-based strategy game for two to six players. "
+				+ "<br>The object of the game is to achieve global conquest. Your goal is to occupy every territory"
+				+ "<br>on the board by eliminating other players, capturing their territories with dice rolls."
+				+ "<br><br>Developers: RISKy Business (Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Rebecca Simon)."
+				+ "<br>University of Arizona, CSc 335, Fall 2014.");
+		JOptionPane.showMessageDialog(null, about, "SPLASH!", JOptionPane.OK_CANCEL_OPTION, logo);
+		
+	}
+	
 	public void setUpFrame() {
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -132,14 +154,7 @@ public class RiskGUI extends JFrame implements Observer{
 				+ "<br>Enter a name in the Name field or the default name will be used."
 				+ "<br> ----------------------------------------------------------------------");
 
-		JLabel about = new JLabel();
-		about.setText("<html>About This Game"
-				+ "<br>Risk is a turn-based strategy game for two to six players. "
-				+ "<br>The object of the game is to achieve global conquest. Your goal is to occupy every territory"
-				+ "<br>on the board by eliminating other players, capturing their territories with dice rolls."
-				+ "<br><br>Developers: Risky Business (Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Rebecca Simon)."
-				+ "<br>University of Arizona, CSc 335, Fall 2014.");
-
+		
 		//Player 1
 		JLabel p1 = new JLabel("Player 1:");
 
@@ -407,7 +422,7 @@ public class RiskGUI extends JFrame implements Observer{
 
 		Object[] message = {instructionLabel, p1NamePanel, p1ButtonPanel, p2NamePanel, 
 				p2ButtonPanel, p3NamePanel, p3ButtonPanel, p4NamePanel, p4ButtonPanel,
-				p5NamePanel, p5ButtonPanel, p6NamePanel, p6ButtonPanel, about};
+				p5NamePanel, p5ButtonPanel, p6NamePanel, p6ButtonPanel};
 		int option = JOptionPane.showConfirmDialog(null, message, "Select your opponents",
 				JOptionPane.OK_CANCEL_OPTION);
 		if(option == JOptionPane.CANCEL_OPTION) {
