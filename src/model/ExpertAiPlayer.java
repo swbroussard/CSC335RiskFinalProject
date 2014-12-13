@@ -13,7 +13,8 @@ public class ExpertAiPlayer extends Player {
 	private ArrayList<Territory> AUS;
 	private int count = 0;
 	private String ChoosenContinent = "";
-	
+	private Random genRan = new Random();
+	int numAttacks;
 	/**
 	 * helper method to set territories in continent
 	 */
@@ -255,7 +256,7 @@ public class ExpertAiPlayer extends Player {
 			System.out.println("placeArmy called by " + getName());
 		// Semi-intelligently chooses a territory with two or more armies to
 		// attack from
-		Random genRan = new Random();
+		
 
 		// determines if you are still in territory selecting mode or if in army
 		// placing mode
@@ -655,6 +656,7 @@ public class ExpertAiPlayer extends Player {
 		}
 		// }//end of choosing empty territories
 		else {
+			int getNumTroopsLeft = this.getNumArmies();
 			int r = genRan.nextInt(getTerritoriesOwned().size());
 			Territory selected1 = getTerritoriesOwned().get(r);
 			selected1.setNumArmies(selected1.getNumArmies() + 1);
@@ -804,42 +806,69 @@ public class ExpertAiPlayer extends Player {
 	
 	@Override
 	public Territory attackFrom() {
-		if (debug)
-			System.out.println("attackFrom called by " + getName());
+		//if(count <= 5){
+		
+		if (debug) System.out.println("attackFrom called by "+getName());
 		Territory choosenTerritory = null;
-		while (choosenTerritory == null) {
-			// int r = genRan.nextInt(getTerritoriesOwned().size());
-			for (int i = 0; i < getTerritoriesOwned().size(); i++) {
-				// if(getTerritoriesOwned().get(i).getNumArmies() > 1) {
-				if (getTerritoriesOwned().get(i).getNumArmies() == maxArmy()) {
-					for (Territory t : getTerritoriesOwned().get(i)
-							.getAdjacent()) {
-						if (t.getCurrentOwner() != this) {
-							choosenTerritory = getTerritoriesOwned().get(i);
-						}
+		while(choosenTerritory == null){
+			int r = genRan.nextInt(getTerritoriesOwned().size());
+			if(getTerritoriesOwned().get(r).getNumArmies() > 1) {
+				for(Territory t: getTerritoriesOwned().get(r).getAdjacent()) {
+					if(t.getCurrentOwner() != this) {
+						choosenTerritory = getTerritoriesOwned().get(r);
 					}
 				}
 			}
+		}numAttacks++;
+		if(numAttacks == 5) {
+			setDoneAttacking(true);
+			numAttacks = 0;
 		}
 		return choosenTerritory;
-	}
-
-	// helper method for max number armies
-	private int maxArmy() {
-		int maxNumArmy = 0;
-		for (int i = 0; i < getTerritoriesOwned().size(); i++) {
-			if(i+1 == getTerritoriesOwned().size()){
-			if (getTerritoriesOwned().get(i).getNumArmies() < getTerritoriesOwned()
-					.get(i + 1).getNumArmies()
-					&& 1 + i != getTerritoriesOwned().size()) {
-				
-				maxNumArmy = getTerritoriesOwned().get(i + 1).getNumArmies();
-			}
-		}else{
-			break;}
+	//}
+		//return null;
 		}
-		return maxNumArmy;
-	}
+//	//setDoneAttacking = true;
+//	@Override
+//	public Territory attackFrom() {
+//		
+//
+//		if (debug)
+//			System.out.println("attackFrom called by " + getName());
+//		Territory choosenTerritory = null;
+//		while (choosenTerritory == null) {
+//			// int r = genRan.nextInt(getTerritoriesOwned().size());
+//			for (int i = 0; i < getTerritoriesOwned().size(); i++) {
+//				// if(getTerritoriesOwned().get(i).getNumArmies() > 1) {
+//				if (getTerritoriesOwned().get(i).getNumArmies() == maxArmy()) {
+//					for (Territory t : getTerritoriesOwned().get(i)
+//							.getAdjacent()) {
+//						if (t.getCurrentOwner() != this) {
+//							choosenTerritory = getTerritoriesOwned().get(i);
+//						}
+//					}
+//				}
+//			}
+//		}
+//		return choosenTerritory;
+//	}
+//
+//	// helper method for max number armies
+//	private int maxArmy() {
+//		int maxNumArmy = 0;
+//		for (int i = 0; i < getTerritoriesOwned().size(); i++) {
+//			if(i+1 == getTerritoriesOwned().size()){
+//			if (getTerritoriesOwned().get(i).getNumArmies() < getTerritoriesOwned()
+//					.get(i + 1).getNumArmies()
+//					&& 1 + i != getTerritoriesOwned().size()) {
+//				
+//				maxNumArmy = getTerritoriesOwned().get(i + 1).getNumArmies();
+//			}
+//		}else{
+//			break;}
+//		}
+//		return maxNumArmy;
+//	}
 
 	/**
 	 * attack to an army that is significantly smaller then its own
