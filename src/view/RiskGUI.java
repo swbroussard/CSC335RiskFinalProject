@@ -5,16 +5,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,7 +19,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import model.ExpertAiPlayer;
+import model.ExpertAIPlayer;
 import model.HumanPlayer;
 import model.IntermediateAIPlayer;
 import model.ObserverMessages;
@@ -47,7 +42,7 @@ public class RiskGUI extends JFrame implements Observer{
 	private TypeOfPlay typeOfPlay;
 
 	public RiskGUI() {
-		super();	
+		super();
 		splashScreen();
 		setUpPlayers();
 		
@@ -72,7 +67,6 @@ public class RiskGUI extends JFrame implements Observer{
 	}
 
 	public void splashScreen() {
-
 		ImageIcon logo = new ImageIcon("images/Risk_logo.png");
 		
 		JLabel about = new JLabel();
@@ -83,7 +77,7 @@ public class RiskGUI extends JFrame implements Observer{
 				+ "<br><br>Developers: RISKy Business (Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Rebecca Simon)."
 				+ "<br>University of Arizona, CSc 335, Fall 2014.");
 		JOptionPane.showMessageDialog(null, about, "SPLASH!", JOptionPane.OK_CANCEL_OPTION, logo);
-		
+		// need to add music button to this
 	}
 	
 	public void setUpFrame() {
@@ -438,7 +432,7 @@ public class RiskGUI extends JFrame implements Observer{
 			else if(p1Inter.isSelected())
 				players.add(new IntermediateAIPlayer(p1EnterName.getText()));
 			else if(p1Expert.isSelected())
-				players.add(new ExpertAiPlayer(p1EnterName.getText()));
+				players.add(new ExpertAIPlayer(p1EnterName.getText()));
 
 			//player 2
 			if(p2Human.isSelected())
@@ -448,7 +442,7 @@ public class RiskGUI extends JFrame implements Observer{
 			else if(p2Inter.isSelected())
 				players.add(new IntermediateAIPlayer(p2EnterName.getText()));
 			else if(p2Expert.isSelected())
-				players.add(new ExpertAiPlayer(p2EnterName.getText()));
+				players.add(new ExpertAIPlayer(p2EnterName.getText()));
 
 			//add player 3
 			if(p3Human.isSelected())
@@ -458,7 +452,7 @@ public class RiskGUI extends JFrame implements Observer{
 			else if(p3Inter.isSelected())
 				players.add(new IntermediateAIPlayer(p3EnterName.getText()));
 			else if(p3Expert.isSelected())
-				players.add(new ExpertAiPlayer(p3EnterName.getText()));
+				players.add(new ExpertAIPlayer(p3EnterName.getText()));
 
 			//add player 4
 			if(p4Human.isSelected())
@@ -468,7 +462,7 @@ public class RiskGUI extends JFrame implements Observer{
 			else if(p4Inter.isSelected())
 				players.add(new IntermediateAIPlayer(p4EnterName.getText()));
 			else if(p4Expert.isSelected())
-				players.add(new ExpertAiPlayer(p4EnterName.getText()));
+				players.add(new ExpertAIPlayer(p4EnterName.getText()));
 
 			//add player 5
 			if(p5Human.isSelected())
@@ -478,7 +472,7 @@ public class RiskGUI extends JFrame implements Observer{
 			else if(p5Inter.isSelected())
 				players.add(new IntermediateAIPlayer(p5EnterName.getText()));
 			else if(p5Expert.isSelected())
-				players.add(new ExpertAiPlayer(p5EnterName.getText()));
+				players.add(new ExpertAIPlayer(p5EnterName.getText()));
 
 			//add player 6
 			if(p6Human.isSelected())
@@ -488,7 +482,7 @@ public class RiskGUI extends JFrame implements Observer{
 			else if(p6Inter.isSelected())
 				players.add(new IntermediateAIPlayer(p6EnterName.getText()));
 			else if(p6Expert.isSelected())
-				players.add(new ExpertAiPlayer(p6EnterName.getText()));
+				players.add(new ExpertAIPlayer(p6EnterName.getText()));
 
 		}
 	}
@@ -541,7 +535,7 @@ public class RiskGUI extends JFrame implements Observer{
 		}
 		else if(typeOfPlay == TypeOfPlay.PLACE_ARMY) {
 			if(t.getCurrentOwner() != human) {
-				label.setText("You dont own that territory...");
+				label.setText("You don't own that territory...");
 			}
 			else {
 				t.setNumArmies(t.getNumArmies() + 1);
@@ -634,6 +628,26 @@ public class RiskGUI extends JFrame implements Observer{
 			label.setText("Please select an enemy territory to attack.");
 			typeOfPlay = TypeOfPlay.ATTACK_TO;
 		}
+		
+		else if (arg == ObserverMessages.HUMAN_SELECT_REINFORCE_FROM) {
+			label.setText("Please select one of your territories to move armies from.");
+			typeOfPlay = TypeOfPlay.FORTIFY_FROM;
+		}
+		
+		else if (arg == ObserverMessages.HUMAN_SELECT_REINFORCE_TO) {
+			label.setText("Please select one of your territories move armies to.");
+			typeOfPlay = TypeOfPlay.FORTIFY_TO;
+		}
+		
+		else if (arg == ObserverMessages.HUMAN_SELECT_NUM_ARMIES) {
+			label.setText("Please enter a number of armies to move.");
+			typeOfPlay = TypeOfPlay.FORTIFY_ARMIES;
+		}
+		
+		else if (arg == ObserverMessages.HUMAN_TRY_AGAIN_ARMIES) {
+			label.setText("The number you select must be less than the number armies in your territory");
+			typeOfPlay = TypeOfPlay.FORTIFY_ARMIES;
+		}
 		//sidePanel.updateLabel();
 		mapPanel.repaint();
 	}
@@ -651,7 +665,7 @@ public class RiskGUI extends JFrame implements Observer{
 	}
 
 	private enum TypeOfPlay {
-		SELECT_TERRITORY, PLACE_ARMY, ATTACK_FROM, ATTACK_TO, FORTIFY_FROM, FORTIFY_TO, DO_NOTHING
+		SELECT_TERRITORY, PLACE_ARMY, ATTACK_FROM, ATTACK_TO, FORTIFY_FROM, FORTIFY_TO, FORTIFY_ARMIES, DO_NOTHING
 	}
 
 }

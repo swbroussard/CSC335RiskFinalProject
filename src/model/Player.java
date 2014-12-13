@@ -35,7 +35,7 @@ public abstract class Player extends Observable{
 	 * @param takeArmy the territory selected to take armies from
 	 * @param reinforceThis the territory selected to move the armies too. 
 	 */
-	public abstract void reinforceArmies(Territory takeArmy, Territory reinforceThis);
+	public abstract void reinforceArmies();
 
 	/**
 	 * determines the territory to attack from during a turn, territory must have at

@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class ExpertAiPlayer extends Player {
+public class ExpertAIPlayer extends Player {
 
 	private ArrayList<Territory> NA;
 	private ArrayList<Territory> SA;
@@ -220,11 +220,11 @@ public class ExpertAiPlayer extends Player {
 	 */
 	
 	// private Random genRan;
-	public ExpertAiPlayer() {
+	public ExpertAIPlayer() {
 		super();
 	}
 
-	public ExpertAiPlayer(String name) {
+	public ExpertAIPlayer(String name) {
 		super(name);
 		if (debug)
 			System.out.println("New ExpertAIPlayer created: " + name);
@@ -676,7 +676,8 @@ public class ExpertAiPlayer extends Player {
 	
 	// TODO: work on this!
 	@Override
-	public void reinforceArmies(Territory takeArmy, Territory reinforceThis) {
+	public void reinforceArmies() {
+		Territory takeArmy = null, reinforceThis = null;
 		if (debug)
 			System.out.println("reinforceArmies called by " + getName());
 		if (numTimesCalled < 1) {
@@ -795,7 +796,7 @@ public class ExpertAiPlayer extends Player {
 			}
 		}// master for loop
 
-		reinforceArmies(high, low);
+		//reinforceArmies(high, low);
 
 	}// close helper method
 

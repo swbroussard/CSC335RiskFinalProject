@@ -133,14 +133,20 @@ public class SimpleAIPlayer extends Player {
 	 * 
 	 */
 	@Override
-	public void reinforceArmies(Territory takeArmy, Territory reinforceThis) {
+	public void reinforceArmies() {
 		if (debug) System.out.println("reinforceArmies called by "+getName());
 		int takeArmyFrom = 0;
-
+		
+		Territory reinforceThis = null;
+		Territory takeArmy = getTerritoriesOwned().get(randomGen.nextInt(getTerritoriesOwned().size()-1));
+		if (takeArmy.getAdjacent().size() > 0)
+			reinforceThis = takeArmy.getAdjacent().get(randomGen.nextInt(takeArmy.getAdjacent().size()-1));
+		
 		takeArmyFrom = randomGen.nextInt(takeArmy.getNumArmies() - 1);
-		reinforceThis.setNumArmies(getNumArmies() + takeArmyFrom);
-		takeArmy.setNumArmies(getNumArmies() - takeArmyFrom);
-
+		if (reinforceThis != null) {
+			reinforceThis.setNumArmies(getNumArmies() + takeArmyFrom);
+			takeArmy.setNumArmies(getNumArmies() - takeArmyFrom);
+		}
 	}
 
 }
