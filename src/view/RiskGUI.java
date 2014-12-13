@@ -20,10 +20,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 
+
 import songplayer.SongPlayer;
-
 import model.ExpertAIPlayer;
-
 import model.HumanPlayer;
 import model.IntermediateAIPlayer;
 import model.ObserverMessages;
@@ -73,8 +72,8 @@ public class RiskGUI extends JFrame implements Observer{
 	public void splashScreen() {
 
 		ImageIcon logo = new ImageIcon("images/Risk_logo.png");
-		
-		SongPlayer.playFile("/Users/jeremyjalnos/Documents/CSC335/CSC335RiskFinalProject/Turnpike.mp3");
+		String baseDir = System.getProperty("user.dir") + System.getProperty("file.separator");
+		SongPlayer.playFile(baseDir + "01_1812_Overture_Op.wav");
 		
 		JLabel about = new JLabel();
 		about.setText("<html>About This Game"

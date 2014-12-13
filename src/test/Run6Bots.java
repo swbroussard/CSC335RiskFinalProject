@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import controller.RiskController;
-import model.ExpertAiPlayer;
+import model.ExpertAIPlayer;
 import model.IntermediateAIPlayer;
 import model.Player;
 import model.SimpleAIPlayer;
@@ -71,7 +71,7 @@ public class Run6Bots {
 				if (debug) System.out.println("Intermediate player "+players.get(j).toString()+" added");
 			}
 			for (int j = 0; j < expertPlayers; j++) {
-				players.add(new ExpertAiPlayer("Expert Player " + counter));
+				players.add(new ExpertAIPlayer("Expert Player " + counter));
 				counter++;
 			}
 			if (debug) System.out.println("Game "+i+" started");
