@@ -132,7 +132,13 @@ public class RiskGUI extends JFrame implements Observer{
 				+ "<br>Enter a name in the Name field or the default name will be used."
 				+ "<br> ----------------------------------------------------------------------");
 
-
+		JLabel about = new JLabel();
+		about.setText("<html>About This Game"
+				+ "<br>Risk is a turn-based strategy game for two to six players. "
+				+ "<br>The object of the game is to achieve global conquest. Your goal is to occupy every territory"
+				+ "<br>on the board by eliminating other players, capturing their territories with dice rolls."
+				+ "<br><br>Developers: Risky Business (Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Rebecca Simon)."
+				+ "<br>University of Arizona, CSc 335, Fall 2014.");
 
 		//Player 1
 		JLabel p1 = new JLabel("Player 1:");
@@ -401,13 +407,13 @@ public class RiskGUI extends JFrame implements Observer{
 
 		Object[] message = {instructionLabel, p1NamePanel, p1ButtonPanel, p2NamePanel, 
 				p2ButtonPanel, p3NamePanel, p3ButtonPanel, p4NamePanel, p4ButtonPanel,
-				p5NamePanel, p5ButtonPanel, p6NamePanel, p6ButtonPanel};
+				p5NamePanel, p5ButtonPanel, p6NamePanel, p6ButtonPanel, about};
 		int option = JOptionPane.showConfirmDialog(null, message, "Select your opponents",
 				JOptionPane.OK_CANCEL_OPTION);
 		if(option == JOptionPane.CANCEL_OPTION) {
 			System.exit(0);
 		}
-		//add the players to the arrray
+		//add the players to the array
 		else{
 			//add player 1
 			if(p1Human.isSelected())
