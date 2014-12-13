@@ -24,6 +24,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import songplayer.SongPlayer;
 import model.ExpertAiPlayer;
 import model.HumanPlayer;
 import model.IntermediateAIPlayer;
@@ -72,8 +73,10 @@ public class RiskGUI extends JFrame implements Observer{
 	}
 
 	public void splashScreen() {
-
+		
 		ImageIcon logo = new ImageIcon("images/Risk_logo.png");
+		
+		SongPlayer.playFile("/Users/jeremyjalnos/Documents/CSC335/CSC335RiskFinalProject/Turnpike.mp3");
 		
 		JLabel about = new JLabel();
 		about.setText("<html>About This Game"
