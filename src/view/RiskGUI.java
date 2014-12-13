@@ -33,6 +33,8 @@ import controller.RiskController;
 
 @SuppressWarnings("serial")
 public class RiskGUI extends JFrame implements Observer{
+	private String baseDir = System.getProperty("user.dir") + System.getProperty("file.separator")
+			+ "sound" + System.getProperty("file.separator");
 	private RiskController controller;
 	private JFrame frame;
 	private JPanel labelPanel;
@@ -72,7 +74,6 @@ public class RiskGUI extends JFrame implements Observer{
 	public void splashScreen() {
 
 		ImageIcon logo = new ImageIcon("images/Risk_logo.png");
-		String baseDir = System.getProperty("user.dir") + System.getProperty("file.separator");
 		SongPlayer.playFile(baseDir + "01_1812_Overture_Op.wav");
 		
 		JLabel about = new JLabel();
