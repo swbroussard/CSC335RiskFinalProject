@@ -59,8 +59,8 @@ public class RiskGUI extends JFrame implements Observer{
 		controller.addObserver(this);
 		controller.setPlayers(players);
 		controller.sendTerritoriesToPlayers();
-
-
+		
+		
 		setUpFrame();
 		try {
 			Thread.sleep(2000);
@@ -158,7 +158,7 @@ public class RiskGUI extends JFrame implements Observer{
 		//Player 1
 		JLabel p1 = new JLabel("Player 1:");
 
-
+		
 		JPanel p1NamePanel = new JPanel();
 		p1NamePanel.setLayout(new FlowLayout(FlowLayout.LEADING));
 
