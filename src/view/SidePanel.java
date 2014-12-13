@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -48,23 +47,35 @@ public class SidePanel extends JPanel{
 			}
 		});
 		
-		this.add(label);
+		this.add(getLabel());
 		this.add(doneAttacking);
 		this.add(doneFortifying);
 		this.add(exit);
 	}
 	
 	public void updateLabel() {
-		label = new JLabel();
+		setLabel(new JLabel());
 		String text = new String("<html>Current Players: ");
-		for(Player p: gui.getPlayers()) {
-			text += "<br>\t " + p.getName();
+		for (int i = 0; i < gui.getPlayers().size(); i++) {
+			Player p = gui.getPlayers().get(i);
+			switch(i){
+				case 0: // cyan
+					text += String.format("<br>%s<font color=#00FFFF>%s</font>","",p.getName()); break;
+				case 1: // green
+					text += String.format("<br>%s<font color=#00FF00>%s</font>","",p.getName()); break;
+				case 2: // orange
+					text += String.format("<br>%s<font color=#FF8C00>%s</font>","",p.getName()); break;
+				case 3: // magenta
+					text += String.format("<br>%s<font color=#FF00FF>%s</font>","",p.getName()); break;
+				case 4: // yellow
+					text += String.format("<br>%s<font color=#FFD700>%s</font>","",p.getName()); break;
+				case 5: // purple
+					text += String.format("<br>%s<font color=#9932CC>%s</font>","",p.getName()); break;
+			}
 		}
-		//text += "<br><br>" + gui.getCurrentPlayer().getName() + "\'s turn.";
-		
 		text += "<br><br>Continent Bonuses:<br>North America - 5<br>South America - 2"
-				+ "<br>Europe - 5<br>Africa - 3<br>Asia - 7<br>Australia - 2";
-		label.setText(text);
+				+ "<br>Europe - 5<br>Africa - 3<br>Asia - 7<br>Australia - 2</html>";
+		getLabel().setText(text);
 	}
 	
 	public void doneAttacking() {
@@ -74,5 +85,13 @@ public class SidePanel extends JPanel{
 	
 	public void doneFortifying() {
 		gui.setLabel("Done Fortifying");
+	}
+
+	public JLabel getLabel() {
+		return label;
+	}
+
+	public void setLabel(JLabel label) {
+		this.label = label;
 	}
 }

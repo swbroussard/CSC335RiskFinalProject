@@ -57,7 +57,6 @@ public class ExpertAIPlayer extends Player {
 	 * placed, then clusters around the it and try to take over the continent.
 	 */
 
-	// TODO: work on this!
 	@Override
 	public void placeArmy() {
 		if(debug) System.out.println("placeArmy called by "+getName());
@@ -341,7 +340,6 @@ public class ExpertAIPlayer extends Player {
 	 * @param reinforceThis
 	 */
 
-	// TODO: work on this!
 	@Override
 	public void reinforceArmies() {
 		if (debug)

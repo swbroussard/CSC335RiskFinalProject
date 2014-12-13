@@ -654,7 +654,6 @@ public class RiskGUI extends JFrame implements Observer{
 			label.setText("The number you select must be less than the number armies in your territory");
 			typeOfPlay = TypeOfPlay.FORTIFY_ARMIES;
 		}
-		//sidePanel.updateLabel();
 		mapPanel.repaint();
 	}
 
