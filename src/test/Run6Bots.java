@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import controller.RiskController;
+import model.ExpertAiPlayer;
 import model.IntermediateAIPlayer;
 import model.Player;
 import model.SimpleAIPlayer;
@@ -21,7 +22,7 @@ public class Run6Bots {
 	boolean debug = false;
 	private RiskController controller;
 	private ArrayList<Player> players;
-	private int simpleWon, intermediateWon;
+	private int simpleWon, intermediateWon, expertWon;
 
 	/**
 	 * Constructs a new <code>Run6Bots</code>, reads in the number and type of players 
@@ -34,8 +35,8 @@ public class Run6Bots {
 		int simplePlayers = Integer.parseInt(scan.next());
 		System.out.println("Enter the number of IntermediateAIPlayers");
 		int intermediatePlayers = Integer.parseInt(scan.next());
-
-		
+		System.out.println("Enter the number of ExpertAIPlayers");
+		int expertPlayers = Integer.parseInt(scan.next());
 
 		//make sure user has entered no more than 6 players
 		if(simplePlayers > 6) {
@@ -44,12 +45,16 @@ public class Run6Bots {
 		if(intermediatePlayers > 6) {
 			intermediatePlayers = 6;
 		}
-		if(intermediatePlayers + simplePlayers > 6) {
-			intermediatePlayers = 6 - simplePlayers;
+		if (expertPlayers > 6) {
+			expertPlayers = 6;
+		}
+		if(intermediatePlayers + simplePlayers + expertPlayers > 6) {
+			expertPlayers = 6 - intermediatePlayers - simplePlayers;
 		}
 		
 		simpleWon = 0;
 		intermediateWon = 0;
+		expertWon = 0;
 		
 		for (int i = 1; i <= 1000; i++) { 
 			players = new ArrayList<Player>();
@@ -65,19 +70,27 @@ public class Run6Bots {
 				counter++;
 				if (debug) System.out.println("Intermediate player "+players.get(j).toString()+" added");
 			}
+			for (int j = 0; j < expertPlayers; j++) {
+				players.add(new ExpertAiPlayer("Expert Player " + counter));
+				counter++;
+			}
 			if (debug) System.out.println("Game "+i+" started");
 			controller = new RiskController(players);
 			
 			if (controller.getPlayers().get(0) instanceof SimpleAIPlayer) 
 				simpleWon++;
-			else
+			else if (controller.getPlayers().get(0) instanceof IntermediateAIPlayer)
 				intermediateWon++;
+			else
+				expertWon++;
 			//System.out.println("Player "+controller.getPlayers().get(0).getName() + " won Game #" + i);
 		}
 		double simplePercent = simpleWon / 10.0;
 		double intermediatePercent = intermediateWon / 10.0;
+		double expertPercent = expertWon / 10.0;
 		System.out.println("SimpleAIPlayers won " + simpleWon + " times (" + simplePercent + "%).");
 		System.out.println("IntermediateAIPlayers won " + intermediateWon + " times" + " (" + intermediatePercent + "%).");
+		System.out.println("ExpertAIPlayers won " + expertWon + "times (" + expertPercent + "%).");
 		scan.close();
 	}
 
