@@ -84,7 +84,6 @@ public class RiskGUI extends JFrame implements Observer{
 				+ "<br><br>Developers: RISKy Business (Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Rebecca Simon)."
 				+ "<br>University of Arizona, CSc 335, Fall 2014.");
 		JOptionPane.showMessageDialog(null, about, "SPLASH!", JOptionPane.OK_CANCEL_OPTION, logo);
-		// need to add music button to this
 	}
 	
 	public void setUpFrame() {
