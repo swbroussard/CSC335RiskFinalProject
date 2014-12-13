@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Observable;
 import java.util.Random;
 
+import songplayer.SongPlayer;
 import model.*;
 import model.Card.CardType;
 
@@ -15,6 +16,8 @@ import model.Card.CardType;
  *
  */
 public class RiskController extends Observable{
+	private String baseDir = System.getProperty("user.dir") + System.getProperty("file.separator")
+			+ "sound" + System.getProperty("file.separator");
 	boolean debug = false;
 	private ArrayList<Territory> territories;
 	private Territory alaska, alberta, centralAmerica, easternUS, greenland, northwest,
@@ -121,6 +124,8 @@ public class RiskController extends Observable{
 				//for (Player p : getPlayers()) {
 				Player p = players.get(counter);
 				if (debug) System.out.println(p.getName()+"'s turn");
+				if (p instanceof HumanPlayer)
+					SongPlayer.playFile(baseDir + "charge.wav");
 				if (p.addArmies(cardBonus))
 					incrementCardBonus();
 				while (p.getNumArmies() > 0) {
@@ -149,7 +154,6 @@ public class RiskController extends Observable{
 					issueCard(p);
 					conquered = false;
 				}
-				// TODO: ITERATION 2 - fortify if desired
 				p.reinforceArmies();
 				counter++;
 			}
@@ -762,7 +766,7 @@ public class RiskController extends Observable{
 		defendingTerritory.setNumArmies(defendingTerritory.getNumArmies() - attackerWon);
 
 		if (defendingTerritory.getNumArmies() <= 0) { // attacker conquered defending territory
-
+			SongPlayer.playFile(baseDir + "BigExplosion.wav");
 			if (defendingTerritory.getCurrentOwner().getTerritoriesOwned().size() == 1) {
 				// attacker conquered defender's last territory
 				if (debug) System.out.println(defendingTerritory.getCurrentOwner().getName() + " has been eliminated");
