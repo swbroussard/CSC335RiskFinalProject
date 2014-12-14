@@ -13,7 +13,6 @@ import model.Card.CardType;
 /**
  * Controls the game of Risk, as the name suggests. Maintains a list of <code>Player</code>s and every possible <code>Territory</code>. Handles gameplay, including board setup and turns, until a winner is declared.  
  * @author Elizabeth Harris, Becca Simon
- *
  */
 public class RiskController extends Observable{
 	private String baseDir = System.getProperty("user.dir") + System.getProperty("file.separator")
@@ -21,12 +20,12 @@ public class RiskController extends Observable{
 	private boolean debug = false;
 	private ArrayList<Territory> territories;
 	private Territory alaska, alberta, centralAmerica, easternUS, greenland, northwest,
-	ontario, quebec, westernUS, argentina, brazil, peru, venezuela, 
-	greatBritain, iceland, northernEurope, scandinavia, southernEurope, 
-	ukraine, westernEurope, congo, eastAfrica, egypt, madagascar, northAfrica,
-	southAfrica, afghanistan, china, india, irkutsk, japan, kamchatka, 
-	middleEast, mongolia, siam, siberia, ural, yakutsk, easternAustralia,
-	indonesia, newGuinea, westernAustralia;
+		ontario, quebec, westernUS, argentina, brazil, peru, venezuela, 
+		greatBritain, iceland, northernEurope, scandinavia, southernEurope, 
+		ukraine, westernEurope, congo, eastAfrica, egypt, madagascar, northAfrica,
+		southAfrica, afghanistan, china, india, irkutsk, japan, kamchatka, 
+		middleEast, mongolia, siam, siberia, ural, yakutsk, easternAustralia,
+		indonesia, newGuinea, westernAustralia;
 	private ArrayList<Player> players;
 	private ArrayList<Card> deckOfCards;
 	private int cardBonus;
@@ -124,6 +123,7 @@ public class RiskController extends Observable{
 			while(counter < players.size()) {
 				//for (Player p : getPlayers()) {
 				Player p = players.get(counter);
+				notifyObservers(ObserverMessages.NEW_TURN);
 				if (debug) System.out.println(p.getName()+"'s turn");
 				if (p instanceof HumanPlayer)
 					SongPlayer.playFile(baseDir + "charge.wav");

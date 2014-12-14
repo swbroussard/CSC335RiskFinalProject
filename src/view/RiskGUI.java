@@ -21,6 +21,9 @@ import javax.swing.SwingConstants;
 
 
 
+
+
+
 import songplayer.SongPlayer;
 import model.ExpertAIPlayer;
 import model.HumanPlayer;
@@ -656,6 +659,9 @@ public class RiskGUI extends JFrame implements Observer{
 		}
 		else if(arg == ObserverMessages.START_EXPLOSION) {
 			mapPanel.setExplosion(controller.getDefendingTerritory());
+		}
+		else if (arg == ObserverMessages.NEW_TURN) {
+			sidePanel.repaint();
 		}
 		mapPanel.repaint();
 		mapPanel.setExplosion(null);

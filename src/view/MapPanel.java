@@ -49,8 +49,6 @@ public class MapPanel extends JPanel{
 		repaint();
 	}
 	
-	
-	
 	@Override
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
