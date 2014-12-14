@@ -798,9 +798,10 @@ public class RiskController extends Observable{
 			defendingTerritory.setCurrentOwner(attackingTerritory.getCurrentOwner());
 			attackingTerritory.getCurrentOwner().getTerritoriesOwned().add(defendingTerritory);
 			
-			// same number of armies as dice rolled move to conquered territory
+			// same number of armies as num time attacker won move to conquered territory
 			int moveArmies = 0;
 			if (attackingTerritory.getCurrentOwner() instanceof HumanPlayer) {
+				this.setChanged();
 				notifyObservers("Please select a number of armies to move.");
 			}
 			else

@@ -1,6 +1,7 @@
 package explosion;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -36,7 +37,7 @@ public abstract class SpriteObject {
 		position.setLocation(x, y);
 	}
 	
-	public void draw(Graphics g){
+	public void draw(Graphics2D g){
 		if (sprite != null && !sprite.isFinished())
 			g.drawImage(frame, position.x  - sprite.getWidth()/2, position.y - sprite.getHeight()/2, null);
 	}

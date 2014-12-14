@@ -53,7 +53,7 @@ public class RiskGUI extends JFrame implements Observer{
 		super();
 		splashScreen();
 		setUpPlayers();
-		
+
 		currentPlayer = players.get(0);
 
 		typeOfPlay = TypeOfPlay.DO_NOTHING;
@@ -62,8 +62,8 @@ public class RiskGUI extends JFrame implements Observer{
 		controller.addObserver(this);
 		controller.setPlayers(players);
 		controller.sendTerritoriesToPlayers();
-		
-		
+
+
 		setUpFrame();
 		try {
 			Thread.sleep(2000);
@@ -78,7 +78,7 @@ public class RiskGUI extends JFrame implements Observer{
 
 		ImageIcon logo = new ImageIcon("images/Risk_logo.png");
 		SongPlayer.playFile(baseDir + "01_1812_Overture_Op.wav");
-		
+
 		JLabel about = new JLabel();
 		about.setText("<html>About This Game"
 				+ "<br>Risk is a turn-based strategy game for two to six players. "
@@ -88,7 +88,7 @@ public class RiskGUI extends JFrame implements Observer{
 				+ "<br>University of Arizona, CSc 335, Fall 2014.");
 		JOptionPane.showMessageDialog(null, about, "SPLASH!", JOptionPane.OK_CANCEL_OPTION, logo);
 	}
-	
+
 	public void setUpFrame() {
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -157,11 +157,11 @@ public class RiskGUI extends JFrame implements Observer{
 				+ "<br>Enter a name in the Name field or the default name will be used."
 				+ "<br> ----------------------------------------------------------------------");
 
-		
+
 		//Player 1
 		JLabel p1 = new JLabel("Player 1:");
 
-		
+
 		JPanel p1NamePanel = new JPanel();
 		p1NamePanel.setLayout(new FlowLayout(FlowLayout.LEADING));
 
@@ -577,7 +577,7 @@ public class RiskGUI extends JFrame implements Observer{
 			if (t.getCurrentOwner() == human) {
 				label.setText("You can't attack yourself!");
 			}
-			if(!human.getCurrentTerritory().getAdjacent().contains(t)) {
+			else if(t.getAdjacent().contains(human.getCurrentTerritory()) == false) {
 				label.setText("You must select a territory adjacent to the one you are attacking from.\n"
 						+ "You are attacking from " + t.getName());
 			}
@@ -637,35 +637,35 @@ public class RiskGUI extends JFrame implements Observer{
 			label.setText("Please select an enemy territory to attack.");
 			typeOfPlay = TypeOfPlay.ATTACK_TO;
 		}
-		
+
 		else if (arg == ObserverMessages.HUMAN_SELECT_REINFORCE_FROM) {
 			label.setText("Please select one of your territories to move armies from.");
 			typeOfPlay = TypeOfPlay.FORTIFY_FROM;
 		}
-		
+
 		else if (arg == ObserverMessages.HUMAN_SELECT_REINFORCE_TO) {
 			label.setText("Please select one of your territories move armies to.");
 			typeOfPlay = TypeOfPlay.FORTIFY_TO;
 		}
-		
+
 		else if (arg == ObserverMessages.HUMAN_SELECT_NUM_ARMIES) {
 			label.setText("Please enter a number of armies to move.");
 			typeOfPlay = TypeOfPlay.FORTIFY_ARMIES;
 		}
-		
+
 		else if (arg == ObserverMessages.HUMAN_TRY_AGAIN_ARMIES) {
 			label.setText("The number you select must be less than the number armies in your territory");
 			typeOfPlay = TypeOfPlay.FORTIFY_ARMIES;
 		}
-//		else if(arg != ObserverMessages.START_EXPLOSION) {
-//			System.out.println("explosion primed");
-//			mapPanel.setExplosion(controller.getDefendingTerritory());
-//			mapPanel.setExplosion(null);
-//		}
-//		else if(arg == ObserverMessages.START_EXPLOSION) {
-//			//System.out.println("explosion primed");
-//			mapPanel.setExplosion(controller.getDefendingTerritory());
-//		}
+		//		else if(arg != ObserverMessages.START_EXPLOSION) {
+		//			System.out.println("explosion primed");
+		//			mapPanel.setExplosion(controller.getDefendingTerritory());
+		//			mapPanel.setExplosion(null);
+		//		}
+		//		else if(arg == ObserverMessages.START_EXPLOSION) {
+		//			//System.out.println("explosion primed");
+		//			mapPanel.setExplosion(controller.getDefendingTerritory());
+		//		}
 		else if (arg == ObserverMessages.NEW_TURN) {
 			sidePanel.repaint();
 		}
@@ -681,7 +681,7 @@ public class RiskGUI extends JFrame implements Observer{
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
-	
+
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}

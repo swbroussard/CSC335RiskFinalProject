@@ -88,7 +88,7 @@ public class MapPanel extends JPanel{
 			if(t.getNumArmies() < 10)
 				g2.drawString("" + t.getNumArmies(), (int) t.getLabelPosition().getX() + 7, (int) t.getLabelPosition().getY() + 16);
 			else//armies is double digit number
-				g2.drawString("" + t.getNumArmies(), (int) t.getLabelPosition().getX() + 2, (int) t.getLabelPosition().getY() + 15);
+				g2.drawString("" + t.getNumArmies(), (int) t.getLabelPosition().getX() + 3, (int) t.getLabelPosition().getY() + 16);
 //			if(loosingTerritory != null) {
 //				System.out.println("explosion activated. BOOM!!!!");
 //				createExplosion(g2, (int) loosingTerritory.getLabelPosition().getX(), (int) loosingTerritory.getLabelPosition().getY());

@@ -228,7 +228,7 @@ public class IntermediateAIPlayer extends Player{
 		armiesToMove = takeArmy.getNumArmies() - 1;
 		
 		if (reinforceThis != null) {
-			reinforceThis.setNumArmies(takeArmy.getNumArmies() + armiesToMove);
+			reinforceThis.setNumArmies(reinforceThis.getNumArmies() + armiesToMove);
 			takeArmy.setNumArmies(takeArmy.getNumArmies() - armiesToMove);
 		}
 	}
