@@ -193,7 +193,8 @@ public abstract class Player extends Observable{
 	public boolean canTurnInCards() {
 		int cannon = 0, horseman = 0, footSoldier = 0, wild = 0;
 		int cardsRemoved = 0; 
-		for (Card c : cards) {
+		for (int i = 0; i < cards.size(); i++) {
+			Card c = cards.get(i);
 			switch (c.getCardType()) {
 				case CANNON: cannon++; break;
 				case HORSEMAN: horseman++; break;
@@ -203,7 +204,8 @@ public abstract class Player extends Observable{
 		}
 
 		if (cannon == 3) {
-			for (Card c : cards) {
+			for (int i = 0; i < cards.size(); i++) {
+				Card c = cards.get(i);
 				if (c.getCardType() == CardType.CANNON) {
 					if (cardsRemoved == 3)
 						break;
@@ -215,7 +217,8 @@ public abstract class Player extends Observable{
 		}
 		
 		else if (horseman == 3) {
-			for (Card c : cards) {
+			for (int i = 0; i < cards.size(); i++) {
+				Card c = cards.get(i);
 				if (c.getCardType() == CardType.HORSEMAN) {
 					if (cardsRemoved == 3)
 						break;
@@ -227,7 +230,8 @@ public abstract class Player extends Observable{
 		}
 		
 		else if (footSoldier == 3) {
-			for (Card c : cards) {
+			for (int i = 0; i < cards.size(); i++) {
+				Card c = cards.get(i);
 				if (c.getCardType() == CardType.FOOT_SOLDIER) {
 					if (cardsRemoved == 3)
 						break;
@@ -240,7 +244,8 @@ public abstract class Player extends Observable{
 		
 		else if (cannon >= 1 && horseman >= 1 && footSoldier >= 1) {
 			int cannonsRemoved = 0, horsemenRemoved = 0, footSoldiersRemoved = 0;
-			for (Card c : cards) {
+			for (int i = 0; i < cards.size(); i++) {
+				Card c = cards.get(i);
 				if (cannonsRemoved < 1 && c.getCardType() == CardType.CANNON) {
 					removeCard(c);
 					cannonsRemoved++;
@@ -259,7 +264,8 @@ public abstract class Player extends Observable{
 		
 		else if (wild >= 1) {
 			int wildCardsRemoved = 0;
-			for (Card c : cards) {
+			for (int i = 0; i < cards.size(); i++) {
+				Card c = cards.get(i);
 				if (cardsRemoved == 2 && wildCardsRemoved == 1)
 					break;
 				if (cardsRemoved < 2 && c.getCardType() != CardType.WILD) {
