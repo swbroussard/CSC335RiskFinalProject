@@ -657,14 +657,21 @@ public class RiskGUI extends JFrame implements Observer{
 			label.setText("The number you select must be less than the number armies in your territory");
 			typeOfPlay = TypeOfPlay.FORTIFY_ARMIES;
 		}
-		else if(arg == ObserverMessages.START_EXPLOSION) {
-			mapPanel.setExplosion(controller.getDefendingTerritory());
-		}
+//		else if(arg != ObserverMessages.START_EXPLOSION) {
+//			System.out.println("explosion primed");
+//			mapPanel.setExplosion(controller.getDefendingTerritory());
+//			mapPanel.setExplosion(null);
+//		}
+//		else if(arg == ObserverMessages.START_EXPLOSION) {
+//			//System.out.println("explosion primed");
+//			mapPanel.setExplosion(controller.getDefendingTerritory());
+//		}
 		else if (arg == ObserverMessages.NEW_TURN) {
 			sidePanel.repaint();
 		}
 		mapPanel.repaint();
-		mapPanel.setExplosion(null);
+		//System.out.println(controller.getDefendingTerritory() + " is being set to null if not primed.");
+		//mapPanel.setExplosion(null);
 	}
 
 	public Player getHumanPlayer() {

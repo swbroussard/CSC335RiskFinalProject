@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -14,11 +16,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
+import javax.swing.Timer;
+import explosion.SpriteObject;
 import explosion.*;
 import model.*;
 
@@ -27,8 +29,10 @@ public class MapPanel extends JPanel{
 	private BufferedImage map;
 	private ArrayList<Territory> territories;
 	private RiskGUI gui;
-	private List<SpriteObject> splosions;
+	private List<Object> splosions;
 	private Territory loosingTerritory;
+	private Timer animTimer;
+	private BufferedImage sheet;
 	
 	public MapPanel(RiskGUI gui) {
 		super();
@@ -37,15 +41,20 @@ public class MapPanel extends JPanel{
 		this.setPreferredSize(new Dimension(960, 640));
 		this.setBackground(Color.RED);
 		this.setVisible(true);
-		splosions = new LinkedList<SpriteObject>();
+		splosions = new LinkedList<Object>();
 		
 		try {
 			map = ImageIO.read(new File("images/RiskMap2.jpg"));
+			sheet = ImageIO.read(new File("images/explosion-sprite.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+		//manually add in the 14 different frames
+		//splosions.add(sheet.getSubimage(col * width, row * height, width, height))
+		
 		this.addMouseListener(new MapListener());
+		
 		repaint();
 	}
 	
@@ -53,8 +62,19 @@ public class MapPanel extends JPanel{
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawImage(map, 0, 0, 960, 640, null);
-
 		g2.setFont(new Font("Arial", Font.BOLD, 15));
+		//System.out.println(loosingTerritory + " exploded");
+		if(loosingTerritory != null) {
+			//System.out.println("explosion activated. BOOM!!!!");
+			//createExplosion((int) loosingTerritory.getLabelPosition().getX(), (int) loosingTerritory.getLabelPosition().getY());
+			//System.out.println(splosions.size() + " of sprite frames");
+			//change the for loop to loop through the splosions with a sleeper delay
+			//and draws the frame.
+			for (int i = 0; 1 < splosions.size(); i++){
+				
+			}
+			loosingTerritory = null;
+		}
 		for(Territory t: territories) {
 			if(t.getCurrentOwner() == null) {
 				g2.setColor(Color.WHITE);
@@ -69,9 +89,10 @@ public class MapPanel extends JPanel{
 				g2.drawString("" + t.getNumArmies(), (int) t.getLabelPosition().getX() + 7, (int) t.getLabelPosition().getY() + 16);
 			else//armies is double digit number
 				g2.drawString("" + t.getNumArmies(), (int) t.getLabelPosition().getX() + 2, (int) t.getLabelPosition().getY() + 15);
-			if(loosingTerritory != null) {
-				createExplosion(g2, (int) loosingTerritory.getLabelPosition().getX(), (int) loosingTerritory.getLabelPosition().getY());
-			}
+//			if(loosingTerritory != null) {
+//				System.out.println("explosion activated. BOOM!!!!");
+//				createExplosion(g2, (int) loosingTerritory.getLabelPosition().getX(), (int) loosingTerritory.getLabelPosition().getY());
+//			}
 		}
 	}
 	
@@ -80,18 +101,21 @@ public class MapPanel extends JPanel{
 	 * @param graphs, x, y
 	 * @return none
 	 */
-	public void createExplosion(Graphics2D g2, int x, int y){
-		Explosion e = new Explosion(0, 0);
-		e.setPosition(x, y);
-		splosions.add(e);
-		e.start();
-		for (SpriteObject explosion : splosions)
-			explosion.draw(g2);
-	}
+//	public void createExplosion(int x, int y){
+//		Explosion e = new Explosion(0, 0);
+//		e.setPosition(x, y);
+//		splosions.add(e);
+//		e.start();
+//		e.draw(g2);
+//		for (SpriteObject explosion : splosions){
+//			System.out.println("A sprite frame");
+//			explosion.draw(g2);
+//		}
+//	}
 	
-	public void setExplosion(Territory t) {
-		loosingTerritory = t;
-	}
+//	public void setExplosion(Territory t) {
+//		loosingTerritory = t;
+//	}
 	
 	private class MapListener implements MouseListener {
 
