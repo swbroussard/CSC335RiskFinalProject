@@ -170,10 +170,8 @@ public class SimpleAIPlayer extends Player {
 				reinforceSelected = true;
 			}
 		}while(!reinforceSelected);
-			
-		do {
+		
 		armiesToMove = randomGen.nextInt(takeArmy.getNumArmies() - 1) + 1;
-		}while(armiesToMove > 0);
 		
 		if (reinforceThis != null) {
 			reinforceThis.setNumArmies(reinforceThis.getNumArmies() + armiesToMove);
