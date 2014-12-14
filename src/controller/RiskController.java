@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Observable;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 import explosion.*;
 import songplayer.SongPlayer;
 import view.MapPanel;
@@ -815,8 +817,20 @@ public class RiskController extends Observable{
 			// same number of armies as num time attacker won move to conquered territory
 			int moveArmies = 0;
 			if (attackingTerritory.getCurrentOwner() instanceof HumanPlayer) {
-				this.setChanged();
-				notifyObservers("Please select a number of armies to move.");
+				int selection = attackingDiceValues.size();
+				do {
+					String message = JOptionPane.showInputDialog("Please enter the number of armies to move from " + 
+						attackingTerritory.getName() + " to " + defendingTerritory.getName(), selection);
+				selection = Integer.parseInt(message);
+				}while(selection < attackingDiceValues.size() && selection > attackingTerritory.getNumArmies() - 1);
+				moveArmies = selection;
+			}
+			else if(attackingTerritory.getCurrentOwner() instanceof ExpertAIPlayer) {
+				if(attackingTerritory.getNumArmies() > 7){
+					moveArmies = attackingTerritory.getNumArmies() / 2;
+				}
+				else
+					moveArmies = attackingDiceValues.size();
 			}
 			else
 				moveArmies = attackingDiceValues.size();

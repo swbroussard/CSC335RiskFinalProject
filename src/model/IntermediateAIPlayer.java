@@ -11,24 +11,22 @@ import java.util.Random;
  * @author Steven W Broussard & Jeremy Jalnos
  *
  */
-//TODO: Need to add in an algorithm for ending the turn.  Right now the intermediate player continues attacking
-//until he has no where to attack from.
 public class IntermediateAIPlayer extends Player{
 	private Random genRan;
 	private int numAttacks;
 	private Territory attackTo;
-	
+
 	public IntermediateAIPlayer() {
 		super();
 		attackTo = null;
 	}
-	
+
 	public IntermediateAIPlayer(String name) {
 		super(name);
 		if (debug) System.out.println("New IntermediateAIPlayer created: "+name);
 		attackTo = null;
 	}
-	
+
 	/**
 	 * Description: First troop is place at a territory randomly. All other troops will
 	 * then be place in adjacent territories that are not owned.
@@ -36,10 +34,9 @@ public class IntermediateAIPlayer extends Player{
 	@Override
 	public void placeArmy() {
 		if(debug) System.out.println("placeArmy called by "+getName());
-		// TODO place an troop one per turn or place all the armies on player turn in the beginning?
 		// Semi-intelligently chooses a territory with two or more armies to attack from
 		genRan = new Random();
-		
+
 		//determines if you are still in territory selecting mode or if in army placing mode
 		boolean allSelected = true;
 		for(Territory t: getAllTerritories()) {
@@ -47,7 +44,7 @@ public class IntermediateAIPlayer extends Player{
 				allSelected = false;
 			}
 		}
-		
+
 		if(allSelected == false) {
 			//if it is the first territory to select
 			if(getTerritoriesOwned().size() == 0) {
@@ -72,7 +69,6 @@ public class IntermediateAIPlayer extends Player{
 			//choosing territories after the first one, want to cluster territories if possible. 
 			else {
 				boolean territoryChoosen = false;
-				//nextPick = getTerritoriesOwned().get(genRandom.nextInt(firstPick.getAdjacent().size()));
 				for(int i = 0; i < 7; i++) {//try to cluster 7 times, then just pick a random one
 					int n = 0;
 					if(debug) System.out.println("itr " + i);
@@ -109,7 +105,6 @@ public class IntermediateAIPlayer extends Player{
 					else
 						r = genRan.nextInt(42);
 				}
-
 			}
 		}//end of choosing empty territories
 		else {//place army in territory			
@@ -118,8 +113,7 @@ public class IntermediateAIPlayer extends Player{
 				if(t.getNumArmies() < 1)
 					selected = t;
 			}
-			
-			
+
 			int r = genRan.nextInt(getTerritoriesOwned().size());
 			for(int i = 0; i < 5; i++) {
 				if(selected == null) {
@@ -141,26 +135,25 @@ public class IntermediateAIPlayer extends Player{
 			if (debug) System.out.println("Army successfully placed in owned territory by "+getName());
 		}
 	}
-	
+
 	/**
 	 * randomly chooses owned territories to attack from
 	 * @return Territory
 	 */
-	
+
 	@Override
 	public Territory attackFrom() {
-		//if(count <= 5){
 		attackTo = null;
 		if (debug) System.out.println("attackFrom called by "+getName());
 		Territory choosenTerritory = null;
 		for(int i = 0; i < 30; i++){
 			Territory temp = getTerritoriesOwned().get(genRan.nextInt(getTerritoriesOwned().size()));
-			if(temp.getNumArmies() > 1 && choosenTerritory == null) {
+			if(temp.getNumArmies() > 1) {
 				for(Territory t: temp.getAdjacent()) {
 					if(t.getCurrentOwner() != this){ 
 						if(temp.getNumArmies() > t.getNumArmies()) {
-						choosenTerritory = temp;
-						attackTo = t;
+							choosenTerritory = temp;
+							attackTo = t;
 						}
 					}
 				}
@@ -176,9 +169,7 @@ public class IntermediateAIPlayer extends Player{
 			}
 		}
 		return choosenTerritory;
-	//}
-		//return null;
-		}
+	}
 	/**
 	 * randomly attacks to adjacent enemy territory
 	 * @param attackForm
@@ -191,7 +182,7 @@ public class IntermediateAIPlayer extends Player{
 		if(attackTo != null) {
 			return attackTo;
 		}
-		
+
 		int lowTroop = 1000;
 		Territory attack = null;
 		for(int i = 0; i< attackFrom.getAdjacent().size(); i++){
@@ -200,7 +191,7 @@ public class IntermediateAIPlayer extends Player{
 					lowTroop = attackFrom.getAdjacent().get(i).getNumArmies();
 					attack = attackFrom.getAdjacent().get(i);
 				}
-				
+
 			}
 		}
 		numAttacks++;
@@ -215,12 +206,12 @@ public class IntermediateAIPlayer extends Player{
 	 * randomly puts reinforce armies around adjacent territories owned by other player
 	 * @param takeArmy, reinforceThis
 	 */
-	
+
 	@Override
 	public void reinforceArmies() {
 		if (debug) System.out.println("reinforceArmies called by "+getName());
 		int armiesToMove = 0;
-		
+
 		boolean reinforcePossible = false;
 		for(Territory t: getTerritoriesOwned()) {
 			for(Territory a: t.getAdjacent()) {
@@ -230,10 +221,10 @@ public class IntermediateAIPlayer extends Player{
 		}
 		if(!reinforcePossible)
 			return;
-		
+
 		Territory reinforceThis = null;
 		Territory takeArmy = null;
-		
+
 		for(Territory t: getTerritoriesOwned()) {
 			if(takeArmy == null && t.getNumArmies() > 1 && t.getCurrentOwner() == this) {
 				boolean adjacentAllThis = true;
@@ -247,13 +238,14 @@ public class IntermediateAIPlayer extends Player{
 		}
 		while(takeArmy == null) {
 			Territory temp = getTerritoriesOwned().get(genRan.nextInt(getTerritoriesOwned().size()));
-			if(temp.getNumArmies() > 1)
+			if(temp.getNumArmies() > 1) {
 				for(Territory t: temp.getAdjacent()) {
 					if(t.getCurrentOwner() == this)
 						takeArmy = temp;
 				}			
+			}
 		}
-		
+
 		boolean reinforceSelected = false;
 		do{
 			reinforceThis = takeArmy.getAdjacent().get(genRan.nextInt(takeArmy.getAdjacent().size()));
@@ -261,14 +253,14 @@ public class IntermediateAIPlayer extends Player{
 				reinforceSelected = true;
 			}
 		}while(!reinforceSelected);
-			
+
 		armiesToMove = takeArmy.getNumArmies() - 1;
-		
+
 		if (reinforceThis != null) {
 			reinforceThis.setNumArmies(reinforceThis.getNumArmies() + armiesToMove);
 			takeArmy.setNumArmies(takeArmy.getNumArmies() - armiesToMove);
 		}
-		
+
 		this.setChanged();
 		notifyObservers(this.getName() + " has moved " + armiesToMove + " armies from " + 
 				takeArmy.getName() + " to " + reinforceThis.getName());

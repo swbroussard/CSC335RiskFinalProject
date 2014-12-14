@@ -405,5 +405,4 @@ public abstract class Player extends Observable{
 	public boolean getDoneAttacking() {
 		return doneAttacking;
 	}
-	
 }
