@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Observable;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 import songplayer.SongPlayer;
 import model.*;
 import model.Card.CardType;
@@ -94,11 +96,11 @@ public class RiskController extends Observable{
 		
 		while (getPlayers().get(0).getNumArmies() > 0) {
 			for (Player p : players) {
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+//				try {
+//					Thread.sleep(1000);
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
 				if(p.getNumArmies() > 0)
 					p.placeArmy();
 			}
@@ -137,22 +139,31 @@ public class RiskController extends Observable{
 				p.addArmies();
 				
 				while (p.getNumArmies() > 0) {
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) { e.printStackTrace();}
+//					try {
+//						Thread.sleep(1000);
+//					} catch (InterruptedException e) { e.printStackTrace();}
 					p.placeArmy();
 				}
 				while (p.canAttack()) {
-					Territory attacker;
+					Territory attacker = null;
 					do {
 						attacker = p.attackFrom();
-					} while (attacker == null || attacker.getNumArmies() < 1 || attacker.getCurrentOwner() != p);
-					
-					Territory defender = p.attackTo(attacker);
-					if (debug) System.out.println("Attacking " + defender.toString());
-					while (defender == null || defender.getCurrentOwner() == p) {
+						if(p.getDoneAttacking()) {
+							break;
+						}
+					} while (attacker == null || attacker.getNumArmies() < 2 || attacker.getCurrentOwner() != p);
+					if(p.getDoneAttacking()) {
+						break;
+					}
+					Territory defender = null;;
+					do{
 						defender = p.attackTo(attacker);
-						if (debug) System.out.println("Attacking" + defender.toString());
+						if(p.getDoneAttacking()) {
+							break;
+						}
+					}while (defender == null || defender.getCurrentOwner() == p || !attacker.getAdjacent().contains(defender));
+					if(p.getDoneAttacking()) {
+						break;
 					}
 					if (attack(attacker, defender))
 						conquered = true;
@@ -810,8 +821,20 @@ public class RiskController extends Observable{
 			// same number of armies as num time attacker won move to conquered territory
 			int moveArmies = 0;
 			if (attackingTerritory.getCurrentOwner() instanceof HumanPlayer) {
-				this.setChanged();
-				notifyObservers("Please select a number of armies to move.");
+				int selection = attackingDiceValues.size();
+				do {
+					String message = JOptionPane.showInputDialog("Please enter the number of armies to move from " + 
+						attackingTerritory.getName() + " to " + defendingTerritory.getName(), selection);
+				selection = Integer.parseInt(message);
+				}while(selection < attackingDiceValues.size() && selection > attackingTerritory.getNumArmies() - 1);
+				moveArmies = selection;
+			}
+			else if(attackingTerritory.getCurrentOwner() instanceof ExpertAIPlayer) {
+				if(attackingTerritory.getNumArmies() > 7){
+					moveArmies = attackingTerritory.getNumArmies() / 2;
+				}
+				else
+					moveArmies = attackingDiceValues.size();
 			}
 			else
 				moveArmies = attackingDiceValues.size();

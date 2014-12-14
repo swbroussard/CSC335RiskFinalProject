@@ -602,9 +602,12 @@ public class RiskGUI extends JFrame implements Observer{
 					possible = true;
 			}
 			if(possible) {
-				human.setTerritoryChosen(true);
-				human.setAttackFrom(t);
 				label.setText("You selected " + t.getName() + " to attack from.");
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {e.printStackTrace();}
+				human.setAttackFrom(t);
+				human.setTerritoryChosen(true);
 				typeOfPlay = TypeOfPlay.DO_NOTHING;
 			}
 			else
@@ -612,19 +615,13 @@ public class RiskGUI extends JFrame implements Observer{
 
 		}
 		else if (typeOfPlay == TypeOfPlay.ATTACK_TO){
-			if (t.getCurrentOwner() == human) {
-				label.setText("You can't attack yourself!");
-			}
-			else if(t.getAdjacent().contains(human.getAttackFrom()) == false) {
-				label.setText("You must select a territory adjacent to the one you are attacking from.\n"
-						+ "You are attacking from " + t.getName());
-			}
-			else {
+				label.setText("You are attacking " + t.getName());
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {e.printStackTrace();}
 				human.setTerritoryChosen(true);
 				human.setAttackTo(t);
-				label.setText("You are attacking " + t.getName());
 				typeOfPlay = TypeOfPlay.DO_NOTHING;
-			}
 		}
 		else {
 			label.setText("It is not your turn");

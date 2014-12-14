@@ -84,14 +84,10 @@ public class MapPanel extends JPanel{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawImage(map, 0, 0, 960, 640, null);
 		g2.setFont(new Font("Arial", Font.BOLD, 15));
-		for (SpriteObject explosion : getSplosions())
+		for (int i = 0; i < getSplosions().size(); i++) {
+			SpriteObject explosion = getSplosions().get(i);
 			explosion.draw(g2);
-		/*if(loosingTerritory != null) {
-			for (int i = 0; 1 < getSplosions().size(); i++){
-				
-			}
-			loosingTerritory = null;
-		}*/
+		}
 		for(Territory t: territories) {
 			if(t.getCurrentOwner() == null) {
 				g2.setColor(Color.WHITE);
@@ -138,10 +134,8 @@ public class MapPanel extends JPanel{
 			int x = e.getX();
 			int y = e.getY();
 			int rgb = map.getRGB(x, y);
-			//System.out.println(rgb);
 			for(Territory t : territories) {
 				if(t.getColor() == rgb) {
-//					gui.setLabel("You have selected " + t.getName());
 					gui.territorySelected(t);
 				}
 			}
