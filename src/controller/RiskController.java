@@ -95,11 +95,11 @@ public class RiskController extends Observable{
 		
 		while (getPlayers().get(0).getNumArmies() > 0) {
 			for (Player p : players) {
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+//				try {
+//					Thread.sleep(1000);
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
 				if(p.getNumArmies() > 0)
 					p.placeArmy();
 			}
@@ -136,22 +136,31 @@ public class RiskController extends Observable{
 				p.addArmies();
 				
 				while (p.getNumArmies() > 0) {
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) { e.printStackTrace();}
+//					try {
+//						Thread.sleep(1000);
+//					} catch (InterruptedException e) { e.printStackTrace();}
 					p.placeArmy();
 				}
 				while (p.canAttack()) {
-					Territory attacker;
+					Territory attacker = null;
 					do {
 						attacker = p.attackFrom();
-					} while (attacker == null || attacker.getNumArmies() < 1 || attacker.getCurrentOwner() != p);
-					
-					Territory defender = p.attackTo(attacker);
-					if (debug) System.out.println("Attacking " + defender.toString());
-					while (defender == null || defender.getCurrentOwner() == p) {
+						if(p.getDoneAttacking()) {
+							break;
+						}
+					} while (attacker == null || attacker.getNumArmies() < 2 || attacker.getCurrentOwner() != p);
+					if(p.getDoneAttacking()) {
+						break;
+					}
+					Territory defender = null;;
+					do{
 						defender = p.attackTo(attacker);
-						if (debug) System.out.println("Attacking" + defender.toString());
+						if(p.getDoneAttacking()) {
+							break;
+						}
+					}while (defender == null || defender.getCurrentOwner() == p || !attacker.getAdjacent().contains(defender));
+					if(p.getDoneAttacking()) {
+						break;
 					}
 					if (attack(attacker, defender))
 						conquered = true;

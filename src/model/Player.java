@@ -402,6 +402,8 @@ public abstract class Player extends Observable{
 		return cards;
 	}
 	
-	
+	public boolean getDoneAttacking() {
+		return doneAttacking;
+	}
 	
 }
