@@ -12,6 +12,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
@@ -24,6 +26,7 @@ public class MapPanel extends JPanel{
 	private BufferedImage map;
 	private ArrayList<Territory> territories;
 	private RiskGUI gui;
+	private List<SpriteObject> splosions;
 	
 	public MapPanel(RiskGUI gui) {
 		super();
@@ -32,6 +35,7 @@ public class MapPanel extends JPanel{
 		this.setPreferredSize(new Dimension(960, 640));
 		this.setBackground(Color.RED);
 		this.setVisible(true);
+		splosions = new LinkedList<SpriteObject>();
 		
 		try {
 			map = ImageIO.read(new File("images/RiskMap2.jpg"));
@@ -108,5 +112,18 @@ public class MapPanel extends JPanel{
 		
 	}
 	
+	/**
+	 * method to make explosion when a territory is conquerer by another player
+	 * @param graphs, x, y
+	 * @return none
+	 */
+	public void exploions(Graphics2D g2, int x, int y){
+		Explosion e = new Explosion(0, 0);
+		e.setPosition(x, y);
+		splosions.add(e);
+		e.start();
+		for (SpriteObject explosion : splosions)
+			explosion.draw(g2);
+	}
 	
 }

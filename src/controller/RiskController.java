@@ -3,6 +3,8 @@ package controller;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Random;
 
@@ -767,6 +769,7 @@ public class RiskController extends Observable{
 
 		if (defendingTerritory.getNumArmies() <= 0) { // attacker conquered defending territory
 			SongPlayer.playFile(baseDir + "BigExplosion.wav");
+			//call the method to show explosion
 			if (defendingTerritory.getCurrentOwner().getTerritoriesOwned().size() == 1) {
 				// attacker conquered defender's last territory
 				if (debug) System.out.println(defendingTerritory.getCurrentOwner().getName() + " has been eliminated");
