@@ -19,8 +19,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import explosion.Explosion;
-import explosion.SpriteObject;
+import explosion.*;
 import model.*;
 
 @SuppressWarnings({ "unused", "serial" })
@@ -29,7 +28,7 @@ public class MapPanel extends JPanel{
 	private ArrayList<Territory> territories;
 	private RiskGUI gui;
 	private List<SpriteObject> splosions;
-	private Territory explosion;
+	private Territory loosingTerritory;
 	
 	public MapPanel(RiskGUI gui) {
 		super();
@@ -48,7 +47,6 @@ public class MapPanel extends JPanel{
 		
 		this.addMouseListener(new MapListener());
 		repaint();
-		//mapPanel.add(map, BorderLayout.CENTER);
 	}
 	
 	
@@ -73,14 +71,28 @@ public class MapPanel extends JPanel{
 				g2.drawString("" + t.getNumArmies(), (int) t.getLabelPosition().getX() + 7, (int) t.getLabelPosition().getY() + 16);
 			else//armies is double digit number
 				g2.drawString("" + t.getNumArmies(), (int) t.getLabelPosition().getX() + 2, (int) t.getLabelPosition().getY() + 15);
-			if(explosion != null) {
-				explosions(g2, (int) explosion.getLabelPosition().getX(), (int) explosion.getLabelPosition().getY());
+			if(loosingTerritory != null) {
+				createExplosion(g2, (int) loosingTerritory.getLabelPosition().getX(), (int) loosingTerritory.getLabelPosition().getY());
 			}
 		}
 	}
 	
+	/**
+	 * method to make explosion when a territory is conquerer by another player
+	 * @param graphs, x, y
+	 * @return none
+	 */
+	public void createExplosion(Graphics2D g2, int x, int y){
+		Explosion e = new Explosion(0, 0);
+		e.setPosition(x, y);
+		splosions.add(e);
+		e.start();
+		for (SpriteObject explosion : splosions)
+			explosion.draw(g2);
+	}
+	
 	public void setExplosion(Territory t) {
-		explosion = t;
+		loosingTerritory = t;
 	}
 	
 	private class MapListener implements MouseListener {
@@ -122,18 +134,6 @@ public class MapPanel extends JPanel{
 		
 	}
 	
-	/**
-	 * method to make explosion when a territory is conquerer by another player
-	 * @param graphs, x, y
-	 * @return none
-	 */
-	public void explosions(Graphics2D g2, int x, int y){
-		Explosion e = new Explosion(0, 0);
-		e.setPosition(x, y);
-		splosions.add(e);
-		e.start();
-		for (SpriteObject explosion : splosions)
-			explosion.draw(g2);
-	}
+	
 	
 }
