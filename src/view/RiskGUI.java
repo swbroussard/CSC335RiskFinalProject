@@ -643,7 +643,8 @@ public class RiskGUI extends JFrame implements Observer{
 		
 		else if (arg == ObserverMessages.HUMAN_SELECT_NUM_ARMIES) {
 			label.setText("Please enter a number of armies to move.");
-			typeOfPlay = TypeOfPlay.FORTIFY_ARMIES;
+			//typeOfPlay = TypeOfPlay.FORTIFY_ARMIES;
+			// could be either FORTIFY_ARMIES or the end of conquering a territory
 		}
 		
 		else if (arg == ObserverMessages.HUMAN_TRY_AGAIN_ARMIES) {

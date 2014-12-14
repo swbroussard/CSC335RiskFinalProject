@@ -64,13 +64,13 @@ public class SidePanel extends JPanel{
 				case 1: // green
 					text += String.format("<br>%s<font color=#00FF00>%s</font>","",p.getName()); break;
 				case 2: // orange
-					text += String.format("<br>%s<font color=#FF8C00>%s</font>","",p.getName()); break;
+					text += String.format("<br>%s<font color=#FF7700>%s</font>","",p.getName()); break;
 				case 3: // magenta
 					text += String.format("<br>%s<font color=#FF00FF>%s</font>","",p.getName()); break;
 				case 4: // yellow
 					text += String.format("<br>%s<font color=#FFD700>%s</font>","",p.getName()); break;
 				case 5: // purple
-					text += String.format("<br>%s<font color=#9932CC>%s</font>","",p.getName()); break;
+					text += String.format("<br>%s<font color=#8C4AFF>%s</font>","",p.getName()); break;
 			}
 		}
 		text += "<br><br>Continent Bonuses:<br>North America - 5<br>South America - 2"

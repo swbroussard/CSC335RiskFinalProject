@@ -36,10 +36,11 @@ public class SimpleAIPlayer extends Player {
 		Territory choosenTerritory = null;
 		while(choosenTerritory == null){
 			int r = randomGen.nextInt(getTerritoriesOwned().size());
-			if(getTerritoriesOwned().get(r).getNumArmies() > 1) {
-				for(Territory t: getTerritoriesOwned().get(r).getAdjacent()) {
+			Territory temp = getTerritoriesOwned().get(r);
+			if(temp.getNumArmies() > 1) {
+				for(Territory t: temp.getAdjacent()) {
 					if(t.getCurrentOwner() != this) {
-						choosenTerritory = getTerritoriesOwned().get(r);
+						choosenTerritory = temp; break;
 					}
 				}
 			}

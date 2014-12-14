@@ -137,7 +137,10 @@ public class RiskController extends Observable{
 					p.placeArmy();
 				}
 				while (p.canAttack()) {
-					Territory attacker = p.attackFrom();
+					Territory attacker;
+					do {
+						attacker = p.attackFrom();
+					} while (attacker.getNumArmies() > 1);
 					while (attacker == null || attacker.getCurrentOwner() != p) {
 						attacker = p.attackFrom();
 					}
@@ -154,6 +157,8 @@ public class RiskController extends Observable{
 				p.setDoneAttacking(false);
 				if (conquered) {
 					issueCard(p);
+					this.setChanged();
+					notifyObservers(p.getName()+" was issued a card: "+p.getCards().get(p.getCards().size()-1).toString());
 					conquered = false;
 				}
 				p.reinforceArmies();
@@ -797,8 +802,14 @@ public class RiskController extends Observable{
 			attackingTerritory.getCurrentOwner().getTerritoriesOwned().add(defendingTerritory);
 			// same number of armies as dice rolled move to conquered territory
 			// TODO: ITERATION 2 - can choose the number of armies to move (>= number of dice rolled)
-			defendingTerritory.setNumArmies(attackingDiceValues.size());
-			attackingTerritory.setNumArmies(attackingTerritory.getNumArmies() - attackingDiceValues.size());
+			int moveArmies = 0;
+			if (attackingTerritory.getCurrentOwner() instanceof HumanPlayer) {
+				notifyObservers("Please select a number of armies to move.");
+			}
+			else
+				moveArmies = attackingDiceValues.size();
+			defendingTerritory.setNumArmies(moveArmies);
+			attackingTerritory.setNumArmies(attackingTerritory.getNumArmies() - moveArmies);
 			return true;
 		}
 		if (debug) System.out.println(territories + "\n");

@@ -77,4 +77,13 @@ public class Card {
 	public void setInDeck(boolean inDeck) {
 		this.inDeck = inDeck;
 	}
+	
+	public String toString() {
+		//String deckness;
+		//if (inDeck)
+		//	deckness = "is in deck";
+		//else
+		//	deckness = "is not in deck";
+		return type + ": " + cardTerritory;
+	}
 }
