@@ -315,7 +315,7 @@ public class ExpertAIPlayer extends Player {
 		}//end of choosing empty territories
 		else {
 			int r = genRan.nextInt(getTerritoriesOwned().size());
-			for(int i = 0; i < 10; i++) {
+			for(int i = 0; i < 20; i++) {
 				if(selected == null) {
 					Territory temp = getTerritoriesOwned().get(r);
 					for(Territory t: temp.getAdjacent()) {
@@ -336,8 +336,6 @@ public class ExpertAIPlayer extends Player {
 		}
 	}
 
-	
-	
 	@Override
 	public void reinforceArmies() {
 		if (debug) System.out.println("reinforceArmies called by "+getName());
@@ -518,10 +516,11 @@ public class ExpertAIPlayer extends Player {
 
 	@Override
 	public Territory attackFrom() {
-		if (debug) System.out.println("attackFrom called by "+getName());
+		if (debug) System.out.println("attackFrom called by " + getName());
 		Territory choosenTerritory = null;
 
 		Continent continentToAttack = determineContinent();
+		System.out.println(this.getName() + " is going to attack " + continentToAttack.toString());
 		
 		if(continentToAttack == Continent.NORTH_AMERICA) {
 			for(Territory t: NA) {

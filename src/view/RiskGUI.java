@@ -19,12 +19,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-
-
-
-
-
-
 import songplayer.SongPlayer;
 import model.ExpertAIPlayer;
 import model.HumanPlayer;
@@ -558,34 +552,34 @@ public class RiskGUI extends JFrame implements Observer{
 		}
 		else if (typeOfPlay == TypeOfPlay.ATTACK_FROM) {
 			if (t.getCurrentOwner() != human) {
-				label.setText("You don't own that territory!  Please select a Territory you own to attack from!");
+				label.setText("You don't own " + t.getName() + "!  Please select a Territory you own to attack from!");
 			}
 			else {
 				if(t.getNumArmies() > 1) {
 					for(Territory a: t.getAdjacent()) {
 						if(a.getCurrentOwner() != human) {
 							human.setTerritoryChosen(true);
-							human.setCurrentTerritory(t);
+							human.setAttackFrom(t);
 							label.setText("You selected " + t.getName() + " to attack from.");
 							typeOfPlay = TypeOfPlay.DO_NOTHING;
 						}
 					}
 				}
 				else
-					label.setText("You cannot attack from that Territory! Please select another");
+					label.setText("You cannot attack from " + t.getName() + "! Please select another");
 			}
 		}
 		else if (typeOfPlay == TypeOfPlay.ATTACK_TO){
 			if (t.getCurrentOwner() == human) {
 				label.setText("You can't attack yourself!");
 			}
-			else if(t.getAdjacent().contains(human.getCurrentTerritory()) == false) {
+			else if(t.getAdjacent().contains(human.getAttackFrom()) == false) {
 				label.setText("You must select a territory adjacent to the one you are attacking from.\n"
 						+ "You are attacking from " + t.getName());
 			}
 			else {
 				human.setTerritoryChosen(true);
-				human.setCurrentTerritory(t);
+				human.setAttackTo(t);
 				label.setText("You are attacking " + t.getName());
 				typeOfPlay = TypeOfPlay.DO_NOTHING;
 			}
@@ -632,11 +626,9 @@ public class RiskGUI extends JFrame implements Observer{
 		else if (arg == ObserverMessages.HUMAN_SELECT_ATTACK_FROM) {
 			label.setText("Please select one of your territories to attack from.");
 			typeOfPlay = TypeOfPlay.ATTACK_FROM;
-			//((HumanPlayer) o).setTerritoryChosen(true); 
 		}
 
 		else if (arg == ObserverMessages.HUMAN_SELECT_ATTACK_TO) {
-			//((HumanPlayer) o).setTerritoryChosen(true);
 			label.setText("Please select an enemy territory to attack.");
 			typeOfPlay = TypeOfPlay.ATTACK_TO;
 		}
@@ -660,7 +652,6 @@ public class RiskGUI extends JFrame implements Observer{
 			label.setText("The number you select must be less than the number armies in your territory");
 			typeOfPlay = TypeOfPlay.FORTIFY_ARMIES;
 		}
-		
 		else if (arg == ObserverMessages.START_EXPLOSION) {
 			Explosion e = new Explosion(0, 0);
 			Territory t = controller.getDefendingTerritory();

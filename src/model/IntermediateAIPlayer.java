@@ -16,14 +16,17 @@ import java.util.Random;
 public class IntermediateAIPlayer extends Player{
 	private Random genRan;
 	private int numAttacks;
+	private Territory attackTo;
 	
 	public IntermediateAIPlayer() {
 		super();
+		attackTo = null;
 	}
 	
 	public IntermediateAIPlayer(String name) {
 		super(name);
 		if (debug) System.out.println("New IntermediateAIPlayer created: "+name);
+		attackTo = null;
 	}
 	
 	/**
@@ -147,16 +150,28 @@ public class IntermediateAIPlayer extends Player{
 	@Override
 	public Territory attackFrom() {
 		//if(count <= 5){
-		
+		attackTo = null;
 		if (debug) System.out.println("attackFrom called by "+getName());
 		Territory choosenTerritory = null;
-		while(choosenTerritory == null){
-			int r = genRan.nextInt(getTerritoriesOwned().size());
-			if(getTerritoriesOwned().get(r).getNumArmies() > 1) {
-				for(Territory t: getTerritoriesOwned().get(r).getAdjacent()) {
-					if(t.getCurrentOwner() != this) {
-						choosenTerritory = getTerritoriesOwned().get(r);
+		for(int i = 0; i < 30; i++){
+			Territory temp = getTerritoriesOwned().get(genRan.nextInt(getTerritoriesOwned().size()));
+			if(temp.getNumArmies() > 1 && choosenTerritory == null) {
+				for(Territory t: temp.getAdjacent()) {
+					if(t.getCurrentOwner() != this){ 
+						if(temp.getNumArmies() > t.getNumArmies()) {
+						choosenTerritory = temp;
+						attackTo = t;
+						}
 					}
+				}
+			}
+		}
+		while(choosenTerritory == null) {
+			Territory temp = getTerritoriesOwned().get(genRan.nextInt(getTerritoriesOwned().size()));
+			if(temp.getNumArmies() > 1) {
+				for(Territory t: temp.getAdjacent()) {
+					if(t.getCurrentOwner() != this)
+						choosenTerritory = temp;
 				}
 			}
 		}
@@ -173,6 +188,10 @@ public class IntermediateAIPlayer extends Player{
 	public Territory attackTo(Territory attackFrom) {
 		if (debug) System.out.println("attackTo called by "+getName());
 		// Semi-intelligently chooses a territory and places one army there
+		if(attackTo != null) {
+			return attackTo;
+		}
+		
 		int lowTroop = 1000;
 		Territory attack = null;
 		for(int i = 0; i< attackFrom.getAdjacent().size(); i++){
@@ -181,6 +200,7 @@ public class IntermediateAIPlayer extends Player{
 					lowTroop = attackFrom.getAdjacent().get(i).getNumArmies();
 					attack = attackFrom.getAdjacent().get(i);
 				}
+				
 			}
 		}
 		numAttacks++;

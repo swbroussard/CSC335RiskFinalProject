@@ -1,7 +1,7 @@
 package model;
 
 public class HumanPlayer extends Player{
-	private Territory currentTerritory;
+	private Territory currentTerritory, attackFromTerritory, attackToTerritory;
 	private boolean territoryChosen;
 	private int armies;
 	private boolean armiesChosen;
@@ -30,6 +30,8 @@ public class HumanPlayer extends Player{
 
 	@Override
 	public Territory attackFrom() {
+		attackFromTerritory = null;
+		attackToTerritory = null;
 		this.setChanged();
 		notifyObservers(ObserverMessages.HUMAN_SELECT_ATTACK_FROM);
 		while (!territoryChosen) {
@@ -37,7 +39,7 @@ public class HumanPlayer extends Player{
 			notifyObservers();
 			if(territoryChosen == true) {
 				territoryChosen = false;
-				return currentTerritory;
+				return attackFromTerritory;
 			}
 			//System.out.println("waiting for attackFrom territory to be chosen");
 		}
@@ -55,7 +57,7 @@ public class HumanPlayer extends Player{
 			notifyObservers();
 			if(territoryChosen == true) {
 				territoryChosen = false;
-				return currentTerritory;
+				return attackToTerritory;
 			}
 		}
 		// choose another player's territory adjacent to attackFrom
@@ -133,4 +135,13 @@ public class HumanPlayer extends Player{
 		this.armiesChosen = armiesChosen;
 	}
 
+	public void setAttackFrom(Territory t) {
+		attackFromTerritory = t;
+	}
+	public void setAttackTo(Territory t) {
+		attackToTerritory = t;
+	}
+	public Territory getAttackFrom() {
+		return attackFromTerritory;
+	}
 }
