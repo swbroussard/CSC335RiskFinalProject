@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Random;
 
 public class ExpertAIPlayer extends Player {
@@ -9,10 +11,11 @@ public class ExpertAIPlayer extends Player {
 	private ArrayList<Territory> SA;
 	private ArrayList<Territory> EU;
 	private ArrayList<Territory> AF;
-	private ArrayList<Territory> ASI;
-	private ArrayList<Territory> AUS;
+	private ArrayList<Territory> AS;
+	private ArrayList<Territory> AU;
 	private Continent chosenContinent;
-
+	private Random genRan;
+	private int numAttacks;
 
 	public ExpertAIPlayer(String name) {
 		super(name);
@@ -25,8 +28,8 @@ public class ExpertAIPlayer extends Player {
 		SA = new ArrayList<Territory>();
 		EU = new ArrayList<Territory>();
 		AF = new ArrayList<Territory>();
-		ASI = new ArrayList<Territory>();
-		AUS = new ArrayList<Territory>();
+		AS = new ArrayList<Territory>();
+		AU = new ArrayList<Territory>();
 
 		for(Territory t: getAllTerritories()) {
 			switch(t.getContinent()) {
@@ -43,10 +46,10 @@ public class ExpertAIPlayer extends Player {
 				AF.add(t);
 				break;
 			case ASIA:
-				ASI.add(t);
+				AS.add(t);
 				break;
 			case AUSTRALIA:
-				AUS.add(t);
+				AU.add(t);
 				break;
 			}
 		}
@@ -62,7 +65,7 @@ public class ExpertAIPlayer extends Player {
 		if(debug) System.out.println("placeArmy called by "+getName());
 		Territory selected = null;
 
-		Random genRan = new Random();
+		genRan = new Random();
 
 		// determines if you are still in territory selecting mode or if in army placing mode
 		boolean allSelected = true;
@@ -127,7 +130,7 @@ public class ExpertAIPlayer extends Player {
 				isTaken = false;
 
 				// Asia Compatible
-				for (Territory n: ASI) {
+				for (Territory n: AS) {
 					if (n.getCurrentOwner() != null)
 						isTaken = true;
 				}
@@ -136,7 +139,7 @@ public class ExpertAIPlayer extends Player {
 				isTaken = false;
 
 				// Australia Compatible
-				for (Territory n: AUS) {
+				for (Territory n: AU) {
 					if (n.getCurrentOwner() != null)
 						isTaken = true;
 				}
@@ -196,14 +199,14 @@ public class ExpertAIPlayer extends Player {
 				}
 
 				else if (compatibleContinent.get(r) == Continent.ASIA) {
-					int k = genRan.nextInt(ASI.size());
-					selected = ASI.get(k);
+					int k = genRan.nextInt(AS.size());
+					selected = AS.get(k);
 					chosenContinent = Continent.ASIA;
 				}
 
 				else if (compatibleContinent.get(r) == Continent.AUSTRALIA) {
-					int k = genRan.nextInt(AUS.size());
-					selected = AUS.get(k);
+					int k = genRan.nextInt(AU.size());
+					selected = AU.get(k);
 					chosenContinent = Continent.AUSTRALIA;
 				}
 
@@ -249,13 +252,13 @@ public class ExpertAIPlayer extends Player {
 					}
 				}
 				else if(chosenContinent == Continent.ASIA) {
-					for(Territory t: ASI) {
+					for(Territory t: AS) {
 						if(t.getCurrentOwner() == null)
 							stillAvailable = true;
 					}
 				}
 				else if(chosenContinent == Continent.AUSTRALIA) {
-					for(Territory t: AUS) {
+					for(Territory t: AU) {
 						if(t.getCurrentOwner() == null)
 							stillAvailable = true;
 					}
@@ -457,38 +460,218 @@ public class ExpertAIPlayer extends Player {
 
 	@Override
 	public Territory attackFrom() {
-		if (debug)
-			System.out.println("attackFrom called by " + getName());
+		if (debug) System.out.println("attackFrom called by "+getName());
 		Territory choosenTerritory = null;
-		while (choosenTerritory == null) {
-			// int r = genRan.nextInt(getTerritoriesOwned().size());
-			for (int i = 0; i < getTerritoriesOwned().size(); i++) {
-				// if(getTerritoriesOwned().get(i).getNumArmies() > 1) {
-				if (getTerritoriesOwned().get(i).getNumArmies() == maxArmy()) {
-					for (Territory t : getTerritoriesOwned().get(i).getAdjacent()) {
-						if (t.getCurrentOwner() != this) {
-							choosenTerritory = getTerritoriesOwned().get(i);
+
+		Continent continentToAttack = determineContinent();
+		
+		if(continentToAttack == Continent.NORTH_AMERICA) {
+			while(choosenTerritory == null) {
+				Territory t = NA.get(genRan.nextInt(NA.size()));
+				if(t.getCurrentOwner() != this) {
+					for(Territory a: t.getAdjacent()) {
+						if(a.getCurrentOwner() == this) {
+							if(choosenTerritory == null)
+								choosenTerritory = a;
+							else if(a.getNumArmies() > choosenTerritory.getNumArmies())
+								choosenTerritory = a;
 						}
 					}
 				}
 			}
 		}
+		else if(continentToAttack == Continent.SOUTH_AMERICA) {
+			while(choosenTerritory == null) {
+				Territory t = SA.get(genRan.nextInt(SA.size()));
+				if(t.getCurrentOwner() != this) {
+					for(Territory a: t.getAdjacent()) {
+						if(a.getCurrentOwner() == this) {
+							if(choosenTerritory == null)
+								choosenTerritory = a;
+							else if(a.getNumArmies() > choosenTerritory.getNumArmies())
+								choosenTerritory = a;
+						}
+					}
+				}
+			}
+		}
+		else if(continentToAttack == Continent.EUROPE) {
+			while(choosenTerritory == null) {
+				Territory t = EU.get(genRan.nextInt(EU.size()));
+				if(t.getCurrentOwner() != this) {
+					for(Territory a: t.getAdjacent()) {
+						if(a.getCurrentOwner() == this) {
+							if(choosenTerritory == null)
+								choosenTerritory = a;
+							else if(a.getNumArmies() > choosenTerritory.getNumArmies())
+								choosenTerritory = a;
+						}
+					}
+				}
+			}
+		}
+		else if(continentToAttack == Continent.AFRICA) {
+			while(choosenTerritory == null) {
+				Territory t = AF.get(genRan.nextInt(AF.size()));
+				if(t.getCurrentOwner() != this) {
+					for(Territory a: t.getAdjacent()) {
+						if(a.getCurrentOwner() == this) {
+							if(choosenTerritory == null)
+								choosenTerritory = a;
+							else if(a.getNumArmies() > choosenTerritory.getNumArmies())
+								choosenTerritory = a;
+						}
+					}
+				}
+			}
+		}
+		else if(continentToAttack == Continent.ASIA) {
+			while(choosenTerritory == null){
+				Territory t = AS.get(genRan.nextInt(AS.size()));
+				if(t.getCurrentOwner() != this) {
+					for(Territory a: t.getAdjacent()) {
+						if(a.getCurrentOwner() == this) {
+							if(choosenTerritory == null)
+								choosenTerritory = a;
+							else if(a.getNumArmies() > choosenTerritory.getNumArmies())
+								choosenTerritory = a;
+						}
+					}
+				}
+			}
+		}
+		else if(continentToAttack == Continent.AUSTRALIA) {
+			while(choosenTerritory == null) {
+				Territory t = AU.get(genRan.nextInt(AU.size()));
+				if(t.getCurrentOwner() != this) {
+					for(Territory a: t.getAdjacent()) {
+						if(a.getCurrentOwner() == this) {
+							if(choosenTerritory == null)
+								choosenTerritory = a;
+							else if(a.getNumArmies() > choosenTerritory.getNumArmies())
+								choosenTerritory = a;
+						}
+					}
+				}
+			}
+		}
+		while(choosenTerritory == null) {
+			Territory t = getTerritoriesOwned().get(genRan.nextInt(getTerritoriesOwned().size()));
+			for(Territory a: t.getAdjacent()) {
+				if(a.getCurrentOwner() != this)
+					choosenTerritory = t;
+			}
+		}
 		return choosenTerritory;
+
 	}
 
-	// helper method for max number armies
-	private int maxArmy() {
-		int maxNumArmy = 0;
-		for (int i = 0; i < getTerritoriesOwned().size(); i++) {
-			if(i+1 == getTerritoriesOwned().size()){
-				if (getTerritoriesOwned().get(i).getNumArmies() < getTerritoriesOwned().get(i + 1).getNumArmies()
-						&& 1 + i != getTerritoriesOwned().size()) {
-					maxNumArmy = getTerritoriesOwned().get(i + 1).getNumArmies();
-				}
-			}else{
-				break;}
+	private Continent determineContinent() {
+		int numNA = 0;
+		int numSA = 0;
+		int numEU = 0;
+		int numAF = 0;
+		int numAS = 0;
+		int numAU = 0;
+		for(Territory t: NA) {
+			if(t.getCurrentOwner() != this)
+				numNA++;
 		}
-		return maxNumArmy;
+		for(Territory t: SA) {
+			if(t.getCurrentOwner() != this)
+				numSA++;
+		}
+		for(Territory t: EU) {
+			if(t.getCurrentOwner() != this)
+				numEU++;
+		}
+		for(Territory t: AF) {
+			if(t.getCurrentOwner() != this)
+				numAF++;
+		}
+		for(Territory t: AS) {
+			if(t.getCurrentOwner() != this)
+				numAS++;
+		}
+		for(Territory t: AU) {
+			if(t.getCurrentOwner() != this)
+				numAU++;
+		}
+		ArrayList<Continent> possible = new ArrayList<Continent>();
+		
+		//if own all, make it a large number so everything else is less than it
+		if(numNA != 0 && numNA < 9)
+			possible.add(Continent.NORTH_AMERICA);
+		else
+			numNA = 20;
+		if(numSA != 0 && numSA < 4)
+			possible.add(Continent.SOUTH_AMERICA);
+		else
+			numSA = 20;
+		if(numEU != 0 && numEU < 7)
+			possible.add(Continent.EUROPE);
+		else
+			numEU = 20;
+		if(numAF != 0 && numAF < 6)
+			possible.add(Continent.AFRICA);
+		else
+			numAF = 20;
+		if(numAS != 0 && numAS < 12)
+			possible.add(Continent.ASIA);
+		else
+			numAS = 20;
+		if(numAU != 0 && numAU < 4)
+			possible.add(Continent.AUSTRALIA);
+		else
+			numAU = 20;
+		
+		if(numNA < numSA) {
+			if(numNA < numEU) {
+				if(numNA < numAF) {
+					if(numNA < numAS) {
+						if(numNA < numAU) {
+							if(possible.contains(Continent.NORTH_AMERICA))
+								return Continent.NORTH_AMERICA;
+						}
+					}
+				}
+			}
+		}
+		else if(numSA < numEU) {
+			if(numSA < numAF) {
+				if(numSA < numAS) {
+					if(numSA < numAU) {
+						if(possible.contains(Continent.SOUTH_AMERICA))
+							return Continent.SOUTH_AMERICA;
+					}
+				}
+			}
+		}
+		else if(numEU < numAF) {
+			if(numEU < numAS) {
+				if(numEU < numAU) {
+					if(possible.contains(Continent.EUROPE)) {
+						if(possible.contains(Continent.EUROPE))
+							return Continent.EUROPE;
+					}
+				}
+			}
+		}
+		else if(numAF < numAS) {
+			if(numAF < numAU) {
+				if(possible.contains(Continent.AFRICA))
+					return Continent.AFRICA;
+			}
+		}
+		else if(numAS < numAU) {
+			if(possible.contains(Continent.ASIA))
+				return Continent.ASIA;
+		}
+		else if(possible.contains(Continent.AUSTRALIA))
+			return Continent.AUSTRALIA;
+		return null;
+		
+
 	}
 
 	/**
@@ -499,19 +682,22 @@ public class ExpertAIPlayer extends Player {
 
 	@Override
 	public Territory attackTo(Territory attackFrom) {
-		if (debug)
-			System.out.println("attackTo called by " + getName());
+		if (debug) System.out.println("attackTo called by "+getName());
 		// Semi-intelligently chooses a territory and places one army there
 		int lowTroop = 1000;
-		System.out.println("attackTo called by " + getName());
 		Territory attack = null;
-		for (int i = 0; i < attackFrom.getAdjacent().size(); i++) {
-			if (attackFrom.getAdjacent().get(i).getCurrentOwner() != this) {
-				if (attackFrom.getAdjacent().get(i).getNumArmies() < lowTroop) {
+		for(int i = 0; i< attackFrom.getAdjacent().size(); i++){
+			if(attackFrom.getAdjacent().get(i).getCurrentOwner()!= this){
+				if(attackFrom.getAdjacent().get(i).getNumArmies() < lowTroop){
 					lowTroop = attackFrom.getAdjacent().get(i).getNumArmies();
 					attack = attackFrom.getAdjacent().get(i);
 				}
 			}
+		}
+		numAttacks++;
+		if(numAttacks == 9) {
+			setDoneAttacking(true);
+			numAttacks = 0;
 		}
 		return attack;
 	}

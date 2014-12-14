@@ -8,8 +8,8 @@ import java.util.Random;
  * @author jeremyjalnos stevenBroussard
  */
 public class SimpleAIPlayer extends Player {
-	Random randomGen;
-	int numAttacks;
+	private Random randomGen;
+	private int numAttacks;
 
 	// constructor
 	public SimpleAIPlayer() {
@@ -140,7 +140,7 @@ public class SimpleAIPlayer extends Player {
 		boolean reinforcePossible = false;
 		for(Territory t: getTerritoriesOwned()) {
 			for(Territory a: t.getAdjacent()) {
-				if(a.getCurrentOwner() == this)
+				if(a.getCurrentOwner() == this && t.getNumArmies() > 1)
 					reinforcePossible = true;
 			}
 		}
