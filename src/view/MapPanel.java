@@ -117,7 +117,7 @@ public class MapPanel extends JPanel{
 	 * @param graphs, x, y
 	 * @return none
 	 */
-	public void exploions(Graphics2D g2, int x, int y){
+	public void explosions(Graphics2D g2, int x, int y){
 		Explosion e = new Explosion(0, 0);
 		e.setPosition(x, y);
 		splosions.add(e);
