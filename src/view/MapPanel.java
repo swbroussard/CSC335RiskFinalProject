@@ -70,8 +70,10 @@ public class MapPanel extends JPanel{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawImage(map, 0, 0, 960, 640, null);
 		g2.setFont(new Font("Arial", Font.BOLD, 15));
-		for (SpriteObject explosion : getSplosions())
+		for (int i = 0; i < getSplosions().size(); i++) {
+			SpriteObject explosion = getSplosions().get(i);
 			explosion.draw(g2);
+		}
 		if(loosingTerritory != null) {
 			for (int i = 0; 1 < getSplosions().size(); i++){
 				

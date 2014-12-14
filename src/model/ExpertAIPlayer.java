@@ -520,7 +520,7 @@ public class ExpertAIPlayer extends Player {
 		Territory choosenTerritory = null;
 
 		Continent continentToAttack = determineContinent();
-		System.out.println(this.getName() + " is going to attack " + continentToAttack.toString());
+		//System.out.println(this.getName() + " is going to attack " + continentToAttack);
 		
 		if(continentToAttack == Continent.NORTH_AMERICA) {
 			for(Territory t: NA) {
@@ -609,7 +609,7 @@ public class ExpertAIPlayer extends Player {
 		while(choosenTerritory == null) {
 			Territory t = getTerritoriesOwned().get(genRan.nextInt(getTerritoriesOwned().size()));
 			for(Territory a: t.getAdjacent()) {
-				if(a.getCurrentOwner() != this && a.getNumArmies() > 1)
+				if(a.getCurrentOwner() != this)
 					choosenTerritory = t;
 			}
 		}
@@ -648,32 +648,19 @@ public class ExpertAIPlayer extends Player {
 			if(t.getCurrentOwner() != this)
 				numAU++;
 		}
-		ArrayList<Continent> possible = new ArrayList<Continent>();
 		
 		//if own all, make it a large number so everything else is less than it
-		if(numNA != 0 && numNA < 9)
-			possible.add(Continent.NORTH_AMERICA);
-		else
+		if(numNA == 0 && numNA >= 9)
 			numNA = 20;
-		if(numSA != 0 && numSA < 4)
-			possible.add(Continent.SOUTH_AMERICA);
-		else
+		if(numSA == 0 && numSA >= 4)
 			numSA = 20;
-		if(numEU != 0 && numEU < 7)
-			possible.add(Continent.EUROPE);
-		else
+		if(numEU == 0 && numEU >= 7)
 			numEU = 20;
-		if(numAF != 0 && numAF < 6)
-			possible.add(Continent.AFRICA);
-		else
+		if(numAF == 0 && numAF >= 6)
 			numAF = 20;
-		if(numAS != 0 && numAS < 12)
-			possible.add(Continent.ASIA);
-		else
+		if(numAS == 0 && numAS >= 12)
 			numAS = 20;
-		if(numAU != 0 && numAU < 4)
-			possible.add(Continent.AUSTRALIA);
-		else
+		if(numAU == 0 && numAU >= 4)
 			numAU = 20;
 		
 		if(numNA < numSA) {
@@ -681,7 +668,7 @@ public class ExpertAIPlayer extends Player {
 				if(numNA < numAF) {
 					if(numNA < numAS) {
 						if(numNA < numAU) {
-							if(possible.contains(Continent.NORTH_AMERICA))
+							if(numNA < 9)
 								return Continent.NORTH_AMERICA;
 						}
 					}
@@ -692,7 +679,7 @@ public class ExpertAIPlayer extends Player {
 			if(numSA < numAF) {
 				if(numSA < numAS) {
 					if(numSA < numAU) {
-						if(possible.contains(Continent.SOUTH_AMERICA))
+						if(numSA < 4)
 							return Continent.SOUTH_AMERICA;
 					}
 				}
@@ -701,8 +688,7 @@ public class ExpertAIPlayer extends Player {
 		else if(numEU < numAF) {
 			if(numEU < numAS) {
 				if(numEU < numAU) {
-					if(possible.contains(Continent.EUROPE)) {
-						if(possible.contains(Continent.EUROPE))
+					if(numEU < 7) {
 							return Continent.EUROPE;
 					}
 				}
@@ -710,15 +696,15 @@ public class ExpertAIPlayer extends Player {
 		}
 		else if(numAF < numAS) {
 			if(numAF < numAU) {
-				if(possible.contains(Continent.AFRICA))
+				if(numAF < 6)
 					return Continent.AFRICA;
 			}
 		}
 		else if(numAS < numAU) {
-			if(possible.contains(Continent.ASIA))
+			if(numAS < 12)
 				return Continent.ASIA;
 		}
-		else if(possible.contains(Continent.AUSTRALIA))
+		else if(numAU < 4)
 			return Continent.AUSTRALIA;
 		return null;
 		
@@ -737,14 +723,15 @@ public class ExpertAIPlayer extends Player {
 		// Semi-intelligently chooses a territory and places one army there
 		int lowTroop = 1000;
 		Territory attack = null;
-		for(int i = 0; i< attackFrom.getAdjacent().size(); i++){
-			if(attackFrom.getAdjacent().get(i).getCurrentOwner()!= this){
-				if(attackFrom.getAdjacent().get(i).getNumArmies() < lowTroop){
-					lowTroop = attackFrom.getAdjacent().get(i).getNumArmies();
-					attack = attackFrom.getAdjacent().get(i);
+		for(Territory t: attackFrom.getAdjacent()) {
+			if(t.getCurrentOwner() != this) {
+				if(t.getNumArmies() < lowTroop) {
+					lowTroop = t.getNumArmies();
+					attack = t;
 				}
 			}
 		}
+		
 		numAttacks++;
 		if(numAttacks == 9) {
 			setDoneAttacking(true);
