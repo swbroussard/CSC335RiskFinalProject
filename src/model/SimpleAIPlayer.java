@@ -153,7 +153,7 @@ public class SimpleAIPlayer extends Player {
 		boolean takeArmySelected = false;
 		do {
 			takeArmy = getTerritoriesOwned().get(randomGen.nextInt(getTerritoriesOwned().size()));
-			if(takeArmy.getCurrentOwner() == this && takeArmy.getNumArmies() > 1) {
+			if(takeArmy.getCurrentOwner() == this && takeArmy.getNumArmies() >= 2) {
 				for(Territory t : takeArmy.getAdjacent()) {
 					if(t.getCurrentOwner() == this) 
 						takeArmySelected = true;
@@ -170,7 +170,7 @@ public class SimpleAIPlayer extends Player {
 		}while(!reinforceSelected);
 			
 		do {
-		armiesToMove = randomGen.nextInt(takeArmy.getNumArmies() - 1);
+		armiesToMove = randomGen.nextInt(takeArmy.getNumArmies() - 1) + 1;
 		}while(armiesToMove > 0);
 		
 		if (reinforceThis != null) {

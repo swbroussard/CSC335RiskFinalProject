@@ -146,8 +146,6 @@ public class IntermediateAIPlayer extends Player{
 	
 	@Override
 	public Territory attackFrom() {
-		//if(count <= 5){
-		
 		if (debug) System.out.println("attackFrom called by "+getName());
 		Territory choosenTerritory = null;
 		while(choosenTerritory == null){
@@ -161,9 +159,7 @@ public class IntermediateAIPlayer extends Player{
 			}
 		}
 		return choosenTerritory;
-	//}
-		//return null;
-		}
+	}
 	/**
 	 * randomly attacks to adjacent enemy territory
 	 * @param attackForm
