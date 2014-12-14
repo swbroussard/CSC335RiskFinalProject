@@ -92,10 +92,7 @@ public class RiskController extends Observable{
 		for (Player p : getPlayers()) {
 			p.setNumArmies(temp);
 		}
-		//for testing purposes, set one player to have no extra armies.
-		//players.get(players.size() - 1).setNumArmies(2);
-
-
+		
 		while (getPlayers().get(0).getNumArmies() > 0) {
 			for (Player p : players) {
 				try {
@@ -128,11 +125,16 @@ public class RiskController extends Observable{
 			while(counter < players.size()) {
 				Player p = players.get(counter);
 				notifyObservers(ObserverMessages.NEW_TURN);
-				if (debug) System.out.println(p.getName()+"'s turn");
+
 				if (p instanceof HumanPlayer)
 					SongPlayer.playFile(baseDir + "charge.wav");
-				if (p.addArmies(cardBonus))
+				
+				if(p.canTurnInCards()) {
+					p.setNumArmies(cardBonus);
 					incrementCardBonus();
+				}
+				p.addArmies();
+				
 				while (p.getNumArmies() > 0) {
 					try {
 						Thread.sleep(1000);
@@ -147,7 +149,6 @@ public class RiskController extends Observable{
 					
 					Territory defender = p.attackTo(attacker);
 					if (debug) System.out.println("Attacking " + defender.toString());
-					//if (debug) System.out.println(territories);
 					while (defender == null || defender.getCurrentOwner() == p) {
 						defender = p.attackTo(attacker);
 						if (debug) System.out.println("Attacking" + defender.toString());

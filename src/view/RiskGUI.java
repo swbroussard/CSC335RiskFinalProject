@@ -551,23 +551,21 @@ public class RiskGUI extends JFrame implements Observer{
 			}
 		}
 		else if (typeOfPlay == TypeOfPlay.ATTACK_FROM) {
-			if (t.getCurrentOwner() != human) {
-				label.setText("You don't own " + t.getName() + "!  Please select a Territory you own to attack from!");
+			boolean possible = false;
+			
+			for(Territory a: t.getAdjacent()) {
+				if(a.getCurrentOwner() != human)
+					possible = true;
 			}
-			else {
-				if(t.getNumArmies() > 1) {
-					for(Territory a: t.getAdjacent()) {
-						if(a.getCurrentOwner() != human) {
-							human.setTerritoryChosen(true);
-							human.setAttackFrom(t);
-							label.setText("You selected " + t.getName() + " to attack from.");
-							typeOfPlay = TypeOfPlay.DO_NOTHING;
-						}
-					}
-				}
-				else
-					label.setText("You cannot attack from " + t.getName() + "! Please select another");
+			if(possible) {
+				human.setTerritoryChosen(true);
+				human.setAttackFrom(t);
+				label.setText("You selected " + t.getName() + " to attack from.");
+				typeOfPlay = TypeOfPlay.DO_NOTHING;
 			}
+			else
+				label.setText("You cannot attack from " + t.getName() + "! Please select another");
+
 		}
 		else if (typeOfPlay == TypeOfPlay.ATTACK_TO){
 			if (t.getCurrentOwner() == human) {
@@ -600,7 +598,6 @@ public class RiskGUI extends JFrame implements Observer{
 		if(arg instanceof String) {
 			label.setText((String) arg); 
 			System.out.println((String) arg);
-			sidePanel.updateLabel();
 			sidePanel.repaint();
 		}
 		else if(arg == ObserverMessages.HUMAN_PLACE_ARMY) {

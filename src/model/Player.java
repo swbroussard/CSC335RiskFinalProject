@@ -92,7 +92,7 @@ public abstract class Player extends Observable{
 	 * turned in, they get an additional two armies for that territory. 
 	 */
 
-	public boolean addArmies(int cardBonus) {
+	public void addArmies() {
 		if (debug) System.out.println("addArmies is called by "+name);
 		// minimum armies
 		if(territoriesOwned.size() / 3 <= 3 ) {
@@ -112,15 +112,15 @@ public abstract class Player extends Observable{
 			Continent continent = t.getContinent();
 			if(continent == Continent.NORTH_AMERICA)
 				northAmerica++;
-			if(continent == Continent.SOUTH_AMERICA)
+			else if(continent == Continent.SOUTH_AMERICA)
 				southAmerica++;
-			if(continent == Continent.EUROPE)
+			else if(continent == Continent.EUROPE)
 				europe++;
-			if(continent == Continent.AFRICA)
+			else if(continent == Continent.AFRICA)
 				africa++;
-			if(continent == Continent.ASIA)
+			else if(continent == Continent.ASIA)
 				asia++;
-			if(continent == Continent.AUSTRALIA)
+			else if(continent == Continent.AUSTRALIA)
 				australia++;
 		}
 		if(northAmerica == 9) {
@@ -142,12 +142,7 @@ public abstract class Player extends Observable{
 			numArmies += 2;
 		}
 		
-		// card bonus
-		if (canTurnInCards()) {
-			numArmies += cardBonus;
-			return true;
-		}
-		return false;
+		
 	}
 
 	/**

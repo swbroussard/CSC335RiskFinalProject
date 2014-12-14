@@ -141,7 +141,7 @@ public class SimpleAIPlayer extends Player {
 		boolean reinforcePossible = false;
 		for(Territory t: getTerritoriesOwned()) {
 			for(Territory a: t.getAdjacent()) {
-				if(a.getCurrentOwner() == this && t.getNumArmies() > 1)
+				if(a.getCurrentOwner() == this && t.getNumArmies() >= 2)
 					reinforcePossible = true;
 			}
 		}
