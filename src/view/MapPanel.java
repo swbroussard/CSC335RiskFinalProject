@@ -19,6 +19,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import explosion.Explosion;
+import explosion.SpriteObject;
 import model.*;
 
 @SuppressWarnings({ "unused", "serial" })

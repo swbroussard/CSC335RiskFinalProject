@@ -1,4 +1,5 @@
-package model;
+package explosion;
+
 
 public class Explosion extends SpriteObject{
 	

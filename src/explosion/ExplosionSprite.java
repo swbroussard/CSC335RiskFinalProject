@@ -1,4 +1,4 @@
-package model;
+package explosion;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;

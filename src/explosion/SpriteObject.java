@@ -1,11 +1,14 @@
-package model;
+package explosion;
 
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.Timer;
+
+import explosion.Sprite.State;
 
 public abstract class SpriteObject {
 	public Point position;
