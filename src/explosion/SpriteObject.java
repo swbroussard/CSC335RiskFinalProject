@@ -1,6 +1,5 @@
 package explosion;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
@@ -9,14 +8,23 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-import explosion.Sprite.State;
-
+/**
+ * Abstract class representing a sprite animation
+ * @author Gabe Kishi (Section Leaders?)
+ */
 public abstract class SpriteObject {
 	public Point position;
 	private Sprite sprite;
 	private Image frame;
 	private Timer t;
 	
+	/**
+	 * constructs a new SpriteObject with a particular delay and position
+	 * @param sprite
+	 * @param x
+	 * @param y
+	 * @param delay
+	 */
 	protected SpriteObject(Sprite sprite, int x, int y, int delay){
 		this.sprite = sprite;
 		this.position = new Point(x, y);
@@ -29,19 +37,35 @@ public abstract class SpriteObject {
 		});
 	}
 	
+	/**
+	 * getter for Sprite
+	 * @return
+	 */
 	public Sprite getSprite(){
 		return sprite;
 	}
 	
+	/**
+	 * setter for position
+	 * @param x
+	 * @param y
+	 */
 	public void setPosition(int x, int y){
 		position.setLocation(x, y);
 	}
 	
+	/**
+	 * draws sprite at the correct position
+	 * @param g
+	 */
 	public void draw(Graphics2D g){
 		if (sprite != null && !sprite.isFinished())
 			g.drawImage(frame, position.x  - sprite.getWidth()/2, position.y - sprite.getHeight()/2, null);
 	}
 	
+	/**
+	 * Frog methods moveLeft, moveRight, moveUp, moveDown, moveStop
+	 */
 	public void moveLeft(){
 	//	if (sprite.getState() != Sprite.State.MOVING_LEFT){
 			sprite.setState(Sprite.State.MOVING_LEFT);
@@ -83,20 +107,33 @@ public abstract class SpriteObject {
 //		}
 	}
 	
+	/**
+	 * Starts the sprite if it isn't running
+	 */
 	public void start(){
 		if (!t.isRunning())
 			t.start();
 		sprite.reset();
 	}
 	
+	/**
+	 * Stops the sprite (but you already knew that)
+	 */
 	public void stop(){
 		t.stop();
 	}
 	
+	/**
+	 * Gets the next frame of the animation from the sprite
+	 */
 	public void nextFrame(){
 		frame = sprite.getImage();
 	}
 	
+	/**
+	 * getter for isFinished
+	 * @return
+	 */
 	public boolean isFinished(){
 		return sprite.isFinished();
 	}

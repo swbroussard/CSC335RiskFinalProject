@@ -6,23 +6,21 @@ import java.util.Random;
  * More intelligent than Simple AI
  * 
  * Strategy: randomly places first in a territory, then add other troops in adjacent
- * territories. Only attack the fewest amount enemy troops.
+ * territories. Only attack the fewest amount of enemy troops.
  * 
- * @author Steven W Broussard & Jeremy Jalnos
+ * @author Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Becca Simon
  *
  */
-//TODO: Need to add in an algorithm for ending the turn.  Right now the intermediate player continues attacking
-//until he has no where to attack from.
 public class IntermediateAIPlayer extends Player{
 	private Random genRan;
 	private int numAttacks;
 	private Territory attackTo;
 	
-	public IntermediateAIPlayer() {
-		super();
-		attackTo = null;
-	}
-	
+	/**
+	 * Constructs a new IntermediateAIPlayer object using the default Player constructor. 
+	 * Sets attackTo to null. 
+	 * @param name
+	 */
 	public IntermediateAIPlayer(String name) {
 		super(name);
 		if (debug) System.out.println("New IntermediateAIPlayer created: "+name);
@@ -30,13 +28,12 @@ public class IntermediateAIPlayer extends Player{
 	}
 	
 	/**
-	 * Description: First troop is place at a territory randomly. All other troops will
-	 * then be place in adjacent territories that are not owned.
+	 * First troop is placed at a territory randomly. All other troops will
+	 * then be placed in adjacent territories that are not owned.
 	 */
 	@Override
 	public void placeArmy() {
 		if(debug) System.out.println("placeArmy called by "+getName());
-		// TODO place an troop one per turn or place all the armies on player turn in the beginning?
 		// Semi-intelligently chooses a territory with two or more armies to attack from
 		genRan = new Random();
 		
@@ -143,10 +140,10 @@ public class IntermediateAIPlayer extends Player{
 	}
 	
 	/**
-	 * randomly chooses owned territories to attack from
+	 * Chooses a territory to attack from. Prefers territories next to enemy territories with
+	 * fewer armies than its own.  
 	 * @return Territory
 	 */
-	
 	@Override
 	public Territory attackFrom() {
 		//if(count <= 5){
@@ -176,12 +173,12 @@ public class IntermediateAIPlayer extends Player{
 			}
 		}
 		return choosenTerritory;
-	//}
-		//return null;
 		}
 	/**
-	 * randomly attacks to adjacent enemy territory
-	 * @param attackForm
+	 * Chooses a territory to attack. If this has already been set by attackFrom, 
+	 * returns the territory chosen by attackFrom; otherwise, chooses the enemy territory
+	 * adjacent to the parameter with the least armies. Ends the turn after seven attacks. 
+	 * @param attackFrom
 	 * @return Territory
 	 */
 	@Override
@@ -212,7 +209,10 @@ public class IntermediateAIPlayer extends Player{
 	}
 
 	/**
-	 * randomly puts reinforce armies around adjacent territories owned by other player
+	 * Moves armies away from interior territories (territories with all adjacent
+	 * territories owned by the current player). Finds a territory with more than one army, 
+	 * determines if it's possible to reinforce, chooses an adjacent territory with a lower
+	 * number of armies, and moves all but one army to that territory.  
 	 * @param takeArmy, reinforceThis
 	 */
 	

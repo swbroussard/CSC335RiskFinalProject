@@ -6,8 +6,9 @@ import java.util.Observable;
 
 import model.Card.CardType;
 /**
- * 
- * @author Jeremy Jalnos, Steven Broussard, Becca Simon
+ * Abstract class to represent players in the game of Risk. Implemented by SimpleAIPlayer, 
+ * IntermediateAIPlayer, ExpertAIPlayer, and HumanPlayer. 
+ * @author Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Becca Simon
  *
  */
 public abstract class Player extends Observable{
@@ -55,8 +56,8 @@ public abstract class Player extends Observable{
 	public abstract Territory attackTo(Territory attackFrom);
 
 	/**
-	 * Default constructor for the player that initializes the territories owned, 
-	 * cards and the dice
+	 * Default constructor for the player that takes no arguments, initializes the 
+	 * territories owned, cards and the dice
 	 */
 	public Player() {
 		if (debug) System.out.println("player constructor (no arguments) is called");
@@ -140,9 +141,7 @@ public abstract class Player extends Observable{
 		}
 		if(australia == 4){
 			numArmies += 2;
-		}
-		
-		
+		}	
 	}
 
 	/**
@@ -305,7 +304,7 @@ public abstract class Player extends Observable{
 
 	//set methods
 	/**
-	 * set the name of the player
+	 * setter for name
 	 * @param name the name of the player
 	 */
 	public void setName(String name) {
@@ -314,7 +313,7 @@ public abstract class Player extends Observable{
 	}
 
 	/**
-	 * set number of armies the player has to place
+	 * setter for number of armies the player has to place
 	 * @param numArmies the number of armies that the player has to place
 	 */
 	public void setNumArmies(int numArmies) {
@@ -327,6 +326,7 @@ public abstract class Player extends Observable{
 	}
 	
 	/**
+	 * setter for cards
 	 * @param cards
 	 */
 	public void setCards(ArrayList<Card> cards) {
@@ -345,7 +345,7 @@ public abstract class Player extends Observable{
 
 	//get methods
 	/**
-	 * Returns the players name
+	 * getter for player's name
 	 * @return the name of the player
 	 * 
 	 */
@@ -364,7 +364,7 @@ public abstract class Player extends Observable{
 	}
 
 	/**
-	 * Gets the list of territories and returns it 
+	 * getter for the list of territories
 	 * @return the arrayList of territories owned by the player
 	 */
 	public ArrayList<Territory> getTerritoriesOwned() {
@@ -373,8 +373,8 @@ public abstract class Player extends Observable{
 	}
 
 	/**
-	 * instantiates a new ArrayList of Territories and copys the parameter
-	 * list to the instance variable
+	 * setter for allTerritories. Instantiates a new ArrayList of Territories and 
+	 * copies the parameter list to the instance variable
 	 * @param territories all the territories used in the game
 	 */
 	public void setAllTerritories(ArrayList<Territory> territories) {
@@ -384,6 +384,7 @@ public abstract class Player extends Observable{
 	}
 	
 	/**
+	 * getter for the list of all territories in the game
 	 * @return the list of all territories in the game
 	 */
 	public ArrayList<Territory> getAllTerritories() {
@@ -391,17 +392,20 @@ public abstract class Player extends Observable{
 		return allTerritories;
 	}
 	
+	/**
+	 * getter for color
+	 * @return
+	 */
 	public Color getColor() {
 		return color;
 	}
 
 	/**
+	 * getter for the player's cards
 	 * @return the player's hand of cards
 	 */
 	public ArrayList<Card> getCards() {
 		return cards;
 	}
-	
-	
 	
 }

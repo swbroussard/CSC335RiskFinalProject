@@ -3,7 +3,8 @@ package songplayer;
 /**
  * A new one of these objects is passed to the listener to end of song events.
  * Each EndOfSong event remembers the file name of and the time it finished.
- * 
+ * CSc 335 example in class
+ * @author Rick Mercer
  */
 
 import java.util.GregorianCalendar;

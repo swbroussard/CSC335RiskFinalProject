@@ -14,10 +14,9 @@ import model.SimpleAIPlayer;
  * <code>SimpleAIPlayer</code>s and <code>IntermediateAIPlayer</code>s, and 
  * reporting the number of winners for each type of AI. 
  * 
- * @author Elizabeth Harris, Becca Simon
+ * @author Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Becca Simon
  *
  */
-
 public class Run6Bots {
 	boolean debug = false;
 	private RiskController controller;
@@ -95,7 +94,7 @@ public class Run6Bots {
 	}
 
 	/**
-	 * Runs the program by creating a new <code>Run6Bots</code>.  
+	 * Main method. Runs the program by creating a new <code>Run6Bots</code>.  
 	 * @param args
 	 */
 	public static void main(String[] args) {

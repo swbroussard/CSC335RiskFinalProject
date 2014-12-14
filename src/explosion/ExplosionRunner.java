@@ -3,8 +3,6 @@ package explosion;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
@@ -13,19 +11,26 @@ import java.util.TimerTask;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
+/**
+ * Testing class for explosion animations. 
+ * @author Gabe Kishi (Section Leaders?) with modifications by Elizabeth Harris
+ */
 public class ExplosionRunner {
 	private List<SpriteObject> splosions;
 	private JFrame frame;
 	private JPanel panel;
-	private Timer animTimer;
 	private java.util.Timer otherTimer;
 	
+	/**
+	 * Instantiates a new <code>ExplosionRunner</code> object. 
+	 */
 	public ExplosionRunner() {
 		splosions = new LinkedList<SpriteObject>();
 		
 		panel = new JPanel(){
+			private static final long serialVersionUID = -3731263004697952454L;
+
 			public void paintComponent(Graphics g){
 				Graphics2D g2 = (Graphics2D) g;
 				super.paintComponent(g);
@@ -61,6 +66,10 @@ public class ExplosionRunner {
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * Main method. Creates a new <code>ExplosionRunner</code>. 
+	 * @param args
+	 */
 	public static void main(String[] args){
 		new ExplosionRunner();
 	}

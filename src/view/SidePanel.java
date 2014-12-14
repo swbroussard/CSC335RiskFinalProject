@@ -13,17 +13,28 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.Player;
 
+/**
+ * The side panel in the GUI. Displays the players in the game, designating the player
+ * whose turn it is with a star by their name. Has buttons for the human player to end
+ * their turn or end the game. Lists army bonuses for owning a complete continent. 
+ * @author Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Becca Simon
+ *
+ */
 @SuppressWarnings("serial")
 public class SidePanel extends JPanel{
 	private JButton doneAttacking, doneFortifying, exit;
 	private RiskGUI gui;
 	private BufferedImage star;
 	
+	/**
+	 * Constructs a new SidePanel object. Sets up all buttons and images. Takes a RiskGUI
+	 * argument so that information about territories' owners can be passed easily to the SidePanel. 
+	 * @param gui
+	 */
 	public SidePanel(RiskGUI gui) {
 		super();
 		this.gui = gui;
@@ -66,15 +77,28 @@ public class SidePanel extends JPanel{
 		repaint();
 	}
 	
+	/**
+	 * Called when the doneAttacking button is pressed. Displays the message, 
+	 * "Done Attacking!" in the RiskGUI and sets the human player's doneAttacking
+	 * variable to true. 
+	 */
 	public void doneAttacking() {
 		gui.getHumanPlayer().setDoneAttacking(true);
 		gui.setLabel("Done Attacking!");
 	}
 	
+	/**
+	 * Called when the doneFortifying button is pressed. Displays the message,
+	 * "Done Fortifying" in the RiskGUI. 
+	 */
 	public void doneFortifying() {
 		gui.setLabel("Done Fortifying");
 	}
 
+	/**
+	 * Used whenever repaint is called. Updates the text label with the list of players
+	 * and moves the star depending on whose turn it is. 
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;

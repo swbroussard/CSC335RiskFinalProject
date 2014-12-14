@@ -1,10 +1,14 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * Computer player. Should be the most skilled of the three, consistently beating Simple
+ * and Intermediate computer players, and should be a challenge for human players to beat. 
+ * @author Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Rebecca Simon
+ *
+ */
 public class ExpertAIPlayer extends Player {
 
 	private ArrayList<Territory> NA;
@@ -17,12 +21,19 @@ public class ExpertAIPlayer extends Player {
 	private Random genRan;
 	private int numAttacks;
 
+	/**
+	 * Constructs a new ExpertAIPlayer with the given String as the player's name. 
+	 * @param name
+	 */
 	public ExpertAIPlayer(String name) {
 		super(name);
 		if (debug)
 			System.out.println("New ExpertAIPlayer created: " + name);
 	}
 
+	/**
+	 * For each continent, makes a list of the territories on each continent. 
+	 */
 	private void setContinents() {
 		NA = new ArrayList<Territory>();
 		SA = new ArrayList<Territory>();
@@ -59,7 +70,6 @@ public class ExpertAIPlayer extends Player {
 	 * place an army down in an empty continent or less then two armies in the continent. After the first army is 
 	 * placed, then clusters around the it and try to take over the continent.
 	 */
-
 	@Override
 	public void placeArmy() {
 		if(debug) System.out.println("placeArmy called by "+getName());
@@ -336,6 +346,12 @@ public class ExpertAIPlayer extends Player {
 		}
 	}
 
+	/**
+	 * At the end of a turn, player can move armies from one of their territories to an
+	 * adjacent territory they own. This method selects the relevant territories and the 
+	 * number of armies to move. Finds the smallest army owned and adds the required 
+	 * amount of armies to defend itself from the enemy in the adjacent territories
+	 */
 	@Override
 	public void reinforceArmies() {
 		if (debug) System.out.println("reinforceArmies called by "+getName());
@@ -395,8 +411,8 @@ public class ExpertAIPlayer extends Player {
 		
 	}
 	/**
-	 * finds the smallest army owned and adds the required amount of armies to defend itself from
-	 * the enemy in the adjacent territories
+	 * Another version of reinforceArmies. Finds the smallest army owned and adds the 
+	 * required amount of armies to defend itself from the enemy in the adjacent territories
 	 * @param takeArmy
 	 * @param reinforceThis
 	 */
@@ -421,8 +437,10 @@ public class ExpertAIPlayer extends Player {
 	private int numTroopsTake = 0;
 	private int numTimesCalled = 0;
 
-
-	public void reinforce() { // helper method for reinforce armies method
+	/**
+	 * Helper method for reinforceArmies
+	 */
+	/*public void reinforce() { // helper method for reinforce armies method
 		if (debug)
 			System.out.println("reinforce called by " + getName());
 
@@ -510,7 +528,8 @@ public class ExpertAIPlayer extends Player {
 	*/
 
 	/**
-	 * attack with the maximum armies
+	 * Attacks from the territory with the highest number of armies, which is adjacent to the 
+	 * territory that would make a continent easiest to conquer.
 	 * @return Territory
 	 */
 
@@ -617,6 +636,11 @@ public class ExpertAIPlayer extends Player {
 
 	}
 
+	/**
+	 * Helper method for attackFrom. Finds and returns the continent with the least number of 
+	 * territories not owned by the player. 
+	 * @return Continent
+	 */
 	private Continent determineContinent() {
 		int numNA = 0;
 		int numSA = 0;
@@ -726,7 +750,8 @@ public class ExpertAIPlayer extends Player {
 	}
 
 	/**
-	 * attack to an army that is significantly smaller then its own
+	 * Finds and returns the enemy territory adjacent to the territory selected by 
+	 * attackFrom, which has the fewest armies. 
 	 * @param attackFrom
 	 * @return Territory
 	 */

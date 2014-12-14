@@ -4,8 +4,9 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 /**
- * The <code>Territory</code> class represents, intuitively, a territory in the game of Risk, complete with name, owner, armies, continent, color, and list of adjacent territories. 
- * @author Elizabeth Harris and team
+ * The <code>Territory</code> class represents, intuitively, a territory in the game of Risk, 
+ * complete with name, owner, armies, continent, color, and list of adjacent territories. 
+ * @author Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Rebecca Simon
  *
  */
 
@@ -18,6 +19,13 @@ public class Territory {
 	private int color;
 	private Point armyLabel;
 	
+	/**
+	 * Constructs a new Territory object with the given parameters. 
+	 * @param name, the name of the territory
+	 * @param continent, the continent that the territory is part of
+	 * @param colorRGB, the territory's color on the map image
+	 * @param armyLabel, the position of the territory's label on the map image
+	 */
 	public Territory(String name, Continent continent, int colorRGB, Point armyLabel) {
 		this.name = name;
 		this.continent = continent;
@@ -122,7 +130,8 @@ public class Territory {
 	}
 	
 	/**
-	 * Returns a <code>String</code> representation of the <code>Territory</code> by concatenating its <code>name</code>, <code>numArmies</code>, and <code>currentOwner</code>.  
+	 * Returns a <code>String</code> representation of the <code>Territory</code> by concatenating its <code>name</code>, 
+	 * <code>numArmies</code>, and <code>currentOwner</code>.  
 	 * @return String
 	 */
 	public String toString() {

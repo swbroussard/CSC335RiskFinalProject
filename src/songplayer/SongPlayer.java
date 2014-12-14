@@ -9,6 +9,8 @@ package songplayer;
  * of concurrency with Threads. It has an interface similar to import
  * javax.swing.Timer in that you create a listener first than call the one
  * method playFile with that listener as the first argument.
+ * CSc 335 example in class
+ * @author Rick Mercer
  */
 
 public class SongPlayer {

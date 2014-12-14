@@ -5,19 +5,24 @@ import java.util.Random;
 /**
  * Simple AI that makes decisions based on a random generator.  Easiest AI to beat
  * 
- * @author jeremyjalnos stevenBroussard
+ * @author Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Becca Simon
  */
 public class SimpleAIPlayer extends Player {
 	private Random randomGen;
 	private int numAttacks;
 
-	// constructor
+	/**
+	 * Constructs a new SimpleAIPlayer using the default no-argument constuctor
+	 */
 	public SimpleAIPlayer() {
 		super();
 		randomGen = new Random(); //random generator
 	}
 
-	// constructor with name
+	/**
+	 * Constructs a new SimpleAIPlayer with the parameter as the player's name
+	 * @param name
+	 */
 	public SimpleAIPlayer(String name) {
 		super(name);
 		randomGen = new Random(); 
@@ -128,10 +133,7 @@ public class SimpleAIPlayer extends Player {
 
 
 	/**
-	 * Not used in iteration 1
-	 * @param takeArmy
-	 * @param reinforceThis
-	 * 
+	 * Randomly chooses territories to move armies from and to, and the number of armies to move. 
 	 */
 	@Override
 	public void reinforceArmies() {

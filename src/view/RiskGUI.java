@@ -31,6 +31,12 @@ import controller.RiskController;
 import explosion.Explosion;
 
 @SuppressWarnings("serial")
+/**
+ * Graphical user interface for the game of Risk. Interacts with RiskController to display game events. 
+ * Consists visually of a MapPanel, a SidePanel, and a label panel. 
+ * @author Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Becca Simon
+ *
+ */
 public class RiskGUI extends JFrame implements Observer{
 	private String baseDir = System.getProperty("user.dir") + System.getProperty("file.separator")
 			+ "sound" + System.getProperty("file.separator");
@@ -45,6 +51,11 @@ public class RiskGUI extends JFrame implements Observer{
 	private HumanPlayer human;
 	private TypeOfPlay typeOfPlay;
 
+	/**
+	 * Constructs a new RiskGUI object. Calls the JFrame superconstructor, then displays the splash screen
+	 * and player setup screen using helper methods. Proceeds to the main screen, calls a helper method
+	 * to set up the frame, and plays the game. 
+	 */
 	public RiskGUI() {
 		super();
 		splashScreen();
@@ -70,6 +81,10 @@ public class RiskGUI extends JFrame implements Observer{
 		controller.playGame();
 	}
 
+	/**
+	 * Helper method to display a splash screen. Displays the Risk logo as well as information 
+	 * about the game and its developers, and plays the 1812 Overture. 
+	 */
 	public void splashScreen() {
 
 		ImageIcon logo = new ImageIcon("images/Risk_logo.png");
@@ -85,6 +100,9 @@ public class RiskGUI extends JFrame implements Observer{
 		JOptionPane.showMessageDialog(null, about, "SPLASH!", JOptionPane.OK_CANCEL_OPTION, logo);
 	}
 
+	/**
+	 * Helper method to set up the main screen. Arranges the map panel, side panel, and label. 
+	 */
 	public void setUpFrame() {
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -113,6 +131,10 @@ public class RiskGUI extends JFrame implements Observer{
 		frame.setVisible(true);
 	}
 
+	/**
+	 * Helper method to set up players and listeners and assign colors to the players. 
+	 * Calls a helper method to display the player setup screen. 
+	 */
 	public void setUpPlayers() {
 		players = new ArrayList<Player>();
 		selectPlayers();
@@ -145,6 +167,10 @@ public class RiskGUI extends JFrame implements Observer{
 
 	}
 
+	/**
+	 * Helper method to display the player setup screen. Prompts the user to select between two
+	 * and six players inclusive. The user can customize player names and types. 
+	 */
 	public void selectPlayers() {
 		JLabel instructionLabel = new JLabel();
 		instructionLabel.setText("<html>Instructions:"
@@ -155,8 +181,7 @@ public class RiskGUI extends JFrame implements Observer{
 
 
 		//Player 1
-		JLabel p1 = new JLabel("Player 1:");
-
+		JLabel p1 = new JLabel("Player 1 (Blue):");
 
 		JPanel p1NamePanel = new JPanel();
 		p1NamePanel.setLayout(new FlowLayout(FlowLayout.LEADING));
@@ -196,7 +221,7 @@ public class RiskGUI extends JFrame implements Observer{
 
 
 		//Player 2
-		JLabel p2 = new JLabel("Player 2:");
+		JLabel p2 = new JLabel("Player 2 (Green):");
 
 
 		JPanel p2NamePanel = new JPanel();
@@ -237,7 +262,7 @@ public class RiskGUI extends JFrame implements Observer{
 
 
 		//Player 3
-		JLabel p3 = new JLabel("Player 3:");
+		JLabel p3 = new JLabel("Player 3 (Orange):");
 
 
 		JPanel p3NamePanel = new JPanel();
@@ -280,7 +305,7 @@ public class RiskGUI extends JFrame implements Observer{
 		p3ButtonPanel.add(p3NA);
 
 		//Player 4
-		JLabel p4 = new JLabel("Player 4:");
+		JLabel p4 = new JLabel("Player 4 (Pink):");
 
 
 		JPanel p4NamePanel = new JPanel();
@@ -324,7 +349,7 @@ public class RiskGUI extends JFrame implements Observer{
 
 
 		//Player 5
-		JLabel p5 = new JLabel("Player 5:");
+		JLabel p5 = new JLabel("Player 5 (Yellow):");
 
 
 		JPanel p5NamePanel = new JPanel();
@@ -368,7 +393,7 @@ public class RiskGUI extends JFrame implements Observer{
 
 
 		//Player 6
-		JLabel p6 = new JLabel("Player 6:");
+		JLabel p6 = new JLabel("Player 6 (Purple):");
 
 
 		JPanel p6NamePanel = new JPanel();
@@ -492,7 +517,9 @@ public class RiskGUI extends JFrame implements Observer{
 		}
 	}
 
-
+	/**
+	 * Helper method to set up the label panel at the bottom of the screen. 
+	 */
 	public void setUpLabelPanel() {
 		labelPanel = new JPanel();
 		labelPanel.setPreferredSize(new Dimension(960, 40));
@@ -508,18 +535,35 @@ public class RiskGUI extends JFrame implements Observer{
 		labelPanel.add(label);
 	}
 
+	/**
+	 * Setter for the label panel message
+	 * @param message
+	 */
 	public void setLabel(String message) {
 		label.setText(message);
 	}
 
+	/**
+	 * Getter for the RiskController
+	 * @return
+	 */
 	public RiskController getController() {
 		return controller;
 	}
 
+	/**
+	 * Main method to run the game
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		new RiskGUI();
 	}
 
+	/**
+	 * Prompts the user to select a territory. Used in the initial territory claiming, 
+	 * army placement, and gameplay (attacking). 
+	 * @param t
+	 */
 	public void territorySelected(Territory t) {
 		if(typeOfPlay == TypeOfPlay.SELECT_TERRITORY) {
 			if(t.getCurrentOwner() != null) {
@@ -587,6 +631,10 @@ public class RiskGUI extends JFrame implements Observer{
 		}
 	}
 
+	/**
+	 * Updates the label panel and side panel, and plays explosions as appropriate, 
+	 * throughout gameplay. 
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		if(o instanceof RiskController) {}
@@ -663,18 +711,35 @@ public class RiskGUI extends JFrame implements Observer{
 		mapPanel.repaint();
 	}
 
+	/**
+	 * getter for human
+	 * @return
+	 */
 	public Player getHumanPlayer() {
 		return human;
 	}
 
+	/**
+	 * getter for players
+	 * @return
+	 */
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
 
+	/**
+	 * getter for currentPlayer
+	 * @return
+	 */
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
 
+	/**
+	 * Enum for the type of play, designating the phase of the turn. 
+	 * @author Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Becca Simon
+	 *
+	 */
 	private enum TypeOfPlay {
 		SELECT_TERRITORY, PLACE_ARMY, ATTACK_FROM, ATTACK_TO, FORTIFY_FROM, FORTIFY_TO, FORTIFY_ARMIES, DO_NOTHING
 	}

@@ -27,16 +27,27 @@ import java.util.Timer;
 import explosion.*;
 import model.*;
 
+/**
+ * The map portion of the GUI. Displays the world map, complete with labels for each territory, 
+ * and updates with numbers of armies and explosions as appropriate. Repaints every 15 milliseconds. 
+ * @author Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Becca Simon
+ *
+ */
 @SuppressWarnings({ "unused", "serial" })
 public class MapPanel extends JPanel{
 	private BufferedImage map;
 	private ArrayList<Territory> territories;
 	private RiskGUI gui;
 	private List<SpriteObject> splosions;
-	private Territory loosingTerritory;
+	//private Territory loosingTerritory;
 	private Timer animTimer;
 	private BufferedImage sheet;
 	
+	/**
+	 * Constructs a new MapPanel object. Takes a RiskGUI argument so that information 
+	 * about territories' owners can be passed easily to the MapPanel. 
+	 * @param gui
+	 */
 	public MapPanel(RiskGUI gui) {
 		super();
 		this.gui = gui;
@@ -65,6 +76,9 @@ public class MapPanel extends JPanel{
 		repaint();
 	}
 	
+	/**
+	 * Called by repaint whenever the map is updated. 
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
@@ -72,12 +86,12 @@ public class MapPanel extends JPanel{
 		g2.setFont(new Font("Arial", Font.BOLD, 15));
 		for (SpriteObject explosion : getSplosions())
 			explosion.draw(g2);
-		if(loosingTerritory != null) {
+		/*if(loosingTerritory != null) {
 			for (int i = 0; 1 < getSplosions().size(); i++){
 				
 			}
 			loosingTerritory = null;
-		}
+		}*/
 		for(Territory t: territories) {
 			if(t.getCurrentOwner() == null) {
 				g2.setColor(Color.WHITE);
@@ -95,14 +109,28 @@ public class MapPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * getter for splosions, an instance variable used by the explosion animations
+	 * @return
+	 */
 	public List<SpriteObject> getSplosions() {
 		return splosions;
 	}
 
+	/**
+	 * setter for splosions
+	 * @param splosions
+	 */
 	public void setSplosions(List<SpriteObject> splosions) {
 		this.splosions = splosions;
 	}
 	
+	/**
+	 * private inner class to listen for clicks on the map. Detects the territory
+	 * by the color of the point where the mouse was clicked. 
+	 * @author Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Becca Simon
+	 *
+	 */
 	private class MapListener implements MouseListener {
 
 		@Override
@@ -118,19 +146,18 @@ public class MapPanel extends JPanel{
 				}
 			}
 		}
-
+		
+		/**
+		 * Unimplemented MouseListener methods
+		 */
 		@Override
 		public void mousePressed(MouseEvent e) {}
-
 		@Override
 		public void mouseReleased(MouseEvent e) {}
-
 		@Override
 		public void mouseEntered(MouseEvent e) {}
-
 		@Override
 		public void mouseExited(MouseEvent e) {}
-		
 	}
 	
 }

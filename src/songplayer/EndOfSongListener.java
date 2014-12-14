@@ -3,7 +3,7 @@ package songplayer;
 /**
  * This one method interface allows any new type to become 
  * registered as a listener to end of song event.  
- * 
+ * CSc 335 example in class
  * @author Rick Mercer
  */
 

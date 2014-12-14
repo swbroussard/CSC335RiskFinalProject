@@ -2,40 +2,61 @@ package explosion;
 
 import java.awt.Image;
 
+/**
+ * Abstract class representing the image portion of a sprite.
+ * @author Gabe Kishi (Section Leaders?)
+ */
 public abstract class Sprite {
-  public static enum State {
-    IDLE, MOVING_LEFT, MOVING_RIGHT, MOVING_DOWN, MOVING_UP
-  };
+	/**
+	 * Enum for the states of a frog sprite
+	 */
+	public static enum State {
+		IDLE, MOVING_LEFT, MOVING_RIGHT, MOVING_DOWN, MOVING_UP
+	};
 
-  protected State state;
-  protected int frame;
+	protected State state;
+	protected int frame;
 
-  public Sprite() {
-    state = State.IDLE;
-    frame = 0;
-  }
+	/**
+	 * constructor
+	 */
+	public Sprite() {
+		state = State.IDLE;
+		frame = 0;
+	}
 
-  public void setState(State state) {
-    this.state = state;
-  }
+	/**
+	 * setter for state
+	 * @param state
+	 */
+	public void setState(State state) {
+		this.state = state;
+	}
 
-  public State getState() {
-    return state;
-  }
+	/**
+	 * getter for state
+	 * @return
+	 */
+	public State getState() {
+		return state;
+	}
 
-  // by default, all sprites never finish
-  public boolean isFinished() {
-    return false;
-  }
+	/**
+	 * By default, all sprites never finish
+	 * @return false
+	 */
+	public boolean isFinished() {
+		return false;
+	}
 
-  // by default, reset does nothing
-  public void reset() {
-  }
+	/**
+	 * By default, reset does nothing
+	 */
+	public void reset() {}
 
-  // Abstract methods, vary from sprite to sprite
-  public abstract Image getImage();
+	public abstract Image getImage();
 
-  public abstract int getHeight();
+	public abstract int getHeight();
 
-  public abstract int getWidth();
+	public abstract int getWidth();
 }

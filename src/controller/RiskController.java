@@ -6,15 +6,13 @@ import java.util.Collections;
 import java.util.Observable;
 import java.util.Random;
 
-import explosion.*;
 import songplayer.SongPlayer;
-import view.MapPanel;
 import model.*;
 import model.Card.CardType;
 
 /**
  * Controls the game of Risk, as the name suggests. Maintains a list of <code>Player</code>s and every possible <code>Territory</code>. Handles gameplay, including board setup and turns, until a winner is declared.  
- * @author Elizabeth Harris, Becca Simon
+ * @author Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Becca Simon
  */
 public class RiskController extends Observable{
 	private String baseDir = System.getProperty("user.dir") + System.getProperty("file.separator")
@@ -36,10 +34,10 @@ public class RiskController extends Observable{
 	private Territory defendingTerritory;
 
 	/**
-	 * Constructs a new <code>RiskController</code> object from a given <code>ArrayList<Player></code>. 
-	 * Calls helper methods to set up all possible territories, give each <code>Player</code> that list, 
-	 * set up the deck of cards, have players claim territories and allocate armies, and handle gameplay
-	 * to the end of the game. 
+	 * Constructor for the Run6Bots testing class. Constructs a new <code>RiskController</code> object 
+	 * from a given <code>ArrayList<Player></code>. Calls helper methods to set up all possible territories, 
+	 * give each <code>Player</code> that list, set up the deck of cards, have players claim territories 
+	 * and allocate armies, and handle gameplay to the end of the game. 
 	 * @param myPlayers
 	 */
 	public RiskController(ArrayList<Player> myPlayers) {
@@ -53,7 +51,8 @@ public class RiskController extends Observable{
 	}
 
 	/**
-	 * Constructor for the GUI
+	 * Constructor for the GUI. Constructs a new <code>RiskController</code> object, calling helper methods
+	 * to set up all possible territories and set up the deck. 
 	 */
 	public RiskController() {
 		setUpTerritories();
@@ -110,9 +109,11 @@ public class RiskController extends Observable{
 	/**
 	 * Helper method for the second (main) stage of gameplay. While there is more than one <code>Player</code>
 	 * left in the game, has players take turns. A turn has three stages: First, the player is given armies
-	 * based on how many territories he controls and places them on his territories. Second, the player attacks
+	 * based on how many territories he controls and places them on his territories. The player also has the option
+	 * to turn in a set of cards for an additional army bonus. Second, the player attacks
 	 * other players' territories in an attempt to conquer more territories. Third, when the player is finished
-	 * attacking, he has the option to fortify his territories by moving armies from one to another. 
+	 * attacking, he has the option to fortify his territories by moving armies from one to another. If the player
+	 * conquered at least one opposing territory on his turn, he is issued a card from the deck. 
 	 */
 	public void playGame() {
 		if (debug) System.out.println("playGame called");
@@ -191,7 +192,9 @@ public class RiskController extends Observable{
 	}
 
 	/**
-	 * Keeps track of how many armies are awarded as a bonus for turning in cards. 
+	 * Keeps track of how many armies are awarded as a bonus for turning in cards. The bonus starts at 4, 
+	 * increases by increments of 2 until it reaches 12, jumping to 15, and increasing thereafter by 
+	 * increments of 5. 
 	 */
 	private void incrementCardBonus() {
 		switch (cardBonus) {
@@ -206,7 +209,7 @@ public class RiskController extends Observable{
 
 	/**
 	 * Helper method for initial territory setup. Instantiates the 42 territories on a Risk world map, 
-	 * assigning them the proper continent and neighbors. 
+	 * assigning them the proper continent, neighbors, color and coordinates. 
 	 */
 	private void setUpTerritories() {
 		if (debug) System.out.println("setUpTerritories called");
@@ -703,7 +706,8 @@ public class RiskController extends Observable{
 	/**
 	 * Helper method to handle attacks, called by <code>playGame</code>. Based on the number of armies
 	 * in the attacking and defending territory, simulates the appropriate dice rolls, then moves armies
-	 * and reassigns territory ownership depending on the outcome of the rolls. 
+	 * and reassigns territory ownership depending on the outcome of the rolls. If a territory is lost, 
+	 * an explosion animation starts on the losing territory and a cannon sound is played. 
 	 * @param attackingTerritory
 	 * @param defendingTerritory
 	 * @return true if the attacking territory conquered the defending territory, false otherwise
@@ -857,7 +861,11 @@ public class RiskController extends Observable{
 			p.setAllTerritories(territories);
 		}
 	}
-	
+
+	/**
+	 * Getter for <code>defendingTerritory</code>
+	 * @return defendingTerritory
+	 */
 	public Territory getDefendingTerritory() {
 		return defendingTerritory;
 	}

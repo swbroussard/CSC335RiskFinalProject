@@ -1,11 +1,18 @@
 package model;
 
 /**
+ * Represents a card from the Risk deck. Cards are of one of four types - artillery/cannon,
+ * infantry/foot soldier, cavalry/horseman, or wild. Each card except wildcards has a territory
+ * on its face. 
+ * @author Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Rebecca Simon
  * 
- * @author Elizabeth Harris and team
- *
  */
 public class Card {
+	/**
+	 * Enum for card types
+	 * @author Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Rebecca Simon
+	 *
+	 */
 	public enum CardType {
 		CANNON, HORSEMAN, FOOT_SOLDIER, WILD;
 	}
@@ -15,7 +22,7 @@ public class Card {
 	private boolean inDeck = true;
 	
 	/**
-	 * Constructor
+	 * Constructor. Creates a new Card object with the given type and territory. 
 	 */
 	public Card(CardType c, Territory t) {
 		type = c;
@@ -64,7 +71,8 @@ public class Card {
 	}
 
 	/**
-	 * @return true if the current card is in the game's deck
+	 * @return true if the current card is in the game's deck, 
+	 * false if it's in a player's hand
 	 */
 	public boolean isInDeck() {
 		return inDeck;
@@ -78,6 +86,10 @@ public class Card {
 		this.inDeck = inDeck;
 	}
 	
+	/**
+	 * Returns a string representation of the card of the format CARD_TYPE: Territory
+	 * @return String
+	 */
 	public String toString() {
 		//String deckness;
 		//if (inDeck)
