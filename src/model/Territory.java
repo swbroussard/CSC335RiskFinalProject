@@ -27,6 +27,18 @@ public class Territory {
 		adjacent = new ArrayList<Territory>();
 		this.armyLabel = armyLabel;
 	}
+	
+	/**
+	 * Checks if the parameter is adjacent to this Territory by looping through <code>adjacent</code>. 
+	 * @param toCheck
+	 * @return boolean
+	 */
+	public boolean isAdjacent(Territory toCheck) {
+		for (Territory t : adjacent) {
+			if (toCheck.equals(t)) return true;
+		}
+		return false;
+	}
 
 	/**
 	 * Setter for <code>currentOwner</code>
@@ -92,17 +104,6 @@ public class Territory {
 		return adjacent;
 	}
 	
-	/**
-	 * Checks if the parameter is adjacent to this Territory by looping through <code>adjacent</code>. 
-	 * @param toCheck
-	 * @return boolean
-	 */
-	public boolean isAdjacent(Territory toCheck) {
-		for (Territory t : adjacent) {
-			if (toCheck.equals(t)) return true;
-		}
-		return false;
-	}
 	
 	/**
 	 * Getter for <code>continent</code>
@@ -112,6 +113,10 @@ public class Territory {
 		return continent;
 	}
 	
+	/**
+	 * Getter for the position of the label on the map in the GUI
+	 * @return position of the label
+	 */
 	public Point getLabelPosition() {
 		return armyLabel;
 	}

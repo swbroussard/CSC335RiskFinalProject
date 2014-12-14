@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -17,6 +18,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+
+
 import songplayer.SongPlayer;
 import model.ExpertAIPlayer;
 import model.HumanPlayer;
@@ -643,15 +647,18 @@ public class RiskGUI extends JFrame implements Observer{
 		
 		else if (arg == ObserverMessages.HUMAN_SELECT_NUM_ARMIES) {
 			label.setText("Please enter a number of armies to move.");
-			//typeOfPlay = TypeOfPlay.FORTIFY_ARMIES;
-			// could be either FORTIFY_ARMIES or the end of conquering a territory
+			typeOfPlay = TypeOfPlay.FORTIFY_ARMIES;
 		}
 		
 		else if (arg == ObserverMessages.HUMAN_TRY_AGAIN_ARMIES) {
 			label.setText("The number you select must be less than the number armies in your territory");
 			typeOfPlay = TypeOfPlay.FORTIFY_ARMIES;
 		}
+		else if(arg == ObserverMessages.START_EXPLOSION) {
+			mapPanel.setExplosion(controller.getDefendingTerritory());
+		}
 		mapPanel.repaint();
+		mapPanel.setExplosion(null);
 	}
 
 	public Player getHumanPlayer() {

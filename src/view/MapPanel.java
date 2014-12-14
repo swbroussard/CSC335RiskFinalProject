@@ -27,6 +27,7 @@ public class MapPanel extends JPanel{
 	private ArrayList<Territory> territories;
 	private RiskGUI gui;
 	private List<SpriteObject> splosions;
+	private Territory explosion;
 	
 	public MapPanel(RiskGUI gui) {
 		super();
@@ -70,7 +71,14 @@ public class MapPanel extends JPanel{
 				g2.drawString("" + t.getNumArmies(), (int) t.getLabelPosition().getX() + 7, (int) t.getLabelPosition().getY() + 16);
 			else//armies is double digit number
 				g2.drawString("" + t.getNumArmies(), (int) t.getLabelPosition().getX() + 2, (int) t.getLabelPosition().getY() + 15);
+			if(explosion != null) {
+				explosions(g2, (int) explosion.getLabelPosition().getX(), (int) explosion.getLabelPosition().getY());
+			}
 		}
+	}
+	
+	public void setExplosion(Territory t) {
+		explosion = t;
 	}
 	
 	private class MapListener implements MouseListener {

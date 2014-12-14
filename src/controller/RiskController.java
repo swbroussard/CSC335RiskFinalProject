@@ -3,8 +3,6 @@ package controller;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Random;
 
@@ -20,7 +18,7 @@ import model.Card.CardType;
 public class RiskController extends Observable{
 	private String baseDir = System.getProperty("user.dir") + System.getProperty("file.separator")
 			+ "sound" + System.getProperty("file.separator");
-	boolean debug = false;
+	private boolean debug = false;
 	private ArrayList<Territory> territories;
 	private Territory alaska, alberta, centralAmerica, easternUS, greenland, northwest,
 	ontario, quebec, westernUS, argentina, brazil, peru, venezuela, 
@@ -33,7 +31,8 @@ public class RiskController extends Observable{
 	private ArrayList<Card> deckOfCards;
 	private int cardBonus;
 	private int numCards;
-	static Random rand;
+	private static Random rand;
+	private Territory defendingTerritory;
 
 	/**
 	 * Constructs a new <code>RiskController</code> object from a given <code>ArrayList<Player></code>. 
@@ -140,10 +139,8 @@ public class RiskController extends Observable{
 					Territory attacker;
 					do {
 						attacker = p.attackFrom();
-					} while (attacker.getNumArmies() > 1);
-					while (attacker == null || attacker.getCurrentOwner() != p) {
-						attacker = p.attackFrom();
-					}
+					} while (attacker == null || attacker.getNumArmies() < 1 || attacker.getCurrentOwner() != p);
+					
 					Territory defender = p.attackTo(attacker);
 					if (debug) System.out.println("Attacking " + defender.toString());
 					//if (debug) System.out.println(territories);
@@ -164,14 +161,12 @@ public class RiskController extends Observable{
 				p.reinforceArmies();
 				counter++;
 			}
-			//			}
 		}
 		if(players.size() == 1) {
 			if (debug) System.out.println(players.get(0).getName() + " won the game");
 			setChanged();
 			notifyObservers(players.get(0).getName() + " has won the game!");
 		}
-		//return players.get(0);
 	}
 
 	/**
@@ -692,7 +687,7 @@ public class RiskController extends Observable{
 	}
 
 	/**
-	 * Simulates a dice roll by returning a pseudorandom integer between 1 and 6 inclusive. 
+	 * Simulates a dice roll by returning a pseudo-random integer between 1 and 6 inclusive. 
 	 * @return int result of dice roll
 	 */
 	private int rollDice() {
@@ -708,19 +703,19 @@ public class RiskController extends Observable{
 	 * @param defendingTerritory
 	 * @return true if the attacking territory conquered the defending territory, false otherwise
 	 */
-	private boolean attack(Territory attackingTerritory, Territory defendingTerritory){
+	private boolean attack(Territory attackingTerritory, Territory defendingterritory){
 		if (debug) System.out.println("Attacker - "+attackingTerritory.getName()
 				+" (owner - "+attackingTerritory.getCurrentOwner().getName()+")"
 				+"\nDefender - "+defendingTerritory.getName()+" (owner - "
 				+defendingTerritory.getCurrentOwner().getName()+")");
+		this.defendingTerritory = defendingterritory;
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) { e.printStackTrace();}
 		setChanged();
 		notifyObservers(new String("" + attackingTerritory.getCurrentOwner().getName() + " is attacking " + 
 				defendingTerritory.getName() + " from " + attackingTerritory.getName()));
-		//		List<Dice> attackingDice = attackingTerritory.getCurrentOwner().getAttackingDice();
-		//		List<Dice> defendingDice = defendingTerritory.getCurrentOwner().getDefendingDice();
+		
 		ArrayList<Integer> attackingDiceValues = new ArrayList<Integer>();
 		ArrayList<Integer> defendingDiceValues = new ArrayList<Integer>();
 
@@ -774,7 +769,8 @@ public class RiskController extends Observable{
 
 		if (defendingTerritory.getNumArmies() <= 0) { // attacker conquered defending territory
 			SongPlayer.playFile(baseDir + "BigExplosion.wav");
-			//call the method to show explosion
+			this.setChanged();
+			notifyObservers(ObserverMessages.START_EXPLOSION);
 			if (defendingTerritory.getCurrentOwner().getTerritoriesOwned().size() == 1) {
 				// attacker conquered defender's last territory
 				if (debug) System.out.println(defendingTerritory.getCurrentOwner().getName() + " has been eliminated");
@@ -796,12 +792,13 @@ public class RiskController extends Observable{
 			} catch (InterruptedException e) { e.printStackTrace();}
 			setChanged();
 			notifyObservers(defendingTerritory.getName() + " now belongs to " + attackingTerritory.getCurrentOwner().getName());
+			
 			// defending territory now belongs to attacker
 			defendingTerritory.getCurrentOwner().getTerritoriesOwned().remove(defendingTerritory);
 			defendingTerritory.setCurrentOwner(attackingTerritory.getCurrentOwner());
 			attackingTerritory.getCurrentOwner().getTerritoriesOwned().add(defendingTerritory);
+			
 			// same number of armies as dice rolled move to conquered territory
-			// TODO: ITERATION 2 - can choose the number of armies to move (>= number of dice rolled)
 			int moveArmies = 0;
 			if (attackingTerritory.getCurrentOwner() instanceof HumanPlayer) {
 				notifyObservers("Please select a number of armies to move.");
@@ -853,6 +850,10 @@ public class RiskController extends Observable{
 		for(Player p: players) {
 			p.setAllTerritories(territories);
 		}
+	}
+	
+	public Territory getDefendingTerritory() {
+		return defendingTerritory;
 	}
 
 }

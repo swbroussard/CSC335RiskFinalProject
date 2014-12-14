@@ -336,13 +336,68 @@ public class ExpertAIPlayer extends Player {
 		}
 	}
 
+	
+	
+	@Override
+	public void reinforceArmies() {
+		if (debug) System.out.println("reinforceArmies called by "+getName());
+		int armiesToMove = 0;
+		
+		boolean reinforcePossible = false;
+		for(Territory t: getTerritoriesOwned()) {
+			for(Territory a: t.getAdjacent()) {
+				if(a.getCurrentOwner() == this && t.getNumArmies() > 1)
+					reinforcePossible = true;
+			}
+		}
+		if(!reinforcePossible)
+			return;
+		
+		Territory reinforceThis = null;
+		Territory takeArmy = null;
+		
+		for(Territory t: getTerritoriesOwned()) {
+			if(takeArmy == null && t.getNumArmies() > 1 && t.getCurrentOwner() == this) {
+				boolean adjacentAllThis = true;
+				for(Territory s: t.getAdjacent()) {
+					if(s.getCurrentOwner() != this)
+						adjacentAllThis = false;
+				}
+				if(adjacentAllThis)
+					takeArmy = t;
+			}
+		}
+		while(takeArmy == null) {
+			Territory temp = getTerritoriesOwned().get(genRan.nextInt(getTerritoriesOwned().size()));
+			if(temp.getNumArmies() > 1)
+				for(Territory t: temp.getAdjacent()) {
+					if(t.getCurrentOwner() == this)
+						takeArmy = temp;
+				}			
+		}
+		
+		boolean reinforceSelected = false;
+		do{
+			reinforceThis = takeArmy.getAdjacent().get(genRan.nextInt(takeArmy.getAdjacent().size()));
+			if(reinforceThis.getCurrentOwner() == this) {
+				reinforceSelected = true;
+			}
+		}while(!reinforceSelected);
+			
+		armiesToMove = takeArmy.getNumArmies() - 1;
+		
+		if (reinforceThis != null) {
+			reinforceThis.setNumArmies(takeArmy.getNumArmies() + armiesToMove);
+			takeArmy.setNumArmies(takeArmy.getNumArmies() - armiesToMove);
+		}
+	}
 	/**
 	 * finds the smallest army owned and adds the required amount of armies to defend itself from
 	 * the enemy in the adjacent territories
 	 * @param takeArmy
 	 * @param reinforceThis
 	 */
-
+	/*
 	@Override
 	public void reinforceArmies() {
 		if (debug)
@@ -363,9 +418,6 @@ public class ExpertAIPlayer extends Player {
 	private int numTroopsTake = 0;
 	private int numTimesCalled = 0;
 
-	/**
-	 * helper method for rienforceArmies
-	 */
 
 	public void reinforce() { // helper method for reinforce armies method
 		if (debug)
@@ -452,6 +504,7 @@ public class ExpertAIPlayer extends Player {
 		//		reinforceArmies(high, low);
 
 	}// close helper method
+	*/
 
 	/**
 	 * attack with the maximum armies
@@ -466,11 +519,10 @@ public class ExpertAIPlayer extends Player {
 		Continent continentToAttack = determineContinent();
 		
 		if(continentToAttack == Continent.NORTH_AMERICA) {
-			while(choosenTerritory == null) {
-				Territory t = NA.get(genRan.nextInt(NA.size()));
+			for(Territory t: NA) {
 				if(t.getCurrentOwner() != this) {
 					for(Territory a: t.getAdjacent()) {
-						if(a.getCurrentOwner() == this) {
+						if(a.getCurrentOwner() == this && a.getNumArmies() > 1) {
 							if(choosenTerritory == null)
 								choosenTerritory = a;
 							else if(a.getNumArmies() > choosenTerritory.getNumArmies())
@@ -481,11 +533,10 @@ public class ExpertAIPlayer extends Player {
 			}
 		}
 		else if(continentToAttack == Continent.SOUTH_AMERICA) {
-			while(choosenTerritory == null) {
-				Territory t = SA.get(genRan.nextInt(SA.size()));
+			for(Territory t: SA) {
 				if(t.getCurrentOwner() != this) {
 					for(Territory a: t.getAdjacent()) {
-						if(a.getCurrentOwner() == this) {
+						if(a.getCurrentOwner() == this && a.getNumArmies() > 1) {
 							if(choosenTerritory == null)
 								choosenTerritory = a;
 							else if(a.getNumArmies() > choosenTerritory.getNumArmies())
@@ -496,11 +547,10 @@ public class ExpertAIPlayer extends Player {
 			}
 		}
 		else if(continentToAttack == Continent.EUROPE) {
-			while(choosenTerritory == null) {
-				Territory t = EU.get(genRan.nextInt(EU.size()));
+			for(Territory t: EU) {
 				if(t.getCurrentOwner() != this) {
 					for(Territory a: t.getAdjacent()) {
-						if(a.getCurrentOwner() == this) {
+						if(a.getCurrentOwner() == this && a.getNumArmies() > 1) {
 							if(choosenTerritory == null)
 								choosenTerritory = a;
 							else if(a.getNumArmies() > choosenTerritory.getNumArmies())
@@ -511,11 +561,10 @@ public class ExpertAIPlayer extends Player {
 			}
 		}
 		else if(continentToAttack == Continent.AFRICA) {
-			while(choosenTerritory == null) {
-				Territory t = AF.get(genRan.nextInt(AF.size()));
+			for(Territory t: AF) {
 				if(t.getCurrentOwner() != this) {
 					for(Territory a: t.getAdjacent()) {
-						if(a.getCurrentOwner() == this) {
+						if(a.getCurrentOwner() == this && a.getNumArmies() > 1) {
 							if(choosenTerritory == null)
 								choosenTerritory = a;
 							else if(a.getNumArmies() > choosenTerritory.getNumArmies())
@@ -526,11 +575,10 @@ public class ExpertAIPlayer extends Player {
 			}
 		}
 		else if(continentToAttack == Continent.ASIA) {
-			while(choosenTerritory == null){
-				Territory t = AS.get(genRan.nextInt(AS.size()));
+			for(Territory t: AS){
 				if(t.getCurrentOwner() != this) {
 					for(Territory a: t.getAdjacent()) {
-						if(a.getCurrentOwner() == this) {
+						if(a.getCurrentOwner() == this && a.getNumArmies() > 1) {
 							if(choosenTerritory == null)
 								choosenTerritory = a;
 							else if(a.getNumArmies() > choosenTerritory.getNumArmies())
@@ -541,11 +589,10 @@ public class ExpertAIPlayer extends Player {
 			}
 		}
 		else if(continentToAttack == Continent.AUSTRALIA) {
-			while(choosenTerritory == null) {
-				Territory t = AU.get(genRan.nextInt(AU.size()));
+			for(Territory t: AU) {
 				if(t.getCurrentOwner() != this) {
 					for(Territory a: t.getAdjacent()) {
-						if(a.getCurrentOwner() == this) {
+						if(a.getCurrentOwner() == this && a.getNumArmies() > 1) {
 							if(choosenTerritory == null)
 								choosenTerritory = a;
 							else if(a.getNumArmies() > choosenTerritory.getNumArmies())
@@ -558,7 +605,7 @@ public class ExpertAIPlayer extends Player {
 		while(choosenTerritory == null) {
 			Territory t = getTerritoriesOwned().get(genRan.nextInt(getTerritoriesOwned().size()));
 			for(Territory a: t.getAdjacent()) {
-				if(a.getCurrentOwner() != this)
+				if(a.getCurrentOwner() != this && a.getNumArmies() > 1)
 					choosenTerritory = t;
 			}
 		}
