@@ -603,6 +603,7 @@ public class RiskGUI extends JFrame implements Observer{
 
 		if(arg instanceof String) {
 			label.setText((String) arg); 
+			System.out.println((String) arg);
 			sidePanel.updateLabel();
 			sidePanel.repaint();
 		}

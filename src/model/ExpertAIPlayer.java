@@ -387,9 +387,14 @@ public class ExpertAIPlayer extends Player {
 		armiesToMove = takeArmy.getNumArmies() - 1;
 		
 		if (reinforceThis != null) {
-			reinforceThis.setNumArmies(takeArmy.getNumArmies() + armiesToMove);
+			reinforceThis.setNumArmies(reinforceThis.getNumArmies() + armiesToMove);
 			takeArmy.setNumArmies(takeArmy.getNumArmies() - armiesToMove);
 		}
+		
+		this.setChanged();
+		notifyObservers(this.getName() + " has moved " + armiesToMove + " armies from " + 
+				takeArmy.getName() + " to " + reinforceThis.getName());
+		
 	}
 	/**
 	 * finds the smallest army owned and adds the required amount of armies to defend itself from

@@ -122,6 +122,7 @@ public class RiskController extends Observable{
 			int counter = 0;
 			while(counter < players.size()) {
 				//for (Player p : getPlayers()) {
+				System.out.println("Round: " + counter);
 				Player p = players.get(counter);
 				notifyObservers(ObserverMessages.NEW_TURN);
 				if (debug) System.out.println(p.getName()+"'s turn");

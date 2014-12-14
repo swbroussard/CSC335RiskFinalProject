@@ -110,8 +110,27 @@ public class IntermediateAIPlayer extends Player{
 			}
 		}//end of choosing empty territories
 		else {//place army in territory			
+			Territory selected = null;
+			for(Territory t: getTerritoriesOwned()) {
+				if(t.getNumArmies() < 1)
+					selected = t;
+			}
+			
+			
 			int r = genRan.nextInt(getTerritoriesOwned().size());
-			Territory selected = getTerritoriesOwned().get(r);
+			for(int i = 0; i < 5; i++) {
+				if(selected == null) {
+					Territory temp = getTerritoriesOwned().get(r);
+					for(Territory t: temp.getAdjacent()) {
+						if(t.getCurrentOwner() != this) {
+							selected = temp;
+						}
+					}
+				}
+			}
+			if(selected == null) {
+				selected = getTerritoriesOwned().get(genRan.nextInt(getTerritoriesOwned().size()));
+			}
 			selected.setNumArmies(selected.getNumArmies() + 1);
 			setNumArmies(getNumArmies() - 1);
 			setChanged();
@@ -119,8 +138,6 @@ public class IntermediateAIPlayer extends Player{
 			if (debug) System.out.println("Army successfully placed in owned territory by "+getName());
 		}
 	}
-
-	//private int count = 0;
 	
 	/**
 	 * randomly chooses owned territories to attack from
@@ -231,5 +248,9 @@ public class IntermediateAIPlayer extends Player{
 			reinforceThis.setNumArmies(reinforceThis.getNumArmies() + armiesToMove);
 			takeArmy.setNumArmies(takeArmy.getNumArmies() - armiesToMove);
 		}
+		
+		this.setChanged();
+		notifyObservers(this.getName() + " has moved " + armiesToMove + " armies from " + 
+				takeArmy.getName() + " to " + reinforceThis.getName());
 	}
 }

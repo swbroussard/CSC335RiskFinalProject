@@ -177,6 +177,11 @@ public class SimpleAIPlayer extends Player {
 			reinforceThis.setNumArmies(reinforceThis.getNumArmies() + armiesToMove);
 			takeArmy.setNumArmies(takeArmy.getNumArmies() - armiesToMove);
 		}
+		
+		this.setChanged();
+		notifyObservers(this.getName() + " has moved " + armiesToMove + " armies from " + 
+				takeArmy.getName() + " to " + reinforceThis.getName());
+		
 	}
 
 }
