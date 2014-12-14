@@ -8,8 +8,8 @@ import java.util.Random;
  * @author jeremyjalnos stevenBroussard
  */
 public class SimpleAIPlayer extends Player {
-	Random randomGen;
-	int numAttacks;
+	private Random randomGen;
+	private int numAttacks;
 
 	// constructor
 	public SimpleAIPlayer() {
@@ -137,8 +137,18 @@ public class SimpleAIPlayer extends Player {
 		if (debug) System.out.println("reinforceArmies called by "+getName());
 		int armiesToMove = 0;
 		
-		Territory reinforceThis;
-		Territory takeArmy;
+		boolean reinforcePossible = false;
+		for(Territory t: getTerritoriesOwned()) {
+			for(Territory a: t.getAdjacent()) {
+				if(a.getCurrentOwner() == this && t.getNumArmies() > 1)
+					reinforcePossible = true;
+			}
+		}
+		if(!reinforcePossible)
+			return;
+		
+		Territory reinforceThis = null;
+		Territory takeArmy = null;
 		boolean takeArmySelected = false;
 		do {
 			takeArmy = getTerritoriesOwned().get(randomGen.nextInt(getTerritoriesOwned().size()));

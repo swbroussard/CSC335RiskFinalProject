@@ -15,6 +15,7 @@ import java.util.Random;
 //until he has no where to attack from.
 public class IntermediateAIPlayer extends Player{
 	private Random genRan;
+	private int numAttacks;
 	
 	public IntermediateAIPlayer() {
 		super();
@@ -165,69 +166,13 @@ public class IntermediateAIPlayer extends Player{
 				}
 			}
 		}
+		numAttacks++;
+		if(numAttacks == 7) {
+			setDoneAttacking(true);
+			numAttacks = 0;
+		}
 		return attack;
 	}
-
-	/**
-	 * checks for adjacent territories owned by another player
-	 */
-	
-	private int numTroopsTake = 0;
-	private int numTimesCalled = 0;
-	
-	public void reinforce(){
-		if (debug) System.out.println("reinforce called by "+getName());
-		
-		Territory high = null; 
-		Territory low = null;
-		int highTroop = 0;
-		int lowTroop = 1000;
-		boolean take =false;
-		boolean adjacentNotOwned = false;
-	
-		for(int i =0; i <= getTerritoriesOwned().size(); i++){
-			for(int j =0; j <= getTerritoriesOwned().get(i).getAdjacent().size(); j++) {// check all territories look through all armies find lowest with competitors or ones with no competitors and give to territories more in need
-			
-			
-				if(getTerritoriesOwned().get(i).getAdjacent().get(j).getCurrentOwner() != this){ //checks for un-owned neighbors
-					if(getTerritoriesOwned().get(i).getAdjacent().get(j).getNumArmies() >= getTerritoriesOwned().get(i).getNumArmies()) {// checks to see if neigbor has more armies than us
-						if(getTerritoriesOwned().get(i).getNumArmies() < lowTroop) {// checks to see if we are more screwed than other territories
-							low = getTerritoriesOwned().get(i);// sets this as the low territory
-							lowTroop = getTerritoriesOwned().get(i).getNumArmies(); // sets how many current armies there are here
-						}//if statement
-					}//if statement
-				}//if statement
-			}//for loop
-			for(int e = 0; e <= getTerritoriesOwned().get(i).getAdjacent().size(); e++) {//loops through adjacent territories
-				if(getTerritoriesOwned().get(i).getAdjacent().get(e).getCurrentOwner()!= this) {// checks if we don't own an adjacent land
-					adjacentNotOwned = true;// if we don't own something we can't automatically take from this territory
-					if(getTerritoriesOwned().get(i).getNumArmies() >= highTroop){//checks to see if this is the highest available troop count
-						if(getTerritoriesOwned().get(i).getAdjacent().get(e).getNumArmies() <= (getTerritoriesOwned().get(i).getNumArmies()*2)/3) { //checks to see if they should take from here for sure
-							take = true;
-							highTroop = getTerritoriesOwned().get(i).getNumArmies();
-							high = getTerritoriesOwned().get(i);
-						}
-					}
-					else {
-						take = false;
-					}
-				}//if statement
-			}// for loop
-		
-			if(adjacentNotOwned == false) {
-				take = true;
-				highTroop = getTerritoriesOwned().get(i).getNumArmies();
-				high = getTerritoriesOwned().get(i);
-				break;
-			}// if statement
-			if(take) {
-				numTroopsTake = (highTroop * 2)/3;
-			}
-		}// master for loop
-						
-		//reinforceArmies(high, low);
-
-	}// close helper method
 
 	/**
 	 * randomly puts reinforce armies around adjacent territories owned by other player
@@ -236,30 +181,55 @@ public class IntermediateAIPlayer extends Player{
 	
 	@Override
 	public void reinforceArmies() {
-		// TODO I made this logic pretty unsophisticated, so if you want to revise it by calling reinforce() or whatever, feel free. 
 		if (debug) System.out.println("reinforceArmies called by "+getName());
+		int armiesToMove = 0;
 		
-		int takeArmyFrom = 0;
-		Territory reinforceThis = null, takeArmy = null;
-		do {
-			takeArmy = getTerritoriesOwned().get(genRan.nextInt(getTerritoriesOwned().size()-1));
-		} while (takeArmy.getAdjacent().size() == 0);
-		reinforceThis = takeArmy.getAdjacent().get(genRan.nextInt(takeArmy.getAdjacent().size()-1));
-		takeArmyFrom = genRan.nextInt(takeArmy.getNumArmies() - 1);
-		reinforceThis.setNumArmies(getNumArmies() + takeArmyFrom);
-		takeArmy.setNumArmies(getNumArmies() - takeArmyFrom);
-		
-		/*if(numTimesCalled<1){
-			reinforce();
-			numTimesCalled++;
+		boolean reinforcePossible = false;
+		for(Territory t: getTerritoriesOwned()) {
+			for(Territory a: t.getAdjacent()) {
+				if(a.getCurrentOwner() == this && t.getNumArmies() > 1)
+					reinforcePossible = true;
+			}
 		}
-
-		else {
-			int x = takeArmy.getNumArmies();
-			int y = reinforceThis.getNumArmies();
-			takeArmy.setNumArmies(x -= numTroopsTake);
-			reinforceThis.setNumArmies(y += numTroopsTake);
-			numTimesCalled = 0;
-		}*/
+		if(!reinforcePossible)
+			return;
+		
+		Territory reinforceThis = null;
+		Territory takeArmy = null;
+		
+		for(Territory t: getTerritoriesOwned()) {
+			if(takeArmy == null && t.getNumArmies() > 1 && t.getCurrentOwner() == this) {
+				boolean adjacentAllThis = true;
+				for(Territory s: t.getAdjacent()) {
+					if(s.getCurrentOwner() != this)
+						adjacentAllThis = false;
+				}
+				if(adjacentAllThis)
+					takeArmy = t;
+			}
+		}
+		while(takeArmy == null) {
+			Territory temp = getTerritoriesOwned().get(genRan.nextInt(getTerritoriesOwned().size()));
+			if(temp.getNumArmies() > 1)
+				for(Territory t: temp.getAdjacent()) {
+					if(t.getCurrentOwner() == this)
+						takeArmy = temp;
+				}			
+		}
+		
+		boolean reinforceSelected = false;
+		do{
+			reinforceThis = takeArmy.getAdjacent().get(genRan.nextInt(takeArmy.getAdjacent().size()));
+			if(reinforceThis.getCurrentOwner() == this) {
+				reinforceSelected = true;
+			}
+		}while(!reinforceSelected);
+			
+		armiesToMove = takeArmy.getNumArmies() - 1;
+		
+		if (reinforceThis != null) {
+			reinforceThis.setNumArmies(takeArmy.getNumArmies() + armiesToMove);
+			takeArmy.setNumArmies(takeArmy.getNumArmies() - armiesToMove);
+		}
 	}
 }
