@@ -16,11 +16,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimerTask;
+
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.Timer;
-import explosion.SpriteObject;
+
+import java.util.Timer;
+
 import explosion.*;
 import model.*;
 
@@ -29,7 +32,7 @@ public class MapPanel extends JPanel{
 	private BufferedImage map;
 	private ArrayList<Territory> territories;
 	private RiskGUI gui;
-	private List<Object> splosions;
+	private List<SpriteObject> splosions;
 	private Territory loosingTerritory;
 	private Timer animTimer;
 	private BufferedImage sheet;
@@ -41,7 +44,7 @@ public class MapPanel extends JPanel{
 		this.setPreferredSize(new Dimension(960, 640));
 		this.setBackground(Color.RED);
 		this.setVisible(true);
-		splosions = new LinkedList<Object>();
+		splosions = new LinkedList<SpriteObject>();
 		
 		try {
 			map = ImageIO.read(new File("images/RiskMap2.jpg"));
@@ -50,9 +53,13 @@ public class MapPanel extends JPanel{
 			e.printStackTrace();
 		}
 		
-		//manually add in the 14 different frames
-		//splosions.add(sheet.getSubimage(col * width, row * height, width, height))
-		
+		animTimer = new Timer();
+		animTimer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				repaint();
+			}
+		}, 0, 15);
 		this.addMouseListener(new MapListener());
 		
 		repaint();
@@ -63,14 +70,10 @@ public class MapPanel extends JPanel{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawImage(map, 0, 0, 960, 640, null);
 		g2.setFont(new Font("Arial", Font.BOLD, 15));
-		//System.out.println(loosingTerritory + " exploded");
+		for (SpriteObject explosion : getSplosions())
+			explosion.draw(g2);
 		if(loosingTerritory != null) {
-			//System.out.println("explosion activated. BOOM!!!!");
-			//createExplosion((int) loosingTerritory.getLabelPosition().getX(), (int) loosingTerritory.getLabelPosition().getY());
-			//System.out.println(splosions.size() + " of sprite frames");
-			//change the for loop to loop through the splosions with a sleeper delay
-			//and draws the frame.
-			for (int i = 0; 1 < splosions.size(); i++){
+			for (int i = 0; 1 < getSplosions().size(); i++){
 				
 			}
 			loosingTerritory = null;
@@ -89,33 +92,16 @@ public class MapPanel extends JPanel{
 				g2.drawString("" + t.getNumArmies(), (int) t.getLabelPosition().getX() + 7, (int) t.getLabelPosition().getY() + 16);
 			else//armies is double digit number
 				g2.drawString("" + t.getNumArmies(), (int) t.getLabelPosition().getX() + 3, (int) t.getLabelPosition().getY() + 16);
-//			if(loosingTerritory != null) {
-//				System.out.println("explosion activated. BOOM!!!!");
-//				createExplosion(g2, (int) loosingTerritory.getLabelPosition().getX(), (int) loosingTerritory.getLabelPosition().getY());
-//			}
 		}
 	}
 	
-	/**
-	 * method to make explosion when a territory is conquerer by another player
-	 * @param graphs, x, y
-	 * @return none
-	 */
-//	public void createExplosion(int x, int y){
-//		Explosion e = new Explosion(0, 0);
-//		e.setPosition(x, y);
-//		splosions.add(e);
-//		e.start();
-//		e.draw(g2);
-//		for (SpriteObject explosion : splosions){
-//			System.out.println("A sprite frame");
-//			explosion.draw(g2);
-//		}
-//	}
-	
-//	public void setExplosion(Territory t) {
-//		loosingTerritory = t;
-//	}
+	public List<SpriteObject> getSplosions() {
+		return splosions;
+	}
+
+	public void setSplosions(List<SpriteObject> splosions) {
+		this.splosions = splosions;
+	}
 	
 	private class MapListener implements MouseListener {
 
@@ -131,31 +117,20 @@ public class MapPanel extends JPanel{
 					gui.territorySelected(t);
 				}
 			}
-			
 		}
 
 		@Override
-		public void mousePressed(MouseEvent e) {
-			
-		}
+		public void mousePressed(MouseEvent e) {}
 
 		@Override
-		public void mouseReleased(MouseEvent e) {
-			
-		}
+		public void mouseReleased(MouseEvent e) {}
 
 		@Override
-		public void mouseEntered(MouseEvent e) {
-			
-		}
+		public void mouseEntered(MouseEvent e) {}
 
 		@Override
-		public void mouseExited(MouseEvent e) {
-			
-		}
+		public void mouseExited(MouseEvent e) {}
 		
 	}
-	
-	
 	
 }

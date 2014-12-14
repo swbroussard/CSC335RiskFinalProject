@@ -6,7 +6,9 @@ import java.util.Collections;
 import java.util.Observable;
 import java.util.Random;
 
+import explosion.*;
 import songplayer.SongPlayer;
+import view.MapPanel;
 import model.*;
 import model.Card.CardType;
 

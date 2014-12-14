@@ -24,6 +24,7 @@ import javax.swing.SwingConstants;
 
 
 
+
 import songplayer.SongPlayer;
 import model.ExpertAIPlayer;
 import model.HumanPlayer;
@@ -33,6 +34,7 @@ import model.Player;
 import model.SimpleAIPlayer;
 import model.Territory;
 import controller.RiskController;
+import explosion.Explosion;
 
 @SuppressWarnings("serial")
 public class RiskGUI extends JFrame implements Observer{
@@ -128,7 +130,7 @@ public class RiskGUI extends JFrame implements Observer{
 		}
 		switch(players.size()) {
 		case 6:
-			players.get(5).setColor(new Color(140, 74, 255));
+			players.get(5).setColor(new Color(140, 74, 255));//purple
 			players.get(5).addObserver(this);
 		case 5:
 			players.get(4).setColor(Color.YELLOW);
@@ -658,21 +660,19 @@ public class RiskGUI extends JFrame implements Observer{
 			label.setText("The number you select must be less than the number armies in your territory");
 			typeOfPlay = TypeOfPlay.FORTIFY_ARMIES;
 		}
-		//		else if(arg != ObserverMessages.START_EXPLOSION) {
-		//			System.out.println("explosion primed");
-		//			mapPanel.setExplosion(controller.getDefendingTerritory());
-		//			mapPanel.setExplosion(null);
-		//		}
-		//		else if(arg == ObserverMessages.START_EXPLOSION) {
-		//			//System.out.println("explosion primed");
-		//			mapPanel.setExplosion(controller.getDefendingTerritory());
-		//		}
+		
+		else if (arg == ObserverMessages.START_EXPLOSION) {
+			Explosion e = new Explosion(0, 0);
+			Territory t = controller.getDefendingTerritory();
+			e.setPosition((int)t.getLabelPosition().getX() + 10, 
+					(int)t.getLabelPosition().getY() - e.getSprite().getHeight()/2 + 20);
+			mapPanel.getSplosions().add(e);
+			e.start();
+		}
 		else if (arg == ObserverMessages.NEW_TURN) {
 			sidePanel.repaint();
 		}
 		mapPanel.repaint();
-		//System.out.println(controller.getDefendingTerritory() + " is being set to null if not primed.");
-		//mapPanel.setExplosion(null);
 	}
 
 	public Player getHumanPlayer() {
