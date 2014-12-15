@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Observable;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import songplayer.SongPlayer;
@@ -184,9 +185,12 @@ public class RiskController extends Observable{
 			}
 		}
 		if(players.size() == 1) {
-			if (debug) System.out.println(players.get(0).getName() + " won the game");
-			setChanged();
-			notifyObservers(players.get(0).getName() + " has won the game!");
+			ImageIcon gameOver = new ImageIcon("images/GameOver.jpg");
+			
+			JOptionPane.showMessageDialog(null, players.get(0).getName() + " has won the game",
+					"GAME OVER", JOptionPane.OK_OPTION, gameOver);
+			System.exit(0);
+
 		}
 	}
 

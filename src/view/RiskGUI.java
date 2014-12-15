@@ -648,7 +648,6 @@ public class RiskGUI extends JFrame implements Observer{
 
 		if(arg instanceof String) {
 			label.setText((String) arg); 
-			//System.out.println((String) arg);
 			sidePanel.repaint();
 		}
 		else if(arg == ObserverMessages.HUMAN_PLACE_ARMY) {

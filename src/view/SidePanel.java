@@ -97,14 +97,15 @@ public class SidePanel extends JPanel{
 		
 		//update the text label
 		g2.setFont(new Font("Arial", Font.BOLD, 14));
-		g2.drawString("Current Players:", 25, 150);
-		int yPos = 170;
+		int yPos = 80;
+		g2.drawString("Current Players:", 25, yPos);
+		yPos += 20;
 		for(Player p: gui.getPlayers()) {
 			g2.setColor(p.getColor());
 			g2.drawString(p.getName(), 41, yPos);
 			yPos += 20;
 		}
-		yPos = 156;
+		yPos = 86;
 		
 		switch(gui.getPlayers().indexOf(gui.getCurrentPlayer())) {
 			case 0: // player 1
@@ -132,16 +133,31 @@ public class SidePanel extends JPanel{
 				yPos += 20;
 				break;
 		}
+		yPos += 40;
 		g2.setColor(Color.BLACK);
-		g2.drawString("Continent Bonuses:", 25, 300);
-		g2.drawString("North America - 5", 40, 320);
-		g2.drawString("South America - 2", 40, 340);
-		g2.drawString("Europe - 5", 40, 360);
-		g2.drawString("Africa - 3", 40, 380);
-		g2.drawString("Asia - 7", 40, 400);
-		g2.drawString("Australia - 2", 40, 420);
+		g2.drawString("Continent Bonuses:", 25, yPos);
+		yPos += 20;
+		g2.drawString("North America - 5", 40, yPos);
+		yPos += 20;
+		g2.drawString("South America - 2", 40, yPos);
+		yPos += 20;
+		g2.drawString("Europe - 5", 40, yPos);
+		yPos += 20;
+		g2.drawString("Africa - 3", 40, yPos);
+		yPos += 20;
+		g2.drawString("Asia - 7", 40, yPos);
+		yPos += 20;
+		g2.drawString("Australia - 2", 40, yPos);
+		yPos += 40;
 		
-		g2.drawString("If you do not want to reinforce at the end of your turn, "
-				+ "select a to and from territory, then enter 0 for the number of armies", 10, 440);
+		g2.drawString("If you do not want to", 10, yPos);
+		yPos += 15;
+		g2.drawString("reinforce at the end of", 10, yPos);
+		yPos += 15;
+		g2.drawString("your turn, select a to ", 10, yPos);
+		yPos += 15;
+		g2.drawString("and from territory, then", 10, yPos);
+		yPos += 15;
+		g2.drawString("enter 0 for the number of armies", 10, yPos);
 	}
 }

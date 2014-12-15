@@ -61,7 +61,7 @@ public abstract class Player extends Observable{
 	 */
 	public Player() {
 		if (debug) System.out.println("player constructor (no arguments) is called");
-		
+
 		territoriesOwned = new ArrayList<Territory>();
 		setCards(new ArrayList<Card>());
 	}
@@ -74,7 +74,7 @@ public abstract class Player extends Observable{
 	public Player(String name) {
 		if (debug) System.out.println("player constructor (String) is called");
 		this.name = name;
-		
+
 		territoriesOwned = new ArrayList<Territory>();
 		setCards(new ArrayList<Card>());
 	}
@@ -177,7 +177,7 @@ public abstract class Player extends Observable{
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Determines if the player can turn in a set of three cards, and if possible, 
 	 * turns in a set of cards. A set of cards consists of three of a kind (cannon,
@@ -185,15 +185,28 @@ public abstract class Player extends Observable{
 	 * @return true if the player can turn in a set of cards, false if they cannot. 
 	 */
 	public boolean canTurnInCards() {
+		System.out.println(getName()+"'s cards before turnin: ");
+		for (Card c : cards) {
+
+			if (c == null)
+				System.out.print("null, ");
+			else
+				System.out.print(c.toString()+", ");
+		}
+		System.out.println();
+		
+		if(cards.size() < 3)
+			return false;
+		
 		int cannon = 0, horseman = 0, footSoldier = 0, wild = 0;
 		int cardsRemoved = 0; 
 		for (int i = 0; i < cards.size(); i++) {
 			Card c = cards.get(i);
 			switch (c.getCardType()) {
-				case CANNON: cannon++; break;
-				case HORSEMAN: horseman++; break;
-				case FOOT_SOLDIER: footSoldier++; break;
-				case WILD: wild++; break;
+			case CANNON: cannon++; break;
+			case HORSEMAN: horseman++; break;
+			case FOOT_SOLDIER: footSoldier++; break;
+			case WILD: wild++; break;
 			}
 		}
 
@@ -201,44 +214,62 @@ public abstract class Player extends Observable{
 			for (int i = 0; i < cards.size(); i++) {
 				Card c = cards.get(i);
 				if (c.getCardType() == CardType.CANNON) {
-					if (cardsRemoved == 3)
-						break;
 					removeCard(c);
-					cardsRemoved++;
 				}
+
 			}
 			System.out.println("set of cannon cards turned in by "+getName());
+
+			removeNulls();
+			System.out.println(getName()+"'s cards after turnin: ");
+			for (Card c : cards) {
+				if (c == null)
+					System.out.print("null, ");
+				else
+					System.out.print(c.toString()+", ");
+			}
+			System.out.println();
 			return true;
 		}
-		
+
 		else if (horseman == 3) {
 			for (int i = 0; i < cards.size(); i++) {
 				Card c = cards.get(i);
 				if (c.getCardType() == CardType.HORSEMAN) {
-					if (cardsRemoved == 3)
-						break;
 					removeCard(c);
-					cardsRemoved++;
 				}
 			}
 			System.out.println("set of horseman cards turned in by "+getName());
+			removeNulls();
+			for (Card c : cards) {
+				if (c == null)
+					System.out.print("null, ");
+				else
+					System.out.print(c.toString()+", ");
+			}
+			System.out.println();
 			return true;
 		}
-		
+
 		else if (footSoldier == 3) {
 			for (int i = 0; i < cards.size(); i++) {
 				Card c = cards.get(i);
 				if (c.getCardType() == CardType.FOOT_SOLDIER) {
-					if (cardsRemoved == 3)
-						break;
 					removeCard(c);
-					cardsRemoved++;
 				}
 			}
 			System.out.println("set of foot soldier cards turned in by "+getName());
+			removeNulls();
+			for (Card c : cards) {
+				if (c == null)
+					System.out.print("null, ");
+				else
+					System.out.print(c.toString()+", ");
+			}
+			System.out.println();
 			return true;
 		}
-		
+
 		else if (cannon >= 1 && horseman >= 1 && footSoldier >= 1) {
 			int cannonsRemoved = 0, horsemenRemoved = 0, footSoldiersRemoved = 0;
 			for (int i = 0; i < cards.size(); i++) {
@@ -257,9 +288,17 @@ public abstract class Player extends Observable{
 				}
 			}
 			System.out.println("set of all three types turned in by "+getName());
+			removeNulls();
+			for (Card c : cards) {
+				if (c == null)
+					System.out.print("null, ");
+				else
+					System.out.print(c.toString()+", ");
+			}
+			System.out.println();
 			return true;
 		}
-		
+
 		else if (wild >= 1) {
 			int wildCardsRemoved = 0;
 			for (int i = 0; i < cards.size(); i++) {
@@ -276,12 +315,20 @@ public abstract class Player extends Observable{
 				} 
 			}
 			System.out.println("set with a wildcard turned in by "+getName());
+			removeNulls();
+			for (Card c : cards) {
+				if (c == null)
+					System.out.print("null, ");
+				else
+					System.out.print(c.toString()+", ");
+			}
+			System.out.println();
 			return true;
 		}
-		
+		removeNulls();
 		return false;
 	}
-	
+
 	/**
 	 * Helper method for canTurnInCards. Removes a card from the player's hand and
 	 * puts it back in the deck of cards. Checks whether the player owns the territory
@@ -293,8 +340,32 @@ public abstract class Player extends Observable{
 			if (t.equals(c.getCardTerritory()))
 				t.setNumArmies(t.getNumArmies() + 2);
 		}
-		cards.remove(c);
+		cards.set(cards.indexOf(c), null);
 		c.setInDeck(true);
+	}
+
+	/**
+	 * Private helper method that makes sure all of the null cards
+	 * added in the remove cards method are removed from the arrayList.
+	 */
+	private void removeNulls() {
+		int nextOpen = 0;
+		for(int i = 0; i < cards.size(); i++) {
+			if(i == nextOpen){
+				if(cards.get(i) != null)
+					nextOpen++;
+			}
+			else {
+				if(cards.get(i) != null) {
+					cards.set(nextOpen, cards.get(i));
+					cards.set(i, null);
+					nextOpen++;
+				}
+			}
+		}
+		while(cards.contains(null)) {
+			cards.remove(cards.indexOf(null));
+		}
 	}
 
 	/**
@@ -325,11 +396,11 @@ public abstract class Player extends Observable{
 		this.numArmies = numArmies;
 		if (debug) System.out.println("set armies: " + numArmies+" called by "+name); 
 	}
-	
+
 	public void setColor(Color labelColor) {
 		color = labelColor;
 	}
-	
+
 	/**
 	 * setter for cards
 	 * @param cards
@@ -358,7 +429,7 @@ public abstract class Player extends Observable{
 		if (debug) System.out.println("Get name has been called by"+name);
 		return name;
 	}
-	
+
 	/**
 	 * returns the number of armies the player has that they have not placed
 	 * @return the number of armies the player has to place
@@ -387,7 +458,7 @@ public abstract class Player extends Observable{
 		allTerritories = new ArrayList<Territory>();
 		allTerritories = territories;
 	}
-	
+
 	/**
 	 * getter for the list of all territories in the game
 	 * @return the list of all territories in the game
@@ -396,7 +467,7 @@ public abstract class Player extends Observable{
 		if (debug) System.out.println("getAllTerritories called by "+name);
 		return allTerritories;
 	}
-	
+
 	/**
 	 * getter for color
 	 * @return
@@ -412,7 +483,7 @@ public abstract class Player extends Observable{
 	public ArrayList<Card> getCards() {
 		return cards;
 	}
-	
+
 	/**
 	 * getter for doneAttacking
 	 * @return
