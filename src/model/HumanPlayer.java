@@ -1,16 +1,18 @@
 package model;
 
+import javax.swing.JOptionPane;
+
 /**
  * Allows a human user to play a game of Risk. Sends messages back and forth to the GUI to 
  * record the user's decisions and interactions. 
  * @author Steven Broussard, Elizabeth Harris, Jeremy Jalnos, Becca Simon
  */
 public class HumanPlayer extends Player{
-	private Territory currentTerritory, attackFromTerritory, attackToTerritory;
+	private Territory currentTerritory, attackFromTerritory, attackToTerritory, reinforceFrom, reinforceTo;
 	private boolean territoryChosen;
 	private int armies;
 	private boolean armiesChosen;
-	
+
 	/**
 	 * Constructs a new HumanPlayer object using the Player constructor. The player's
 	 * name is set to the parameter and territoryChosen is set to false. 
@@ -20,7 +22,7 @@ public class HumanPlayer extends Player{
 		super(name);
 		territoryChosen = false;
 	}
-	
+
 	/**
 	 * Prompts the user to select a territory on which to place an army
 	 */
@@ -38,7 +40,7 @@ public class HumanPlayer extends Player{
 		}
 		territoryChosen = false;
 		return;
-		
+
 	}
 
 	/**
@@ -89,16 +91,29 @@ public class HumanPlayer extends Player{
 	 */
 	@Override
 	public void reinforceArmies() {
-		Territory reinforceFrom = null, reinforceTo = null;
+		boolean reinforcePossible = false;
+		for(Territory t: getTerritoriesOwned()) {
+			for(Territory a: t.getAdjacent()) {
+				if(a.getCurrentOwner() == this && t.getNumArmies() > 1)
+					reinforcePossible = true;
+			}
+		}
+		if(!reinforcePossible)
+			return;
+		
+		reinforceFrom = null;
+		reinforceTo = null;
 		this.setChanged();
 		notifyObservers(ObserverMessages.HUMAN_SELECT_REINFORCE_FROM);
-		while (!territoryChosen) {
+		while (reinforceFrom == null || reinforceFrom.getCurrentOwner() != this || reinforceFrom.getNumArmies() < 2) {
 			setChanged();
 			notifyObservers();
 			if (territoryChosen == true) {
-				territoryChosen = false;
-				reinforceFrom = currentTerritory;
-				break;
+				if(reinforceFrom.getCurrentOwner() == this && reinforceFrom.getNumArmies() > 1) {
+					territoryChosen = false;
+					reinforceFrom = currentTerritory;
+					break;
+				}
 			}
 		}
 		this.setChanged();
@@ -107,33 +122,24 @@ public class HumanPlayer extends Player{
 			setChanged();
 			notifyObservers();
 			if (territoryChosen == true) {
-				territoryChosen = false;
-				reinforceTo = currentTerritory;
-				break;
-			}
-		}
-		this.setChanged();
-		notifyObservers(ObserverMessages.HUMAN_SELECT_NUM_ARMIES);
-		while (!armiesChosen) {
-			setChanged();
-			notifyObservers();
-			if (armiesChosen == true) {
-				armiesChosen = false;
-				if (armies > reinforceFrom.getNumArmies() - 1) {
-					notifyObservers(ObserverMessages.HUMAN_TRY_AGAIN_ARMIES);
-					continue;
-				}
-				else {
-					notifyObservers();
+				if(reinforceTo.getCurrentOwner() == this && reinforceFrom.getAdjacent().contains(reinforceTo)) {
+					territoryChosen = false;
+					reinforceTo = currentTerritory;
 					break;
 				}
 			}
 		}
-		
+		int armies = 0;
+		do {
+			String message = JOptionPane.showInputDialog("<html>Please enter the number of armies to move from " + 
+					reinforceFrom.getName() + " to " + reinforceTo.getName() + "<br>If you dont want" +
+					" to reinforce, enter 0.", "0");
+			armies = Integer.parseInt(message);
+		}while(armies < 0 && armies > reinforceFrom.getNumArmies() - 1);
+
 		reinforceFrom.setNumArmies(reinforceFrom.getNumArmies() - armies);
 		reinforceTo.setNumArmies(reinforceTo.getNumArmies() + armies);
 	}
-
 	/**
 	 * getter for territoryChosen
 	 * @return
@@ -189,7 +195,7 @@ public class HumanPlayer extends Player{
 	public void setAttackFrom(Territory t) {
 		attackFromTerritory = t;
 	}
-	
+
 	/**
 	 * setter for attackToTerritory
 	 * @param t
@@ -197,12 +203,22 @@ public class HumanPlayer extends Player{
 	public void setAttackTo(Territory t) {
 		attackToTerritory = t;
 	}
-	
+
 	/**
 	 * getter for attackFromTerritory
 	 * @return
 	 */
 	public Territory getAttackFrom() {
 		return attackFromTerritory;
+	}
+
+	public void setReinforceFrom(Territory t) {
+		reinforceFrom = t;
+	}
+	public void setReinforceTo(Territory t) {
+		reinforceTo = t;
+	}
+	public Territory getReinforceFrom() {
+		return reinforceFrom;
 	}
 }

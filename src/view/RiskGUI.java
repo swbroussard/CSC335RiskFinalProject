@@ -603,9 +603,6 @@ public class RiskGUI extends JFrame implements Observer{
 			}
 			if(possible) {
 				label.setText("You selected " + t.getName() + " to attack from.");
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {e.printStackTrace();}
 				human.setAttackFrom(t);
 				human.setTerritoryChosen(true);
 				typeOfPlay = TypeOfPlay.DO_NOTHING;
@@ -615,13 +612,22 @@ public class RiskGUI extends JFrame implements Observer{
 
 		}
 		else if (typeOfPlay == TypeOfPlay.ATTACK_TO){
-				label.setText("You are attacking " + t.getName());
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {e.printStackTrace();}
-				human.setTerritoryChosen(true);
-				human.setAttackTo(t);
-				typeOfPlay = TypeOfPlay.DO_NOTHING;
+			label.setText("You are attacking " + t.getName());
+			human.setAttackTo(t);
+			human.setTerritoryChosen(true);
+			typeOfPlay = TypeOfPlay.DO_NOTHING;
+		}
+		else if(typeOfPlay == TypeOfPlay.FORTIFY_FROM) {
+			label.setText("You are moving armies from " + t.getName());
+			human.setReinforceFrom(t);
+			human.setTerritoryChosen(true);
+			typeOfPlay = TypeOfPlay.DO_NOTHING;
+		}
+		else if(typeOfPlay == TypeOfPlay.FORTIFY_TO) {
+			label.setText("You are moving armies from " + t.getName());
+			human.setReinforceTo(t);
+			human.setTerritoryChosen(true);
+			typeOfPlay = TypeOfPlay.DO_NOTHING;
 		}
 		else {
 			label.setText("It is not your turn");
@@ -676,12 +682,12 @@ public class RiskGUI extends JFrame implements Observer{
 		}
 
 		else if (arg == ObserverMessages.HUMAN_SELECT_REINFORCE_FROM) {
-			label.setText("Please select one of your territories to move armies from.");
+			label.setText("Please select a territory to move armies from (to fortify).");
 			typeOfPlay = TypeOfPlay.FORTIFY_FROM;
 		}
 
 		else if (arg == ObserverMessages.HUMAN_SELECT_REINFORCE_TO) {
-			label.setText("Please select one of your territories move armies to.");
+			label.setText("Please select a territory to fortify (must be adjacent to " + human.getReinforceFrom() + ".");
 			typeOfPlay = TypeOfPlay.FORTIFY_TO;
 		}
 
