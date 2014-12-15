@@ -185,6 +185,11 @@ public abstract class Player extends Observable{
 	 * @return true if the player can turn in a set of cards, false if they cannot. 
 	 */
 	public boolean canTurnInCards() {
+		System.out.println(getName()+"'s cards before turnin: ");
+		for (Card c : cards) {
+			System.out.print(c.toString()+", ");
+		}
+		System.out.println();
 		if(cards.size() < 3)
 			return false;
 		
@@ -209,6 +214,14 @@ public abstract class Player extends Observable{
 			}
 			System.out.println("set of cannon cards turned in by "+getName());
 			removeNullCards();
+			System.out.println(getName()+"'s cards after turnin: ");
+			for (Card c : cards) {
+				if (c == null)
+					System.out.print("null");
+				else
+					System.out.print(c.toString()+", ");
+			}
+			System.out.println();
 			return true;
 		}
 		
@@ -221,6 +234,14 @@ public abstract class Player extends Observable{
 			}
 			System.out.println("set of horseman cards turned in by "+getName());
 			removeNullCards();
+			System.out.println(getName()+"'s cards after turnin: ");
+			for (Card c : cards) {
+				if (c == null)
+					System.out.print("null");
+				else
+					System.out.print(c.toString()+", ");
+			}
+			System.out.println();
 			return true;
 		}
 		
@@ -233,6 +254,14 @@ public abstract class Player extends Observable{
 			}
 			System.out.println("set of foot soldier cards turned in by "+getName());
 			removeNullCards();
+			System.out.println(getName()+"'s cards after turnin: ");
+			for (Card c : cards) {
+				if (c == null)
+					System.out.print("null");
+				else
+					System.out.print(c.toString()+", ");
+			}
+			System.out.println();
 			return true;
 		}
 		
@@ -255,6 +284,14 @@ public abstract class Player extends Observable{
 			}
 			System.out.println("set of all three types turned in by "+getName());
 			removeNullCards();
+			System.out.println(getName()+"'s cards after turnin: ");
+			for (Card c : cards) {
+				if (c == null)
+					System.out.print("null");
+				else
+					System.out.print(c.toString()+", ");
+			}
+			System.out.println();
 			return true;
 		}
 		
@@ -275,9 +312,25 @@ public abstract class Player extends Observable{
 			}
 			System.out.println("set with a wildcard turned in by "+getName());
 			removeNullCards();
+			System.out.println(getName()+"'s cards after turnin: ");
+			for (Card c : cards) {
+				if (c == null)
+					System.out.print("null");
+				else
+					System.out.print(c.toString()+", ");
+			}
+			System.out.println();
 			return true;
 		}
 		removeNullCards();
+		System.out.println(getName()+"'s cards after turnin: ");
+		for (Card c : cards) {
+			if (c == null)
+				System.out.print("null");
+			else
+				System.out.print(c.toString()+", ");
+		}
+		System.out.println();
 		return false;
 	}
 	
