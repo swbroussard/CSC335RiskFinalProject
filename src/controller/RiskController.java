@@ -135,7 +135,7 @@ public class RiskController extends Observable{
 				if(p.canTurnInCards()) {
 					p.setNumArmies(cardBonus);
 					incrementCardBonus();
-					notifyObservers("Player "+p.getName()+" turned in a set of cards");
+					notifyObservers(p.getName()+" turned in a set of cards");
 				}
 				p.addArmies();
 

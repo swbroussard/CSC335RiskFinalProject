@@ -84,7 +84,6 @@ public class AudioFilePlayer extends Thread {
 			try {
 				line = getLine(targetFormat);
 			} catch (LineUnavailableException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			if (line != null) {
