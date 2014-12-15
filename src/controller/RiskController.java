@@ -222,6 +222,7 @@ public class RiskController extends Observable{
 		case 8: cardBonus = 10; break;
 		case 10: cardBonus = 12; break;
 		case 12: cardBonus = 15; break;
+		case 50: break;
 		default: cardBonus += 5;
 		}
 	}
