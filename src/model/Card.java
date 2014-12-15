@@ -96,6 +96,9 @@ public class Card {
 		//	deckness = "is in deck";
 		//else
 		//	deckness = "is not in deck";
-		return type + ": " + cardTerritory;
+		if (cardTerritory != null)
+			return type + ": " + cardTerritory.getName();
+		else
+			return type + ": no territory";
 	}
 }
