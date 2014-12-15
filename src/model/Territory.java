@@ -18,7 +18,7 @@ public class Territory {
 	private Continent continent;
 	private int color;
 	private Point armyLabel;
-	
+
 	/**
 	 * Constructs a new Territory object with the given parameters. 
 	 * @param name, the name of the territory
@@ -35,7 +35,7 @@ public class Territory {
 		adjacent = new ArrayList<Territory>();
 		this.armyLabel = armyLabel;
 	}
-	
+
 	/**
 	 * Checks if the parameter is adjacent to this Territory by looping through <code>adjacent</code>. 
 	 * @param toCheck
@@ -55,7 +55,7 @@ public class Territory {
 	public void setCurrentOwner(Player currentOwner) {
 		this.currentOwner = currentOwner;
 	}
-	
+
 	/**
 	 * Setter for <code>numArmies</code>
 	 * @param numArmies
@@ -63,7 +63,7 @@ public class Territory {
 	public void setNumArmies(int numArmies){
 		this.numArmies = numArmies;
 	}
-	
+
 	/**
 	 * Setter for <code>adjacent</code>
 	 * @param adjacent
@@ -71,7 +71,7 @@ public class Territory {
 	public void setAdjacent(ArrayList<Territory> adjacent) {
 		this.adjacent = adjacent;
 	}
-	
+
 	/**
 	 * Getter for <code>name</code>
 	 * @return name
@@ -79,7 +79,7 @@ public class Territory {
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * Getter for <code>currentOwner</code>
 	 * @return currentOwner
@@ -87,7 +87,7 @@ public class Territory {
 	public Player getCurrentOwner() {
 		return currentOwner;
 	}
-	
+
 	/**
 	 * Getter for <code>numArmies</code>
 	 * @return numArmies
@@ -95,7 +95,7 @@ public class Territory {
 	public int getNumArmies() {
 		return numArmies;
 	}
-	
+
 	/**
 	 * Getter for <code>color</code>
 	 * @return color
@@ -103,7 +103,7 @@ public class Territory {
 	public int getColor() {
 		return color;
 	}
-	
+
 	/**
 	 * Getter for <code>adjacent</code>
 	 * @return adjacent
@@ -111,8 +111,7 @@ public class Territory {
 	public ArrayList<Territory> getAdjacent() {
 		return adjacent;
 	}
-	
-	
+
 	/**
 	 * Getter for <code>continent</code>
 	 * @return continent
@@ -120,7 +119,7 @@ public class Territory {
 	public Continent getContinent() {
 		return continent;
 	}
-	
+
 	/**
 	 * Getter for the position of the label on the map in the GUI
 	 * @return position of the label
@@ -128,7 +127,7 @@ public class Territory {
 	public Point getLabelPosition() {
 		return armyLabel;
 	}
-	
+
 	/**
 	 * Returns a <code>String</code> representation of the <code>Territory</code> by concatenating its <code>name</code>, 
 	 * <code>numArmies</code>, and <code>currentOwner</code>.  

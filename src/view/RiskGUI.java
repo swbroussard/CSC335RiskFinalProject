@@ -19,7 +19,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import songplayer.SongPlayer;
 import model.ExpertAIPlayer;
 import model.HumanPlayer;
 import model.IntermediateAIPlayer;
@@ -27,6 +26,7 @@ import model.ObserverMessages;
 import model.Player;
 import model.SimpleAIPlayer;
 import model.Territory;
+import songplayer.SongPlayer;
 import controller.RiskController;
 import explosion.Explosion;
 
@@ -590,7 +590,7 @@ public class RiskGUI extends JFrame implements Observer{
 		}
 		else if (typeOfPlay == TypeOfPlay.ATTACK_FROM) {
 			boolean possible = false;
-			
+
 			for(Territory a: t.getAdjacent()) {
 				if(a.getCurrentOwner() != human)
 					possible = true;

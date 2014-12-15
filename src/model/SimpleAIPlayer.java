@@ -12,7 +12,7 @@ public class SimpleAIPlayer extends Player {
 	private int numAttacks;
 
 	/**
-	 * Constructs a new SimpleAIPlayer using the default no-argument constuctor
+	 * Constructs a new SimpleAIPlayer using the default no-argument constructor
 	 */
 	public SimpleAIPlayer() {
 		super();
@@ -127,7 +127,7 @@ public class SimpleAIPlayer extends Player {
 			notifyObservers("" + this.getName() + " placed an army in " + selected.getName());
 			if (debug) System.out.println("Army successfully placed in owned territory by "+getName());
 		}
-		
+
 	}
 
 
@@ -139,7 +139,7 @@ public class SimpleAIPlayer extends Player {
 	public void reinforceArmies() {
 		if (debug) System.out.println("reinforceArmies called by "+getName());
 		int armiesToMove = 0;
-		
+
 		boolean reinforcePossible = false;
 		for(Territory t: getTerritoriesOwned()) {
 			for(Territory a: t.getAdjacent()) {
@@ -149,7 +149,7 @@ public class SimpleAIPlayer extends Player {
 		}
 		if(!reinforcePossible)
 			return;
-		
+
 		Territory reinforceThis = null;
 		Territory takeArmy = null;
 		boolean takeArmySelected = false;
@@ -160,7 +160,7 @@ public class SimpleAIPlayer extends Player {
 					if(t.getCurrentOwner() == this) 
 						takeArmySelected = true;
 				}
-					
+
 			}
 		}while(!takeArmySelected);
 		boolean reinforceSelected = false;
@@ -170,18 +170,18 @@ public class SimpleAIPlayer extends Player {
 				reinforceSelected = true;
 			}
 		}while(!reinforceSelected);
-		
+
 		armiesToMove = randomGen.nextInt(takeArmy.getNumArmies() - 1) + 1;
-		
+
 		if (reinforceThis != null) {
 			reinforceThis.setNumArmies(reinforceThis.getNumArmies() + armiesToMove);
 			takeArmy.setNumArmies(takeArmy.getNumArmies() - armiesToMove);
 		}
-		
+
 		this.setChanged();
 		notifyObservers(this.getName() + " has moved " + armiesToMove + " armies from " + 
 				takeArmy.getName() + " to " + reinforceThis.getName());
-		
+
 	}
 
 }

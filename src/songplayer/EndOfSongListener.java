@@ -8,12 +8,12 @@ package songplayer;
  */
 
 public interface EndOfSongListener {
-  
-  // The listener will have this method called with the name
-  // of the file that just finished playing. Do what you want
-  // at that time. Note: you may not need audioFileName.
-  //
-  // Precondition: audioFileName is fully qualified and exists
-  // on the file system where it is claimed to be
-  public void songFinishedPlaying(EndOfSongEvent eventWithFileNameAndDateFinished);
+
+	// The listener will have this method called with the name
+	// of the file that just finished playing. Do what you want
+	// at that time. Note: you may not need audioFileName.
+	//
+	// Precondition: audioFileName is fully qualified and exists
+	// on the file system where it is claimed to be
+	public void songFinishedPlaying(EndOfSongEvent eventWithFileNameAndDateFinished);
 }

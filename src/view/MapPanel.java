@@ -1,13 +1,10 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -16,16 +13,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import java.util.Timer;
-
-import explosion.*;
-import model.*;
+import model.Territory;
+import explosion.SpriteObject;
 
 /**
  * The map portion of the GUI. Displays the world map, complete with labels for each territory, 
@@ -41,7 +36,7 @@ public class MapPanel extends JPanel{
 	private List<SpriteObject> splosions;
 	private Timer animTimer;
 	private BufferedImage sheet;
-	
+
 	/**
 	 * Constructs a new MapPanel object. Takes a RiskGUI argument so that information 
 	 * about territories' owners can be passed easily to the MapPanel. 
@@ -55,14 +50,14 @@ public class MapPanel extends JPanel{
 		this.setBackground(Color.RED);
 		this.setVisible(true);
 		splosions = new LinkedList<SpriteObject>();
-		
+
 		try {
 			map = ImageIO.read(new File("images/RiskMap2.jpg"));
 			sheet = ImageIO.read(new File("images/explosion-sprite.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		animTimer = new Timer();
 		animTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
@@ -71,10 +66,10 @@ public class MapPanel extends JPanel{
 			}
 		}, 0, 15);
 		this.addMouseListener(new MapListener());
-		
+
 		repaint();
 	}
-	
+
 	/**
 	 * Called by repaint whenever the map is updated. 
 	 */
@@ -95,7 +90,7 @@ public class MapPanel extends JPanel{
 				g2.setColor(t.getCurrentOwner().getColor());
 			}
 			g2.fillOval((int) t.getLabelPosition().getX(), (int) t.getLabelPosition().getY(), 21, 21);
-			
+
 			g2.setColor(Color.BLACK);
 			if(t.getNumArmies() < 10)
 				g2.drawString("" + t.getNumArmies(), (int) t.getLabelPosition().getX() + 7, (int) t.getLabelPosition().getY() + 16);
@@ -103,7 +98,7 @@ public class MapPanel extends JPanel{
 				g2.drawString("" + t.getNumArmies(), (int) t.getLabelPosition().getX() + 3, (int) t.getLabelPosition().getY() + 16);
 		}
 	}
-	
+
 	/**
 	 * getter for splosions, an instance variable used by the explosion animations
 	 * @return
@@ -119,7 +114,7 @@ public class MapPanel extends JPanel{
 	public void setSplosions(List<SpriteObject> splosions) {
 		this.splosions = splosions;
 	}
-	
+
 	/**
 	 * private inner class to listen for clicks on the map. Detects the territory
 	 * by the color of the point where the mouse was clicked. 
@@ -139,7 +134,7 @@ public class MapPanel extends JPanel{
 				}
 			}
 		}
-		
+
 		/**
 		 * Unimplemented MouseListener methods
 		 */
@@ -152,5 +147,5 @@ public class MapPanel extends JPanel{
 		@Override
 		public void mouseExited(MouseEvent e) {}
 	}
-	
+
 }

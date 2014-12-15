@@ -14,38 +14,38 @@ package songplayer;
  */
 
 public class SongPlayer {
-  /**
-   * Play the audio file stored in audioFileName
-   * 
-   * @param audioFileName
-   *          The name of the file to be written to your output device.
-   */
-  public static void playFile(String audioFileName) {
-    AudioFilePlayer player = new AudioFilePlayer(audioFileName);
-    // AudioFilePlayer extends Thread. When start is called,
-    // the overridden run method in AudioFilePlayer executes.
-    // If the song is not played in a separate thread, your GUI stops working
-    player.start();
-  }
+	/**
+	 * Play the audio file stored in audioFileName
+	 * 
+	 * @param audioFileName
+	 *          The name of the file to be written to your output device.
+	 */
+	public static void playFile(String audioFileName) {
+		AudioFilePlayer player = new AudioFilePlayer(audioFileName);
+		// AudioFilePlayer extends Thread. When start is called,
+		// the overridden run method in AudioFilePlayer executes.
+		// If the song is not played in a separate thread, your GUI stops working
+		player.start();
+	}
 
-  /**
-   * Play the song stored in filename in a new thread where waiter will be sent
-   * 
-   * @param waiter
-   *          A reference to the EndOfSongEvent object that becomes registered
-   *          as a listener waiting for the song to end.
-   * @param audioFileName
-   *          The name of the file to be written to your output device.
-   */
-  public static void playFile(EndOfSongListener waiter, String audioFileName) {
-    Thread player = new AudioFilePlayer(audioFileName);
-    //AudioFilePlayer player = new AudioFilePlayer(audioFileName);
-    
-    ((AudioFilePlayer) player).addEndOfSongListener(waiter);
+	/**
+	 * Play the song stored in filename in a new thread where waiter will be sent
+	 * 
+	 * @param waiter
+	 *          A reference to the EndOfSongEvent object that becomes registered
+	 *          as a listener waiting for the song to end.
+	 * @param audioFileName
+	 *          The name of the file to be written to your output device.
+	 */
+	public static void playFile(EndOfSongListener waiter, String audioFileName) {
+		Thread player = new AudioFilePlayer(audioFileName);
+		//AudioFilePlayer player = new AudioFilePlayer(audioFileName);
 
-    // AudioFilePlayer extends Thread. When start is called,
-    // the overridden run method in AudioFilePlayer executes.
-    // If the song is not played in a separate thread, your GUI stops working
-    player.start();
-  }
+		((AudioFilePlayer) player).addEndOfSongListener(waiter);
+
+		// AudioFilePlayer extends Thread. When start is called,
+		// the overridden run method in AudioFilePlayer executes.
+		// If the song is not played in a separate thread, your GUI stops working
+		player.start();
+	}
 }

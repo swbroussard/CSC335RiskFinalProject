@@ -17,7 +17,7 @@ public abstract class SpriteObject {
 	private Sprite sprite;
 	private Image frame;
 	private Timer t;
-	
+
 	/**
 	 * constructs a new SpriteObject with a particular delay and position
 	 * @param sprite
@@ -29,14 +29,14 @@ public abstract class SpriteObject {
 		this.sprite = sprite;
 		this.position = new Point(x, y);
 		frame = sprite.getImage();
-		
+
 		t = new Timer(delay, new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				nextFrame();
 			}
 		});
 	}
-	
+
 	/**
 	 * getter for Sprite
 	 * @return
@@ -44,7 +44,7 @@ public abstract class SpriteObject {
 	public Sprite getSprite(){
 		return sprite;
 	}
-	
+
 	/**
 	 * setter for position
 	 * @param x
@@ -53,7 +53,7 @@ public abstract class SpriteObject {
 	public void setPosition(int x, int y){
 		position.setLocation(x, y);
 	}
-	
+
 	/**
 	 * draws sprite at the correct position
 	 * @param g
@@ -62,51 +62,39 @@ public abstract class SpriteObject {
 		if (sprite != null && !sprite.isFinished())
 			g.drawImage(frame, position.x  - sprite.getWidth()/2, position.y - sprite.getHeight()/2, null);
 	}
-	
+
 	/**
 	 * Frog methods moveLeft, moveRight, moveUp, moveDown, moveStop
 	 */
 	public void moveLeft(){
-	//	if (sprite.getState() != Sprite.State.MOVING_LEFT){
-			sprite.setState(Sprite.State.MOVING_LEFT);
-			nextFrame();
-	//	}	
+		sprite.setState(Sprite.State.MOVING_LEFT);
+		nextFrame();
 		position.translate(-5, 0);
 	}
-	
+
 	public void moveRight(){
-	//	if (sprite.getState() != Sprite.State.MOVING_RIGHT){
-			sprite.setState(Sprite.State.MOVING_RIGHT);
-			nextFrame();
-	//	}
+		sprite.setState(Sprite.State.MOVING_RIGHT);
+		nextFrame();
 		position.translate(5, 0);
 	}
-	
+
 	public void moveUp(){
-///		if (sprite.getState() != Sprite.State.MOVING_UP){
-			sprite.setState(Sprite.State.MOVING_UP);
-			nextFrame();
-//		}
-		
+		sprite.setState(Sprite.State.MOVING_UP);
+		nextFrame();
 		position.translate(0, -5);
 	}
-	
+
 	public void moveDown(){
-	//	if (sprite.getState() != Sprite.State.MOVING_DOWN){
-			sprite.setState(Sprite.State.MOVING_DOWN);
-			nextFrame();
-//		}
-		
+		sprite.setState(Sprite.State.MOVING_DOWN);
+		nextFrame();
 		position.translate(0, 5);
 	}
-	
+
 	public void moveStop(){
-	//	if (sprite.getState() != Sprite.State.IDLE){
-			sprite.setState(Sprite.State.IDLE);
-			nextFrame();
-//		}
+		sprite.setState(Sprite.State.IDLE);
+		nextFrame();
 	}
-	
+
 	/**
 	 * Starts the sprite if it isn't running
 	 */
@@ -115,21 +103,21 @@ public abstract class SpriteObject {
 			t.start();
 		sprite.reset();
 	}
-	
+
 	/**
 	 * Stops the sprite (but you already knew that)
 	 */
 	public void stop(){
 		t.stop();
 	}
-	
+
 	/**
 	 * Gets the next frame of the animation from the sprite
 	 */
 	public void nextFrame(){
 		frame = sprite.getImage();
 	}
-	
+
 	/**
 	 * getter for isFinished
 	 * @return

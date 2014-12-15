@@ -187,17 +187,18 @@ public abstract class Player extends Observable{
 	public boolean canTurnInCards() {
 		if(debug) System.out.println(getName()+"'s cards before turnin: ");
 		for (Card c : cards) {
-
-			if (c == null)
-				if(debug) System.out.print("null, ");
-			else
-				if(debug) System.out.print(c.toString()+", ");
+			if (debug) {
+				if (c == null)
+					System.out.print("null, ");
+				else
+					System.out.print(c.toString()+", ");
+			}
 		}
 		if(debug) System.out.println();
-		
+
 		if(cards.size() < 3)
 			return false;
-		
+
 		int cannon = 0, horseman = 0, footSoldier = 0, wild = 0;
 		int cardsRemoved = 0; 
 		for (int i = 0; i < cards.size(); i++) {
@@ -223,10 +224,12 @@ public abstract class Player extends Observable{
 			removeNulls();
 			if(debug) System.out.println(getName()+"'s cards after turnin: ");
 			for (Card c : cards) {
-				if (c == null)
-					if(debug) System.out.print("null, ");
-				else
-					if(debug) System.out.print(c.toString()+", ");
+				if(debug) {
+					if (c == null)
+						System.out.print("null, ");
+					else
+						System.out.print(c.toString()+", ");
+				}
 			}
 			if(debug) System.out.println();
 			return true;
@@ -242,10 +245,12 @@ public abstract class Player extends Observable{
 			if(debug) System.out.println("set of horseman cards turned in by "+getName());
 			removeNulls();
 			for (Card c : cards) {
-				if (c == null)
-					if(debug) System.out.print("null, ");
-				else
-					if(debug) System.out.print(c.toString()+", ");
+				if(debug) {
+					if (c == null)
+						System.out.print("null, ");
+					else
+						System.out.print(c.toString()+", ");
+				}
 			}
 			if(debug) System.out.println();
 			return true;
@@ -261,10 +266,12 @@ public abstract class Player extends Observable{
 			if(debug) System.out.println("set of foot soldier cards turned in by "+getName());
 			removeNulls();
 			for (Card c : cards) {
-				if (c == null)
-					if(debug) System.out.print("null, ");
-				else
-					if(debug) System.out.print(c.toString()+", ");
+				if(debug) {
+					if (c == null)
+						System.out.print("null, ");
+					else
+						System.out.print(c.toString()+", ");
+				}
 			}
 			if(debug) System.out.println();
 			return true;
@@ -290,10 +297,12 @@ public abstract class Player extends Observable{
 			if(debug) System.out.println("set of all three types turned in by "+getName());
 			removeNulls();
 			for (Card c : cards) {
-				if (c == null)
-					if(debug) System.out.print("null, ");
-				else
-					if(debug) System.out.print(c.toString()+", ");
+				if(debug) {
+					if (c == null)
+						System.out.print("null, ");
+					else
+						System.out.print(c.toString()+", ");
+				}
 			}
 			if(debug) System.out.println();
 			return true;
@@ -317,10 +326,12 @@ public abstract class Player extends Observable{
 			if(debug) System.out.println("set with a wildcard turned in by "+getName());
 			removeNulls();
 			for (Card c : cards) {
-				if (c == null)
-					if(debug) System.out.print("null, ");
-				else
-					if(debug) System.out.print(c.toString()+", ");
+				if(debug) {
+					if (c == null)
+						System.out.print("null, ");
+					else
+						System.out.print(c.toString()+", ");
+				}
 			}
 			if(debug) System.out.println();
 			return true;
@@ -397,6 +408,10 @@ public abstract class Player extends Observable{
 		if (debug) System.out.println("set armies: " + numArmies+" called by "+name); 
 	}
 
+	/**
+	 * setter method for the color of the circle in the gui
+	 * @param labelColor
+	 */
 	public void setColor(Color labelColor) {
 		color = labelColor;
 	}

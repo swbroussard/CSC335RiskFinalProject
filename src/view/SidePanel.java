@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -29,7 +31,7 @@ public class SidePanel extends JPanel{
 	private JButton doneAttacking, exit;
 	private RiskGUI gui;
 	private BufferedImage star;
-	
+
 	/**
 	 * Constructs a new SidePanel object. Sets up all buttons and images. Takes a RiskGUI
 	 * argument so that information about territories' owners can be passed easily to the SidePanel. 
@@ -38,7 +40,7 @@ public class SidePanel extends JPanel{
 	public SidePanel(RiskGUI gui) {
 		super();
 		this.gui = gui;
-		
+
 		try {
 			star = ImageIO.read(new File("images/star.png"));
 		} catch (IOException e1) {
@@ -47,28 +49,35 @@ public class SidePanel extends JPanel{
 
 		this.setPreferredSize(new Dimension(200, 600));
 		this.setVisible(true);
-		
+
 		doneAttacking = new JButton("Done Attacking");
 		exit = new JButton("Exit Game");
-		
+
 		doneAttacking.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doneAttacking();
 			}
 		});
-		
+
 		exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
 		});
-		
-		
+
+
 		this.add(doneAttacking);
 		this.add(exit);
+		Timer animTimer = new Timer();
+		animTimer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				repaint();
+			}
+		}, 0, 15);
 		repaint();
 	}
-	
+
 	/**
 	 * Called when the doneAttacking button is pressed. Displays the message, 
 	 * "Done Attacking!" in the RiskGUI and sets the human player's doneAttacking
@@ -78,7 +87,7 @@ public class SidePanel extends JPanel{
 		gui.getHumanPlayer().setDoneAttacking(true);
 		gui.setLabel("Done Attacking!");
 	}
-	
+
 	/**
 	 * Called when the doneFortifying button is pressed. Displays the message,
 	 * "Done Fortifying" in the RiskGUI. 
@@ -94,7 +103,7 @@ public class SidePanel extends JPanel{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		
+
 		//update the text label
 		g2.setFont(new Font("Arial", Font.BOLD, 14));
 		int yPos = 80;
@@ -106,32 +115,32 @@ public class SidePanel extends JPanel{
 			yPos += 20;
 		}
 		int sPos = 86;
-		
+
 		switch(gui.getPlayers().indexOf(gui.getCurrentPlayer())) {
-			case 0: // player 1
-				g2.drawImage(star, 25, sPos, 15, 15, null); 
-				sPos += 20;
-				break;
-			case 1: // player 2
-				g2.drawImage(star, 25, sPos, 15, 15, null); 
-				sPos += 20;
-				break;
-			case 2: // player 3
-				g2.drawImage(star, 25, sPos, 15, 15, null); 
-				sPos += 20;
-				break;
-			case 3: // player 4
-				g2.drawImage(star, 25, sPos, 15, 15, null); 
-				sPos += 20;
-				break;
-			case 4: // player 5
-				g2.drawImage(star, 25, sPos, 15, 15, null); 
-				sPos += 20;
-				break;
-			case 5: // player 6
-				g2.drawImage(star, 25, sPos, 15, 15, null); 
-				sPos += 20;
-				break;
+		case 0: // player 1
+			g2.drawImage(star, 25, sPos, 15, 15, null); 
+			sPos += 20;
+			break;
+		case 1: // player 2
+			g2.drawImage(star, 25, sPos, 15, 15, null); 
+			sPos += 20;
+			break;
+		case 2: // player 3
+			g2.drawImage(star, 25, sPos, 15, 15, null); 
+			sPos += 20;
+			break;
+		case 3: // player 4
+			g2.drawImage(star, 25, sPos, 15, 15, null); 
+			sPos += 20;
+			break;
+		case 4: // player 5
+			g2.drawImage(star, 25, sPos, 15, 15, null); 
+			sPos += 20;
+			break;
+		case 5: // player 6
+			g2.drawImage(star, 25, sPos, 15, 15, null); 
+			sPos += 20;
+			break;
 		}
 		yPos += 20;
 		g2.setColor(Color.BLACK);
@@ -149,8 +158,8 @@ public class SidePanel extends JPanel{
 		yPos += 20;
 		g2.drawString("Australia - 2", 40, yPos);
 		yPos += 40;
-		
-		
+
+
 		g2.drawString("Instructions:", 5, yPos);
 		yPos += 15;
 		g2.setFont(new Font("Arial", Font.PLAIN, 14));

@@ -16,11 +16,11 @@ public class Card {
 	public enum CardType {
 		CANNON, HORSEMAN, FOOT_SOLDIER, WILD;
 	}
-	
+
 	private CardType type;
 	private Territory cardTerritory;
 	private boolean inDeck;
-	
+
 	/**
 	 * Constructor. Creates a new Card object with the given type and territory. 
 	 */
@@ -37,7 +37,7 @@ public class Card {
 	public void setCardType(CardType c) {
 		this.type = c;
 	}
-	
+
 	/**
 	 * Setter for <code>cardTerritory</code>
 	 * @param cardTerritory
@@ -45,7 +45,7 @@ public class Card {
 	public void setCardTerritory(Territory cardTerritory) {
 		this.cardTerritory = cardTerritory;
 	}
-	
+
 	/**
 	 * Getter for <code>cardType</code>
 	 * @return cardType
@@ -53,7 +53,7 @@ public class Card {
 	public CardType getCardType() {
 		return type;
 	}
-	
+
 	/**
 	 * Getter for <code>cardTerritory</code>
 	 * @return cardTerritory
@@ -77,7 +77,7 @@ public class Card {
 	public void setInDeck(boolean inDeck) {
 		this.inDeck = inDeck;
 	}
-	
+
 	/**
 	 * Returns a string representation of the card of the format CARD_TYPE: Territory
 	 * @return String

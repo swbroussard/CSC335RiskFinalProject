@@ -15,7 +15,7 @@ public class IntermediateAIPlayer extends Player{
 	private Random genRan;
 	private int numAttacks;
 	private Territory attackTo;
-	
+
 	/**
 	 * Constructs a new IntermediateAIPlayer object using the default Player constructor. 
 	 * Sets attackTo to null. 
@@ -25,7 +25,7 @@ public class IntermediateAIPlayer extends Player{
 		super();
 		attackTo = null;
 	}
-	
+
 	/**
 	 * Constructs a new IntermediateAIPlayer object with the player's name set to the parameter. 
 	 * Sets attackTo to null. 

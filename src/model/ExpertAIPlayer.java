@@ -235,7 +235,7 @@ public class ExpertAIPlayer extends Player {
 			}// if its the first one
 
 			else {
-				//determine if there is a territory still available on the choosen continent
+				//determine if there is a territory still available on the chosen continent
 				boolean stillAvailable = false;
 				if(chosenContinent == Continent.NORTH_AMERICA) {
 					for(Territory t: NA) {
@@ -431,122 +431,6 @@ public class ExpertAIPlayer extends Player {
 				takeArmy.getName() + " to " + reinforceThis.getName());
 
 	}
-	/**
-	 * Another version of reinforceArmies. Finds the smallest army owned and adds the 
-	 * required amount of armies to defend itself from the enemy in the adjacent territories
-	 * @param takeArmy
-	 * @param reinforceThis
-	 */
-	/*
-	@Override
-	public void reinforceArmies() {
-		if (debug)
-			System.out.println("reinforceArmies called by " + getName());
-		if (numTimesCalled < 1) {
-			reinforce();
-			numTimesCalled++;
-		} else {
-			//			int x = takeArmy.getNumArmies();
-			//			int y = reinforceThis.getNumArmies();
-			//			takeArmy.setNumArmies(x -= numTroopsTake);
-			//			reinforceThis.setNumArmies(y += numTroopsTake);
-			//			numTimesCalled = 0;
-		}
-
-	}
-
-	private int numTroopsTake = 0;
-	private int numTimesCalled = 0;
-
-	/**
-	 * Helper method for reinforceArmies
-	 */
-	/*public void reinforce() { // helper method for reinforce armies method
-		if (debug)
-			System.out.println("reinforce called by " + getName());
-
-		Territory high = null;
-		Territory low = null;
-		int highTroop = 0;
-		int lowTroop = 1000;
-		boolean take = false;
-		boolean adjacentNotOwned = false;
-
-		for (int i = 0; i <= getTerritoriesOwned().size(); i++) {
-			for (int j = 0; j <= getTerritoriesOwned().get(i).getAdjacent()
-					.size(); j++) {// check all territories look through all
-				// armies find lowest with competitors or
-				// ones with no competitors and give to
-				// territories more in need
-
-				if (getTerritoriesOwned().get(i).getAdjacent().get(j)
-						.getCurrentOwner() != this) { // checks for un-owned
-					// neighbors
-					if (getTerritoriesOwned().get(i).getAdjacent().get(j)
-							.getNumArmies() >= getTerritoriesOwned().get(i)
-							.getNumArmies()) {// checks to see if neigbor has
-						// more armies than us
-						if (getTerritoriesOwned().get(i).getNumArmies() < lowTroop) {// checks
-							// to
-							// see
-							// if
-							// we
-							// are
-							// more
-							// screwed
-							// than
-							// other
-							// territories
-							low = getTerritoriesOwned().get(i);// sets this as
-							// the low
-							// territory
-							lowTroop = getTerritoriesOwned().get(i)
-									.getNumArmies(); // sets how many current
-							// armies there are here
-						}// if statement
-					}// if statement
-				}// if statement
-			}// for loop
-			for (int e = 0; e <= getTerritoriesOwned().get(i).getAdjacent()
-					.size(); e++) {// loops through adjacent territories
-				if (getTerritoriesOwned().get(i).getAdjacent().get(e)
-						.getCurrentOwner() != this) {// checks if we don't own
-					// an adjacent land
-					adjacentNotOwned = true;// if we don't own something we
-					// can't automatically take from
-					// this territory
-					if (getTerritoriesOwned().get(i).getNumArmies() >= highTroop) {
-						//checks to see if this is the highest available troop count
-						if (getTerritoriesOwned().get(i).getAdjacent().get(e)
-								.getNumArmies() <= (getTerritoriesOwned()
-										.get(i).getNumArmies() * 2) / 3) { 
-							// checks to see if they should take from here for sure
-							take = true;
-							highTroop = getTerritoriesOwned().get(i)
-									.getNumArmies();
-							high = getTerritoriesOwned().get(i);
-						}
-					} else {
-						take = false;
-					}
-				}// if statement
-			}// for loop
-
-			if (adjacentNotOwned == false) {
-				take = true;
-				highTroop = getTerritoriesOwned().get(i).getNumArmies();
-				high = getTerritoriesOwned().get(i);
-				break;
-			}// if statement
-			if (take) {
-				numTroopsTake = (highTroop * 2) / 3;
-			}
-		}// master for loop
-
-		//		reinforceArmies(high, low);
-
-	}// close helper method
-	 */
 
 	/**
 	 * Attacks from the territory with the highest number of armies, which is adjacent to the 
@@ -560,7 +444,6 @@ public class ExpertAIPlayer extends Player {
 		Territory choosenTerritory = null;
 
 		Continent continentToAttack = determineContinent();
-		//System.out.println(this.getName() + " is going to attack " + continentToAttack);
 
 		if(continentToAttack == Continent.NORTH_AMERICA) {
 			for(Territory t: NA) {

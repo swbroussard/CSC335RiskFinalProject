@@ -127,12 +127,12 @@ public class RiskController extends Observable{
 		while (getPlayers().size() > 1) {
 			if(debug) System.out.println("Round: " + round);
 			round++;
-			this.setChanged();
-			notifyObservers(ObserverMessages.NEW_TURN);
 			boolean conquered = false;
 			int counter = 0;
 			while(counter < players.size()) {
 				Player p = players.get(counter);
+				p.setDoneAttacking(false);
+				this.setChanged();
 				notifyObservers(ObserverMessages.NEW_TURN);
 
 				if (p instanceof HumanPlayer)
