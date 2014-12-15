@@ -19,7 +19,7 @@ public class Card {
 	
 	private CardType type;
 	private Territory cardTerritory;
-	private boolean inDeck = true;
+	private boolean inDeck;
 	
 	/**
 	 * Constructor. Creates a new Card object with the given type and territory. 
@@ -27,15 +27,7 @@ public class Card {
 	public Card(CardType c, Territory t) {
 		type = c;
 		cardTerritory = t;
-	}
-	
-	/**
-	 * Compares one card to another
-	 * @param c the card to be compared to the current card
-	 * @return true if the cards' territories and types are equal, false otherwise. 
-	 */
-	public boolean equals(Card c) {
-		return (c.type == this.type) && (c.cardTerritory.equals(this.cardTerritory));
+		inDeck = true;
 	}
 	
 	/**
@@ -91,11 +83,6 @@ public class Card {
 	 * @return String
 	 */
 	public String toString() {
-		//String deckness;
-		//if (inDeck)
-		//	deckness = "is in deck";
-		//else
-		//	deckness = "is not in deck";
 		if (cardTerritory != null)
 			return type + ": " + cardTerritory.getName();
 		else
