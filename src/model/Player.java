@@ -185,17 +185,6 @@ public abstract class Player extends Observable{
 	 * @return true if the player can turn in a set of cards, false if they cannot. 
 	 */
 	public boolean canTurnInCards() {
-		System.out.println(getName()+"'s cards before turnin: ");
-		for (Card c : cards) {
-			if (c == null)
-				System.out.print("null, ");
-			else
-				System.out.print(c.toString()+", ");
-		}
-		System.out.println();
-		if(cards.size() < 3)
-			return false;
-		
 		int cannon = 0, horseman = 0, footSoldier = 0, wild = 0;
 		int cardsRemoved = 0; 
 		for (int i = 0; i < cards.size(); i++) {
@@ -212,19 +201,13 @@ public abstract class Player extends Observable{
 			for (int i = 0; i < cards.size(); i++) {
 				Card c = cards.get(i);
 				if (c.getCardType() == CardType.CANNON) {
+					if (cardsRemoved == 3)
+						break;
 					removeCard(c);
+					cardsRemoved++;
 				}
 			}
 			System.out.println("set of cannon cards turned in by "+getName());
-			removeNullCards();
-			System.out.println(getName()+"'s cards after turnin: ");
-			for (Card c : cards) {
-				if (c == null)
-					System.out.print("null, ");
-				else
-					System.out.print(c.toString()+", ");
-			}
-			System.out.println();
 			return true;
 		}
 		
@@ -232,19 +215,13 @@ public abstract class Player extends Observable{
 			for (int i = 0; i < cards.size(); i++) {
 				Card c = cards.get(i);
 				if (c.getCardType() == CardType.HORSEMAN) {
+					if (cardsRemoved == 3)
+						break;
 					removeCard(c);
+					cardsRemoved++;
 				}
 			}
 			System.out.println("set of horseman cards turned in by "+getName());
-			removeNullCards();
-			System.out.println(getName()+"'s cards after turnin: ");
-			for (Card c : cards) {
-				if (c == null)
-					System.out.print("null, ");
-				else
-					System.out.print(c.toString()+", ");
-			}
-			System.out.println();
 			return true;
 		}
 		
@@ -252,19 +229,13 @@ public abstract class Player extends Observable{
 			for (int i = 0; i < cards.size(); i++) {
 				Card c = cards.get(i);
 				if (c.getCardType() == CardType.FOOT_SOLDIER) {
+					if (cardsRemoved == 3)
+						break;
 					removeCard(c);
+					cardsRemoved++;
 				}
 			}
 			System.out.println("set of foot soldier cards turned in by "+getName());
-			removeNullCards();
-			System.out.println(getName()+"'s cards after turnin: ");
-			for (Card c : cards) {
-				if (c == null)
-					System.out.print("null, ");
-				else
-					System.out.print(c.toString()+", ");
-			}
-			System.out.println();
 			return true;
 		}
 		
@@ -272,29 +243,20 @@ public abstract class Player extends Observable{
 			int cannonsRemoved = 0, horsemenRemoved = 0, footSoldiersRemoved = 0;
 			for (int i = 0; i < cards.size(); i++) {
 				Card c = cards.get(i);
-				if (cannonsRemoved == 0 && c.getCardType() == CardType.CANNON) {
+				if (cannonsRemoved < 1 && c.getCardType() == CardType.CANNON) {
 					removeCard(c);
 					cannonsRemoved++;
 				}
-				else if (horsemenRemoved == 0 && c.getCardType() == CardType.HORSEMAN) {
+				else if (horsemenRemoved < 1 && c.getCardType() == CardType.HORSEMAN) {
 					removeCard(c);
 					horsemenRemoved++;
 				}
-				else if (footSoldiersRemoved == 0 && c.getCardType() == CardType.FOOT_SOLDIER) {
+				else if (footSoldiersRemoved < 1 && c.getCardType() == CardType.FOOT_SOLDIER) {
 					removeCard(c);
 					footSoldiersRemoved++;
 				}
 			}
 			System.out.println("set of all three types turned in by "+getName());
-			removeNullCards();
-			System.out.println(getName()+"'s cards after turnin: ");
-			for (Card c : cards) {
-				if (c == null)
-					System.out.print("null, ");
-				else
-					System.out.print(c.toString()+", ");
-			}
-			System.out.println();
 			return true;
 		}
 		
@@ -314,26 +276,9 @@ public abstract class Player extends Observable{
 				} 
 			}
 			System.out.println("set with a wildcard turned in by "+getName());
-			removeNullCards();
-			System.out.println(getName()+"'s cards after turnin: ");
-			for (Card c : cards) {
-				if (c == null)
-					System.out.print("null, ");
-				else
-					System.out.print(c.toString()+", ");
-			}
-			System.out.println();
 			return true;
 		}
-		removeNullCards();
-		System.out.println(getName()+"'s cards after turnin: ");
-		for (Card c : cards) {
-			if (c == null)
-				System.out.print("null, ");
-			else
-				System.out.print(c.toString()+", ");
-		}
-		System.out.println();
+		
 		return false;
 	}
 	
@@ -348,35 +293,10 @@ public abstract class Player extends Observable{
 			if (t.equals(c.getCardTerritory()))
 				t.setNumArmies(t.getNumArmies() + 2);
 		}
-		cards.set(cards.indexOf(c), null);
+		cards.remove(c);
 		c.setInDeck(true);
 	}
 
-	/**
-	 * Private helper method that makes sure all of the null cards
-	 * added in the remove cards method are removed from the arrayList.
-	 */
-	private void removeNullCards() {
-		int nextOpen = 0;
-		for(int i = 0; i < cards.size(); i++) {
-			if(i == nextOpen){
-				if(cards.get(i) != null)
-					nextOpen++;
-			}
-			else {
-				if(cards.get(i) != null) {
-					cards.set(nextOpen, cards.get(i));
-					cards.set(i, null);
-					nextOpen++;
-				}
-			}
-		}
-		while(cards.contains(null)) {
-			cards.remove(cards.indexOf(null));
-		}
-	}
-
-	
 	/**
 	 * Represents a player drawing a card from the deck. Takes the card passed by
 	 * the deck, adds it to the player's hand, and removes it from the deck. 

@@ -177,7 +177,7 @@ public class RiskGUI extends JFrame implements Observer{
 				+ "<br>Please select between 2-6 players and determine a level of difficulty for each."
 				+ "<br>If you do not want a player, select Not Playing."
 				+ "<br>Enter a name in the Name field or the default name will be used."
-				+ "<br> ----------------------------------------------------------------------");
+				+ "<br> ---------------------------------------------------------------------");
 
 
 		//Player 1

@@ -31,6 +31,15 @@ public class Card {
 	}
 	
 	/**
+	 * Compares one card to another
+	 * @param c the card to be compared to the current card
+	 * @return true if the cards' territories and types are equal, false otherwise. 
+	 */
+	public boolean equals(Card c) {
+		return (c.type == this.type) && (c.cardTerritory.equals(this.cardTerritory));
+	}
+	
+	/**
 	 * Setter for <code>cardType</code>
 	 * @param cardType
 	 */
