@@ -325,7 +325,7 @@ public class ExpertAIPlayer extends Player {
 		}//end of choosing empty territories
 		else {
 			int r = genRan.nextInt(getTerritoriesOwned().size());
-			for(int i = 0; i < 20; i++) {
+			for(int i = 0; i < 100; i++) {
 				if(selected == null) {
 					Territory temp = getTerritoriesOwned().get(r);
 					for(Territory t: temp.getAdjacent()) {
@@ -356,7 +356,7 @@ public class ExpertAIPlayer extends Player {
 	public void reinforceArmies() {
 		if (debug) System.out.println("reinforceArmies called by "+getName());
 		int armiesToMove = 0;
-		
+
 		boolean reinforcePossible = false;
 		for(Territory t: getTerritoriesOwned()) {
 			for(Territory a: t.getAdjacent()) {
@@ -366,10 +366,10 @@ public class ExpertAIPlayer extends Player {
 		}
 		if(!reinforcePossible)
 			return;
-		
+
 		Territory reinforceThis = null;
 		Territory takeArmy = null;
-		
+
 		for(Territory t: getTerritoriesOwned()) {
 			if(takeArmy == null && t.getNumArmies() > 1 && t.getCurrentOwner() == this) {
 				boolean adjacentAllThis = true;
@@ -389,26 +389,37 @@ public class ExpertAIPlayer extends Player {
 						takeArmy = temp;
 				}			
 		}
-		
+
 		boolean reinforceSelected = false;
-		do{
+
+		for(Territory t: takeArmy.getAdjacent()) {
+			if(t.getCurrentOwner() == this) {
+				for(Territory a: t.getAdjacent()){
+					if(a.getCurrentOwner() != this){
+						reinforceThis = t;
+						reinforceSelected = true;
+					}
+				}
+			}
+		}
+		while(!reinforceSelected){
 			reinforceThis = takeArmy.getAdjacent().get(genRan.nextInt(takeArmy.getAdjacent().size()));
 			if(reinforceThis.getCurrentOwner() == this) {
 				reinforceSelected = true;
 			}
-		}while(!reinforceSelected);
-			
+		}
+
 		armiesToMove = takeArmy.getNumArmies() - 1;
-		
+
 		if (reinforceThis != null) {
 			reinforceThis.setNumArmies(reinforceThis.getNumArmies() + armiesToMove);
 			takeArmy.setNumArmies(takeArmy.getNumArmies() - armiesToMove);
 		}
-		
+
 		this.setChanged();
 		notifyObservers(this.getName() + " has moved " + armiesToMove + " armies from " + 
 				takeArmy.getName() + " to " + reinforceThis.getName());
-		
+
 	}
 	/**
 	 * Another version of reinforceArmies. Finds the smallest army owned and adds the 
@@ -525,7 +536,7 @@ public class ExpertAIPlayer extends Player {
 		//		reinforceArmies(high, low);
 
 	}// close helper method
-	*/
+	 */
 
 	/**
 	 * Attacks from the territory with the highest number of armies, which is adjacent to the 
@@ -540,7 +551,7 @@ public class ExpertAIPlayer extends Player {
 
 		Continent continentToAttack = determineContinent();
 		//System.out.println(this.getName() + " is going to attack " + continentToAttack);
-		
+
 		if(continentToAttack == Continent.NORTH_AMERICA) {
 			for(Territory t: NA) {
 				if(t.getCurrentOwner() != this) {
@@ -672,7 +683,7 @@ public class ExpertAIPlayer extends Player {
 			if(t.getCurrentOwner() != this)
 				numAU++;
 		}
-		
+
 		//if own all, make it a large number so everything else is less than it
 		if(numNA == 0 && numNA >= 9)
 			numNA = 20;
@@ -686,7 +697,7 @@ public class ExpertAIPlayer extends Player {
 			numAS = 20;
 		if(numAU == 0 && numAU >= 4)
 			numAU = 20;
-		
+
 		if(numNA < numSA) {
 			if(numNA < numEU) {
 				if(numNA < numAF) {
@@ -713,7 +724,7 @@ public class ExpertAIPlayer extends Player {
 			if(numEU < numAS) {
 				if(numEU < numAU) {
 					if(numEU < 7) {
-							return Continent.EUROPE;
+						return Continent.EUROPE;
 					}
 				}
 			}
@@ -731,7 +742,7 @@ public class ExpertAIPlayer extends Player {
 		else if(numAU < 4)
 			return Continent.AUSTRALIA;
 		return null;
-		
+
 
 	}
 
@@ -756,7 +767,7 @@ public class ExpertAIPlayer extends Player {
 				}
 			}
 		}
-		
+
 		numAttacks++;
 		if(numAttacks == 9) {
 			setDoneAttacking(true);

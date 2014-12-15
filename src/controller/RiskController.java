@@ -22,12 +22,12 @@ public class RiskController extends Observable{
 	private boolean debug = false;
 	private ArrayList<Territory> territories;
 	private Territory alaska, alberta, centralAmerica, easternUS, greenland, northwest,
-		ontario, quebec, westernUS, argentina, brazil, peru, venezuela, 
-		greatBritain, iceland, northernEurope, scandinavia, southernEurope, 
-		ukraine, westernEurope, congo, eastAfrica, egypt, madagascar, northAfrica,
-		southAfrica, afghanistan, china, india, irkutsk, japan, kamchatka, 
-		middleEast, mongolia, siam, siberia, ural, yakutsk, easternAustralia,
-		indonesia, newGuinea, westernAustralia;
+	ontario, quebec, westernUS, argentina, brazil, peru, venezuela, 
+	greatBritain, iceland, northernEurope, scandinavia, southernEurope, 
+	ukraine, westernEurope, congo, eastAfrica, egypt, madagascar, northAfrica,
+	southAfrica, afghanistan, china, india, irkutsk, japan, kamchatka, 
+	middleEast, mongolia, siam, siberia, ural, yakutsk, easternAustralia,
+	indonesia, newGuinea, westernAustralia;
 	private ArrayList<Player> players;
 	private ArrayList<Card> deckOfCards;
 	private int cardBonus;
@@ -93,14 +93,14 @@ public class RiskController extends Observable{
 		for (Player p : getPlayers()) {
 			p.setNumArmies(temp);
 		}
-		
+
 		while (getPlayers().get(0).getNumArmies() > 0) {
 			for (Player p : players) {
-//				try {
-//					Thread.sleep(1000);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
+				//				try {
+				//					Thread.sleep(1000);
+				//				} catch (InterruptedException e) {
+				//					e.printStackTrace();
+				//				}
 				if(p.getNumArmies() > 0)
 					p.placeArmy();
 			}
@@ -131,18 +131,18 @@ public class RiskController extends Observable{
 
 				if (p instanceof HumanPlayer)
 					SongPlayer.playFile(baseDir + "charge.wav");
-				
+
 				if(p.canTurnInCards()) {
 					p.setNumArmies(cardBonus);
 					incrementCardBonus();
 					notifyObservers("Player "+p.getName()+" turned in a set of cards");
 				}
 				p.addArmies();
-				
+
 				while (p.getNumArmies() > 0) {
-//					try {
-//						Thread.sleep(1000);
-//					} catch (InterruptedException e) { e.printStackTrace();}
+					//					try {
+					//						Thread.sleep(1000);
+					//					} catch (InterruptedException e) { e.printStackTrace();}
 					p.placeArmy();
 				}
 				while (p.canAttack()) {
@@ -736,7 +736,7 @@ public class RiskController extends Observable{
 		setChanged();
 		notifyObservers(new String("" + attackingTerritory.getCurrentOwner().getName() + " is attacking " + 
 				defendingTerritory.getName() + " from " + attackingTerritory.getName()));
-		
+
 		ArrayList<Integer> attackingDiceValues = new ArrayList<Integer>();
 		ArrayList<Integer> defendingDiceValues = new ArrayList<Integer>();
 
@@ -784,7 +784,7 @@ public class RiskController extends Observable{
 				}
 			}
 		}
-		
+
 		attackingTerritory.setNumArmies(attackingTerritory.getNumArmies() - defenderWon);
 		defendingTerritory.setNumArmies(defendingTerritory.getNumArmies() - attackerWon);
 
@@ -813,29 +813,41 @@ public class RiskController extends Observable{
 			} catch (InterruptedException e) { e.printStackTrace();}
 			setChanged();
 			notifyObservers(defendingTerritory.getName() + " now belongs to " + attackingTerritory.getCurrentOwner().getName());
-			
+
 			// defending territory now belongs to attacker
 			defendingTerritory.getCurrentOwner().getTerritoriesOwned().remove(defendingTerritory);
 			defendingTerritory.setCurrentOwner(attackingTerritory.getCurrentOwner());
 			attackingTerritory.getCurrentOwner().getTerritoriesOwned().add(defendingTerritory);
-			
+
 			// same number of armies as num time attacker won move to conquered territory
 			int moveArmies = 0;
 			if (attackingTerritory.getCurrentOwner() instanceof HumanPlayer) {
 				int selection = attackingDiceValues.size();
 				do {
 					String message = JOptionPane.showInputDialog("Please enter the number of armies to move from " + 
-						attackingTerritory.getName() + " to " + defendingTerritory.getName(), selection);
-				selection = Integer.parseInt(message);
+							attackingTerritory.getName() + " to " + defendingTerritory.getName(), selection);
+					selection = Integer.parseInt(message);
 				}while(selection < attackingDiceValues.size() && selection > attackingTerritory.getNumArmies() - 1);
 				moveArmies = selection;
 			}
 			else if(attackingTerritory.getCurrentOwner() instanceof ExpertAIPlayer) {
-				if(attackingTerritory.getNumArmies() > 7){
-					moveArmies = attackingTerritory.getNumArmies() / 2;
-				}
-				else
+				if(attackingTerritory.getNumArmies() <= 3) {
 					moveArmies = attackingDiceValues.size();
+				}
+				else {
+					int adjacentNotOwned = 0;
+					for(Territory a: attackingTerritory.getAdjacent()) {
+						if(a.getCurrentOwner() != attackingTerritory.getCurrentOwner())
+							adjacentNotOwned++;
+					}
+					if(adjacentNotOwned <= 1)
+						moveArmies = attackingTerritory.getNumArmies() - 2;
+					else if(attackingTerritory.getNumArmies() > 7){
+						moveArmies = attackingTerritory.getNumArmies() / 2;
+					}
+					else
+						moveArmies = attackingDiceValues.size();
+				}
 			}
 			else
 				moveArmies = attackingDiceValues.size();

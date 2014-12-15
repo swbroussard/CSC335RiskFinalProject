@@ -105,13 +105,12 @@ public class HumanPlayer extends Player{
 		reinforceTo = null;
 		this.setChanged();
 		notifyObservers(ObserverMessages.HUMAN_SELECT_REINFORCE_FROM);
-		while (reinforceFrom == null || reinforceFrom.getCurrentOwner() != this || reinforceFrom.getNumArmies() < 2) {
+		while (!territoryChosen) {
 			setChanged();
 			notifyObservers();
 			if (territoryChosen == true) {
 				if(reinforceFrom.getCurrentOwner() == this && reinforceFrom.getNumArmies() > 1) {
 					territoryChosen = false;
-					reinforceFrom = currentTerritory;
 					break;
 				}
 			}
@@ -124,7 +123,6 @@ public class HumanPlayer extends Player{
 			if (territoryChosen == true) {
 				if(reinforceTo.getCurrentOwner() == this && reinforceFrom.getAdjacent().contains(reinforceTo)) {
 					territoryChosen = false;
-					reinforceTo = currentTerritory;
 					break;
 				}
 			}
