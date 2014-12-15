@@ -105,35 +105,35 @@ public class SidePanel extends JPanel{
 			g2.drawString(p.getName(), 41, yPos);
 			yPos += 20;
 		}
-		yPos = 86;
+		int sPos = 86;
 		
 		switch(gui.getPlayers().indexOf(gui.getCurrentPlayer())) {
 			case 0: // player 1
-				g2.drawImage(star, 25, yPos, 15, 15, null); 
-				yPos += 20;
+				g2.drawImage(star, 25, sPos, 15, 15, null); 
+				sPos += 20;
 				break;
 			case 1: // player 2
-				g2.drawImage(star, 25, yPos, 15, 15, null); 
-				yPos += 20;
+				g2.drawImage(star, 25, sPos, 15, 15, null); 
+				sPos += 20;
 				break;
 			case 2: // player 3
-				g2.drawImage(star, 25, yPos, 15, 15, null); 
-				yPos += 20;
+				g2.drawImage(star, 25, sPos, 15, 15, null); 
+				sPos += 20;
 				break;
 			case 3: // player 4
-				g2.drawImage(star, 25, yPos, 15, 15, null); 
-				yPos += 20;
+				g2.drawImage(star, 25, sPos, 15, 15, null); 
+				sPos += 20;
 				break;
 			case 4: // player 5
-				g2.drawImage(star, 25, yPos, 15, 15, null); 
-				yPos += 20;
+				g2.drawImage(star, 25, sPos, 15, 15, null); 
+				sPos += 20;
 				break;
 			case 5: // player 6
-				g2.drawImage(star, 25, yPos, 15, 15, null); 
-				yPos += 20;
+				g2.drawImage(star, 25, sPos, 15, 15, null); 
+				sPos += 20;
 				break;
 		}
-		yPos += 40;
+		yPos += 20;
 		g2.setColor(Color.BLACK);
 		g2.drawString("Continent Bonuses:", 25, yPos);
 		yPos += 20;
@@ -150,14 +150,24 @@ public class SidePanel extends JPanel{
 		g2.drawString("Australia - 2", 40, yPos);
 		yPos += 40;
 		
-		g2.drawString("If you do not want to", 10, yPos);
+		
+		g2.drawString("Instructions:", 5, yPos);
 		yPos += 15;
-		g2.drawString("reinforce at the end of", 10, yPos);
+		g2.setFont(new Font("Arial", Font.PLAIN, 14));
+		g2.drawString("If you do not want to reinforce", 10, yPos);
 		yPos += 15;
-		g2.drawString("your turn, select a to ", 10, yPos);
+		g2.drawString("at the end of your turn, ", 10, yPos);
 		yPos += 15;
-		g2.drawString("and from territory, then", 10, yPos);
+		g2.drawString("select a to and from territory,", 10, yPos);
 		yPos += 15;
-		g2.drawString("enter 0 for the number of armies", 10, yPos);
+		g2.drawString("then enter 0 for # of armies", 10, yPos);
+		yPos += 30;
+		g2.drawString("To turn off sound, mute your", 10, yPos);
+		yPos += 15;
+		g2.drawString("volume on your computer.  :)", 10, yPos);
+		yPos += 30;
+		g2.drawString("You must turn in cards if ", 10, yPos);
+		yPos += 15;
+		g2.drawString("you are able to...", 10, yPos);
 	}
 }

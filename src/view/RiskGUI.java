@@ -72,11 +72,6 @@ public class RiskGUI extends JFrame implements Observer{
 
 
 		setUpFrame();
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		controller.populateBoard();
 		controller.playGame();
 	}
@@ -570,7 +565,6 @@ public class RiskGUI extends JFrame implements Observer{
 				label.setText("That territory is already occupied, please try again");
 			}
 			else {
-				//System.out.println("NumArmies = " + human.getNumArmies());
 				t.setCurrentOwner(human);
 				t.setNumArmies(1);
 				human.setNumArmies(human.getNumArmies() - 1);

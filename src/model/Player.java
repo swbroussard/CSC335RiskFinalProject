@@ -185,15 +185,15 @@ public abstract class Player extends Observable{
 	 * @return true if the player can turn in a set of cards, false if they cannot. 
 	 */
 	public boolean canTurnInCards() {
-		System.out.println(getName()+"'s cards before turnin: ");
+		if(debug) System.out.println(getName()+"'s cards before turnin: ");
 		for (Card c : cards) {
 
 			if (c == null)
-				System.out.print("null, ");
+				if(debug) System.out.print("null, ");
 			else
-				System.out.print(c.toString()+", ");
+				if(debug) System.out.print(c.toString()+", ");
 		}
-		System.out.println();
+		if(debug) System.out.println();
 		
 		if(cards.size() < 3)
 			return false;
@@ -218,17 +218,17 @@ public abstract class Player extends Observable{
 				}
 
 			}
-			System.out.println("set of cannon cards turned in by "+getName());
+			if(debug) System.out.println("set of cannon cards turned in by "+getName());
 
 			removeNulls();
-			System.out.println(getName()+"'s cards after turnin: ");
+			if(debug) System.out.println(getName()+"'s cards after turnin: ");
 			for (Card c : cards) {
 				if (c == null)
-					System.out.print("null, ");
+					if(debug) System.out.print("null, ");
 				else
-					System.out.print(c.toString()+", ");
+					if(debug) System.out.print(c.toString()+", ");
 			}
-			System.out.println();
+			if(debug) System.out.println();
 			return true;
 		}
 
@@ -239,15 +239,15 @@ public abstract class Player extends Observable{
 					removeCard(c);
 				}
 			}
-			System.out.println("set of horseman cards turned in by "+getName());
+			if(debug) System.out.println("set of horseman cards turned in by "+getName());
 			removeNulls();
 			for (Card c : cards) {
 				if (c == null)
-					System.out.print("null, ");
+					if(debug) System.out.print("null, ");
 				else
-					System.out.print(c.toString()+", ");
+					if(debug) System.out.print(c.toString()+", ");
 			}
-			System.out.println();
+			if(debug) System.out.println();
 			return true;
 		}
 
@@ -258,15 +258,15 @@ public abstract class Player extends Observable{
 					removeCard(c);
 				}
 			}
-			System.out.println("set of foot soldier cards turned in by "+getName());
+			if(debug) System.out.println("set of foot soldier cards turned in by "+getName());
 			removeNulls();
 			for (Card c : cards) {
 				if (c == null)
-					System.out.print("null, ");
+					if(debug) System.out.print("null, ");
 				else
-					System.out.print(c.toString()+", ");
+					if(debug) System.out.print(c.toString()+", ");
 			}
-			System.out.println();
+			if(debug) System.out.println();
 			return true;
 		}
 
@@ -287,15 +287,15 @@ public abstract class Player extends Observable{
 					footSoldiersRemoved++;
 				}
 			}
-			System.out.println("set of all three types turned in by "+getName());
+			if(debug) System.out.println("set of all three types turned in by "+getName());
 			removeNulls();
 			for (Card c : cards) {
 				if (c == null)
-					System.out.print("null, ");
+					if(debug) System.out.print("null, ");
 				else
-					System.out.print(c.toString()+", ");
+					if(debug) System.out.print(c.toString()+", ");
 			}
-			System.out.println();
+			if(debug) System.out.println();
 			return true;
 		}
 
@@ -314,15 +314,15 @@ public abstract class Player extends Observable{
 					wildCardsRemoved++;
 				} 
 			}
-			System.out.println("set with a wildcard turned in by "+getName());
+			if(debug) System.out.println("set with a wildcard turned in by "+getName());
 			removeNulls();
 			for (Card c : cards) {
 				if (c == null)
-					System.out.print("null, ");
+					if(debug) System.out.print("null, ");
 				else
-					System.out.print(c.toString()+", ");
+					if(debug) System.out.print(c.toString()+", ");
 			}
-			System.out.println();
+			if(debug) System.out.println();
 			return true;
 		}
 		removeNulls();

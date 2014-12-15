@@ -100,11 +100,11 @@ public class RiskController extends Observable{
 
 		while (getPlayers().get(0).getNumArmies() > 0) {
 			for (Player p : players) {
-				//				try {
-				//					Thread.sleep(1000);
-				//				} catch (InterruptedException e) {
-				//					e.printStackTrace();
-				//				}
+				try {
+					if(runningGUI) Thread.sleep(123);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				if(p.getNumArmies() > 0)
 					p.placeArmy();
 			}
@@ -144,9 +144,9 @@ public class RiskController extends Observable{
 				p.addArmies();
 
 				while (p.getNumArmies() > 0) {
-					//					try {
-					//						Thread.sleep(1000);
-					//					} catch (InterruptedException e) { e.printStackTrace();}
+					try {
+						if(runningGUI) Thread.sleep(123);
+					} catch (InterruptedException e) { e.printStackTrace();}
 					p.placeArmy();
 				}
 				while (p.canAttack()) {
@@ -738,9 +738,9 @@ public class RiskController extends Observable{
 				+"\nDefender - "+defendingTerritory.getName()+" (owner - "
 				+defendingTerritory.getCurrentOwner().getName()+")");
 		this.defendingTerritory = defendingterritory;
-//		try {
-//			Thread.sleep(2000);
-//		} catch (InterruptedException e) { e.printStackTrace();}
+		try {
+			if(runningGUI) Thread.sleep(123);
+		} catch (InterruptedException e) { e.printStackTrace();}
 		setChanged();
 		notifyObservers(new String("" + attackingTerritory.getCurrentOwner().getName() + " is attacking " + 
 				defendingTerritory.getName() + " from " + attackingTerritory.getName()));
@@ -803,9 +803,9 @@ public class RiskController extends Observable{
 			if (defendingTerritory.getCurrentOwner().getTerritoriesOwned().size() == 1) {
 				// attacker conquered defender's last territory
 				if (debug) System.out.println(defendingTerritory.getCurrentOwner().getName() + " has been eliminated");
-//				try {
-//					Thread.sleep(3000);
-//				} catch (InterruptedException e) { e.printStackTrace();}
+				try {
+					if(runningGUI) Thread.sleep(123);
+				} catch (InterruptedException e) { e.printStackTrace();}
 				setChanged();
 				notifyObservers(defendingTerritory.getCurrentOwner().getName() + " has been eliminated");
 				for (Card c : defendingTerritory.getCurrentOwner().getCards()) {
@@ -816,9 +816,9 @@ public class RiskController extends Observable{
 			}
 
 			if (debug) System.out.println(defendingTerritory.getName() + " now belongs to the attacker");
-//			try {
-//				Thread.sleep(3000);
-//			} catch (InterruptedException e) { e.printStackTrace();}
+			try {
+				if(runningGUI) Thread.sleep(123);
+			} catch (InterruptedException e) { e.printStackTrace();}
 			setChanged();
 			notifyObservers(defendingTerritory.getName() + " now belongs to " + attackingTerritory.getCurrentOwner().getName());
 
@@ -864,9 +864,9 @@ public class RiskController extends Observable{
 			return true;
 		}
 		if (debug) System.out.println(territories + "\n");
-//		try {
-//			Thread.sleep(3000);
-//		} catch (InterruptedException e) { e.printStackTrace();}
+		try {
+			if(runningGUI) Thread.sleep(123);
+		} catch (InterruptedException e) { e.printStackTrace();}
 		setChanged();
 		notifyObservers(new String("" + attackingTerritory.getCurrentOwner().getName() + " did not get " + 
 				defendingTerritory.getName()));

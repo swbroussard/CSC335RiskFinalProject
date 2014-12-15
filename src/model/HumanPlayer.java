@@ -116,6 +116,8 @@ public class HumanPlayer extends Player{
 					territoryChosen = false;
 					break;
 				}
+				else
+					territoryChosen = false;
 			}
 		}
 		this.setChanged();
@@ -128,6 +130,8 @@ public class HumanPlayer extends Player{
 					territoryChosen = false;
 					break;
 				}
+				else
+					territoryChosen = false;
 			}
 		}
 		int armies = 0;

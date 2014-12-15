@@ -324,10 +324,20 @@ public class ExpertAIPlayer extends Player {
 			}// allSelected if statement
 		}//end of choosing empty territories
 		else {
-			int r = genRan.nextInt(getTerritoriesOwned().size());
+			ArrayList<Territory> possiblePlaceArmy = new ArrayList<Territory>();
+			for(Territory t: getTerritoriesOwned()) {
+				boolean possible = false;
+				for(Territory a: t.getAdjacent()) {
+					if(a.getCurrentOwner() != this)
+						possible = true;
+				}
+				if(possible)
+					possiblePlaceArmy.add(t);
+			}
+			int r = genRan.nextInt(possiblePlaceArmy.size());
 			for(int i = 0; i < 100; i++) {
 				if(selected == null) {
-					Territory temp = getTerritoriesOwned().get(r);
+					Territory temp = possiblePlaceArmy.get(r);
 					for(Territory t: temp.getAdjacent()) {
 						if(t.getCurrentOwner() != this) {
 							selected = temp;
