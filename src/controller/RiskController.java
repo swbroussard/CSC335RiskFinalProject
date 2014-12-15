@@ -193,10 +193,10 @@ public class RiskController extends Observable{
 	 * @param p the player who has earned a card
 	 */
 	private void issueCard(Player p) {
-		if (numCards == 42)
-			numCards = 0;
-		Card c = deckOfCards.get(numCards);
+		Card c = null;
 		do {
+			if (numCards == 44)
+				numCards = 0;
 			c = deckOfCards.get(numCards);
 			numCards++;
 		} while (!c.isInDeck()); 

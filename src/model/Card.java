@@ -83,9 +83,21 @@ public class Card {
 	 * @return String
 	 */
 	public String toString() {
+		String result = "";
+		switch(type) {
+		case CANNON:
+			result += "Cannon: "; break;
+		case HORSEMAN: 
+			result += "Horseman: "; break;
+		case FOOT_SOLDIER: 
+			result += "Foot soldier: "; break;
+		case WILD: 
+			result += "Wildcard: "; break;
+		}
 		if (cardTerritory != null)
-			return type + ": " + cardTerritory.getName();
+			result += cardTerritory.getName();
 		else
-			return type + ": no territory";
+			result += ": no territory";
+		return result;
 	}
 }
