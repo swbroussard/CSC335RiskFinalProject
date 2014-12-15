@@ -18,7 +18,7 @@ import model.SimpleAIPlayer;
  *
  */
 public class Run6Bots {
-	boolean debug = false;
+	private boolean debug = true;
 	private RiskController controller;
 	private ArrayList<Player> players;
 	private int simpleWon, intermediateWon, expertWon;
@@ -73,7 +73,7 @@ public class Run6Bots {
 				players.add(new ExpertAIPlayer("Expert Player " + counter));
 				counter++;
 			}
-			if (debug) System.out.println("Game "+i+" started");
+			if(debug) System.out.println("Game "+i+" started");
 			controller = new RiskController(players);
 			
 			if (controller.getPlayers().get(0) instanceof SimpleAIPlayer) 

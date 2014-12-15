@@ -34,6 +34,7 @@ public class RiskController extends Observable{
 	private int numCards;
 	private static Random rand;
 	private Territory defendingTerritory;
+	private boolean runningGUI;
 
 	/**
 	 * Constructor for the Run6Bots testing class. Constructs a new <code>RiskController</code> object 
@@ -44,6 +45,7 @@ public class RiskController extends Observable{
 	 */
 	public RiskController(ArrayList<Player> myPlayers) {
 		if (debug) System.out.println("New RiskController created");
+		runningGUI = false;
 		setPlayers(myPlayers);
 		setUpTerritories();
 		sendTerritoriesToPlayers();
@@ -59,6 +61,7 @@ public class RiskController extends Observable{
 	public RiskController() {
 		setUpTerritories();
 		setUpDeck();
+		runningGUI = true;
 	}
 
 	/**
@@ -121,7 +124,7 @@ public class RiskController extends Observable{
 		if (debug) System.out.println("playGame called");
 		int round = 1;
 		while (getPlayers().size() > 1) {
-			System.out.println("Round: " + round);
+			if(debug) System.out.println("Round: " + round);
 			round++;
 			boolean conquered = false;
 			int counter = 0;
@@ -730,9 +733,9 @@ public class RiskController extends Observable{
 				+"\nDefender - "+defendingTerritory.getName()+" (owner - "
 				+defendingTerritory.getCurrentOwner().getName()+")");
 		this.defendingTerritory = defendingterritory;
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) { e.printStackTrace();}
+//		try {
+//			Thread.sleep(2000);
+//		} catch (InterruptedException e) { e.printStackTrace();}
 		setChanged();
 		notifyObservers(new String("" + attackingTerritory.getCurrentOwner().getName() + " is attacking " + 
 				defendingTerritory.getName() + " from " + attackingTerritory.getName()));
@@ -789,15 +792,15 @@ public class RiskController extends Observable{
 		defendingTerritory.setNumArmies(defendingTerritory.getNumArmies() - attackerWon);
 
 		if (defendingTerritory.getNumArmies() <= 0) { // attacker conquered defending territory
-			SongPlayer.playFile(baseDir + "BigExplosion.wav");
+			if(runningGUI) SongPlayer.playFile(baseDir + "BigExplosion.wav");
 			this.setChanged();
 			notifyObservers(ObserverMessages.START_EXPLOSION);
 			if (defendingTerritory.getCurrentOwner().getTerritoriesOwned().size() == 1) {
 				// attacker conquered defender's last territory
 				if (debug) System.out.println(defendingTerritory.getCurrentOwner().getName() + " has been eliminated");
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) { e.printStackTrace();}
+//				try {
+//					Thread.sleep(3000);
+//				} catch (InterruptedException e) { e.printStackTrace();}
 				setChanged();
 				notifyObservers(defendingTerritory.getCurrentOwner().getName() + " has been eliminated");
 				for (Card c : defendingTerritory.getCurrentOwner().getCards()) {
@@ -808,9 +811,9 @@ public class RiskController extends Observable{
 			}
 
 			if (debug) System.out.println(defendingTerritory.getName() + " now belongs to the attacker");
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) { e.printStackTrace();}
+//			try {
+//				Thread.sleep(3000);
+//			} catch (InterruptedException e) { e.printStackTrace();}
 			setChanged();
 			notifyObservers(defendingTerritory.getName() + " now belongs to " + attackingTerritory.getCurrentOwner().getName());
 
@@ -856,9 +859,9 @@ public class RiskController extends Observable{
 			return true;
 		}
 		if (debug) System.out.println(territories + "\n");
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) { e.printStackTrace();}
+//		try {
+//			Thread.sleep(3000);
+//		} catch (InterruptedException e) { e.printStackTrace();}
 		setChanged();
 		notifyObservers(new String("" + attackingTerritory.getCurrentOwner().getName() + " did not get " + 
 				defendingTerritory.getName()));
