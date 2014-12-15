@@ -39,7 +39,6 @@ public class MapPanel extends JPanel{
 	private ArrayList<Territory> territories;
 	private RiskGUI gui;
 	private List<SpriteObject> splosions;
-	//private Territory loosingTerritory;
 	private Timer animTimer;
 	private BufferedImage sheet;
 	

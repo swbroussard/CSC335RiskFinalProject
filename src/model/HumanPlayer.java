@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 public class HumanPlayer extends Player{
 	private Territory currentTerritory, attackFromTerritory, attackToTerritory, reinforceFrom, reinforceTo;
 	private boolean territoryChosen;
-	private int armies;
 	private boolean armiesChosen;
 
 	/**
@@ -62,7 +61,6 @@ public class HumanPlayer extends Player{
 				territoryChosen = false;
 				return attackFromTerritory;
 			}
-			//System.out.println("waiting for attackFrom territory to be chosen");
 		}
 		// choose one of your territories with two or more armies to attack from
 		// if you no longer want to attack, return null
@@ -103,16 +101,25 @@ public class HumanPlayer extends Player{
 		}
 		if(!reinforcePossible)
 			return;
-		
+
 		reinforceFrom = null;
 		reinforceTo = null;
 		this.setChanged();
 		notifyObservers(ObserverMessages.HUMAN_SELECT_REINFORCE_FROM);
 		while (!territoryChosen) {
 			setChanged();
-			notifyObservers();
+			notifyObservers(ObserverMessages.HUMAN_SELECT_REINFORCE_FROM);
 			if (territoryChosen == true) {
-				if(reinforceFrom.getCurrentOwner() == this && reinforceFrom.getNumArmies() > 1) {
+				boolean possible = false;
+				for(Territory t: reinforceFrom.getAdjacent()) {
+					if(t.getCurrentOwner() == this) {
+						possible = true;
+					}
+				}
+				if(!possible) {
+					territoryChosen = false;
+				}
+				else if(reinforceFrom.getCurrentOwner() == this && reinforceFrom.getNumArmies() > 1) {
 					territoryChosen = false;
 					break;
 				}
@@ -124,7 +131,7 @@ public class HumanPlayer extends Player{
 		notifyObservers(ObserverMessages.HUMAN_SELECT_REINFORCE_TO);
 		while (!territoryChosen) {
 			setChanged();
-			notifyObservers();
+			notifyObservers(ObserverMessages.HUMAN_SELECT_REINFORCE_TO);
 			if (territoryChosen == true) {
 				if(reinforceTo.getCurrentOwner() == this && reinforceFrom.getAdjacent().contains(reinforceTo)) {
 					territoryChosen = false;
@@ -139,7 +146,9 @@ public class HumanPlayer extends Player{
 			String message = JOptionPane.showInputDialog("<html>Please enter the number of armies to move from " + 
 					reinforceFrom.getName() + " to " + reinforceTo.getName() + "<br>If you dont want" +
 					" to reinforce, enter 0.", "0");
-			armies = Integer.parseInt(message);
+			try {
+				armies = Integer.parseInt(message);
+			}catch(Exception e) { armies = -1;}
 		}while(armies < 0 && armies > reinforceFrom.getNumArmies() - 1);
 
 		reinforceFrom.setNumArmies(reinforceFrom.getNumArmies() - armies);
@@ -217,12 +226,26 @@ public class HumanPlayer extends Player{
 		return attackFromTerritory;
 	}
 
+	/**
+	 * setter for reinforceFrom
+	 * @param t
+	 */
 	public void setReinforceFrom(Territory t) {
 		reinforceFrom = t;
 	}
+	
+	/**
+	 * setter for reinforceTo
+	 * @param t
+	 */
 	public void setReinforceTo(Territory t) {
 		reinforceTo = t;
 	}
+	
+	/**
+	 * getter for reinforceFrom
+	 * @return
+	 */
 	public Territory getReinforceFrom() {
 		return reinforceFrom;
 	}

@@ -705,6 +705,7 @@ public class RiskGUI extends JFrame implements Observer{
 			sidePanel.repaint();
 		}
 		mapPanel.repaint();
+		sidePanel.repaint();
 	}
 
 	/**
