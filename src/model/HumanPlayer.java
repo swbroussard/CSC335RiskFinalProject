@@ -55,6 +55,9 @@ public class HumanPlayer extends Player{
 		while (!territoryChosen) {
 			setChanged();
 			notifyObservers();
+			if(getDoneAttacking() == true) {
+				return null;
+			}
 			if(territoryChosen == true) {
 				territoryChosen = false;
 				return attackFromTerritory;

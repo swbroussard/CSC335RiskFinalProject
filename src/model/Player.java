@@ -368,6 +368,9 @@ public abstract class Player extends Observable{
 				}
 			}
 		}
+		while(cards.contains(null)) {
+			cards.remove(cards.indexOf(null));
+		}
 	}
 
 	
