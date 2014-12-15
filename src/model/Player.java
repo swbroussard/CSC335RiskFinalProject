@@ -187,7 +187,10 @@ public abstract class Player extends Observable{
 	public boolean canTurnInCards() {
 		System.out.println(getName()+"'s cards before turnin: ");
 		for (Card c : cards) {
-			System.out.print(c.toString()+", ");
+			if (c == null)
+				System.out.print("null, ");
+			else
+				System.out.print(c.toString()+", ");
 		}
 		System.out.println();
 		if(cards.size() < 3)
@@ -217,7 +220,7 @@ public abstract class Player extends Observable{
 			System.out.println(getName()+"'s cards after turnin: ");
 			for (Card c : cards) {
 				if (c == null)
-					System.out.print("null");
+					System.out.print("null, ");
 				else
 					System.out.print(c.toString()+", ");
 			}
@@ -237,7 +240,7 @@ public abstract class Player extends Observable{
 			System.out.println(getName()+"'s cards after turnin: ");
 			for (Card c : cards) {
 				if (c == null)
-					System.out.print("null");
+					System.out.print("null, ");
 				else
 					System.out.print(c.toString()+", ");
 			}
@@ -257,7 +260,7 @@ public abstract class Player extends Observable{
 			System.out.println(getName()+"'s cards after turnin: ");
 			for (Card c : cards) {
 				if (c == null)
-					System.out.print("null");
+					System.out.print("null, ");
 				else
 					System.out.print(c.toString()+", ");
 			}
@@ -287,7 +290,7 @@ public abstract class Player extends Observable{
 			System.out.println(getName()+"'s cards after turnin: ");
 			for (Card c : cards) {
 				if (c == null)
-					System.out.print("null");
+					System.out.print("null, ");
 				else
 					System.out.print(c.toString()+", ");
 			}
@@ -315,7 +318,7 @@ public abstract class Player extends Observable{
 			System.out.println(getName()+"'s cards after turnin: ");
 			for (Card c : cards) {
 				if (c == null)
-					System.out.print("null");
+					System.out.print("null, ");
 				else
 					System.out.print(c.toString()+", ");
 			}
@@ -326,7 +329,7 @@ public abstract class Player extends Observable{
 		System.out.println(getName()+"'s cards after turnin: ");
 		for (Card c : cards) {
 			if (c == null)
-				System.out.print("null");
+				System.out.print("null, ");
 			else
 				System.out.print(c.toString()+", ");
 		}
