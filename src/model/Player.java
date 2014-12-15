@@ -207,6 +207,7 @@ public abstract class Player extends Observable{
 					cardsRemoved++;
 				}
 			}
+			System.out.println("set of cannon cards turned in by "+getName());
 			return true;
 		}
 		
@@ -220,6 +221,7 @@ public abstract class Player extends Observable{
 					cardsRemoved++;
 				}
 			}
+			System.out.println("set of horseman cards turned in by "+getName());
 			return true;
 		}
 		
@@ -233,6 +235,7 @@ public abstract class Player extends Observable{
 					cardsRemoved++;
 				}
 			}
+			System.out.println("set of foot soldier cards turned in by "+getName());
 			return true;
 		}
 		
@@ -253,6 +256,7 @@ public abstract class Player extends Observable{
 					footSoldiersRemoved++;
 				}
 			}
+			System.out.println("set of all three types turned in by "+getName());
 			return true;
 		}
 		
@@ -271,6 +275,7 @@ public abstract class Player extends Observable{
 					wildCardsRemoved++;
 				} 
 			}
+			System.out.println("set with a wildcard turned in by "+getName());
 			return true;
 		}
 		
